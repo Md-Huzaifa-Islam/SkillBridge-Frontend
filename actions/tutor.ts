@@ -1,7 +1,10 @@
 "use server";
 
 import { TutorProfile, Booking, ApiResponse } from "@/types";
-import { UpdateTutorProfileInput, UpdateAvailabilityInput } from "@/types/forms";
+import {
+  UpdateTutorProfileInput,
+  UpdateAvailabilityInput,
+} from "@/types/forms";
 import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
@@ -35,7 +38,9 @@ export async function getTutorProfile(): Promise<ApiResponse<TutorProfile>> {
   }
 }
 
-export async function updateTutorProfile(data: UpdateTutorProfileInput): Promise<ApiResponse<TutorProfile>> {
+export async function updateTutorProfile(
+  data: UpdateTutorProfileInput,
+): Promise<ApiResponse<TutorProfile>> {
   try {
     const headers = await getAuthHeaders();
     const response = await fetch(`${API_URL}/tutor/profile`, {
@@ -56,7 +61,9 @@ export async function updateTutorProfile(data: UpdateTutorProfileInput): Promise
   }
 }
 
-export async function updateTutorAvailability(data: UpdateAvailabilityInput): Promise<ApiResponse<void>> {
+export async function updateTutorAvailability(
+  data: UpdateAvailabilityInput,
+): Promise<ApiResponse<void>> {
   try {
     const headers = await getAuthHeaders();
     const response = await fetch(`${API_URL}/tutor/availability`, {

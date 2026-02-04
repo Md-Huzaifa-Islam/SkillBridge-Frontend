@@ -23,7 +23,9 @@ export async function getCategories(): Promise<ApiResponse<Category[]>> {
   }
 }
 
-export async function createCategory(name: string): Promise<ApiResponse<Category>> {
+export async function createCategory(
+  name: string,
+): Promise<ApiResponse<Category>> {
   try {
     const response = await fetch(`${API_URL}/categories`, {
       method: "POST",

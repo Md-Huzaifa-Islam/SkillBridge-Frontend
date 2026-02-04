@@ -5,13 +5,18 @@ import { TutorFilters } from "@/types/forms";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
 
-export async function getTutors(filters?: TutorFilters): Promise<ApiResponse<PaginatedResponse<TutorProfile>>> {
+export async function getTutors(
+  filters?: TutorFilters,
+): Promise<ApiResponse<PaginatedResponse<TutorProfile>>> {
   try {
     const params = new URLSearchParams();
     if (filters?.category) params.append("category", filters.category);
-    if (filters?.minPrice) params.append("minPrice", filters.minPrice.toString());
-    if (filters?.maxPrice) params.append("maxPrice", filters.maxPrice.toString());
-    if (filters?.minRating) params.append("minRating", filters.minRating.toString());
+    if (filters?.minPrice)
+      params.append("minPrice", filters.minPrice.toString());
+    if (filters?.maxPrice)
+      params.append("maxPrice", filters.maxPrice.toString());
+    if (filters?.minRating)
+      params.append("minRating", filters.minRating.toString());
     if (filters?.search) params.append("search", filters.search);
     if (filters?.page) params.append("page", filters.page.toString());
     if (filters?.limit) params.append("limit", filters.limit.toString());
@@ -33,7 +38,9 @@ export async function getTutors(filters?: TutorFilters): Promise<ApiResponse<Pag
   }
 }
 
-export async function getTutorById(id: string): Promise<ApiResponse<TutorProfile>> {
+export async function getTutorById(
+  id: string,
+): Promise<ApiResponse<TutorProfile>> {
   try {
     const response = await fetch(`${API_URL}/tutors/${id}`, {
       method: "GET",
@@ -52,7 +59,9 @@ export async function getTutorById(id: string): Promise<ApiResponse<TutorProfile
   }
 }
 
-export async function getFeaturedTutors(): Promise<ApiResponse<TutorProfile[]>> {
+export async function getFeaturedTutors(): Promise<
+  ApiResponse<TutorProfile[]>
+> {
   try {
     const response = await fetch(`${API_URL}/tutors?featured=true&limit=6`, {
       method: "GET",

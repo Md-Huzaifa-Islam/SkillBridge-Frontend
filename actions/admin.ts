@@ -34,7 +34,10 @@ export async function getAllUsers(): Promise<ApiResponse<User[]>> {
   }
 }
 
-export async function updateUserStatus(userId: string, is_banned: boolean): Promise<ApiResponse<User>> {
+export async function updateUserStatus(
+  userId: string,
+  is_banned: boolean,
+): Promise<ApiResponse<User>> {
   try {
     const headers = await getAuthHeaders();
     const response = await fetch(`${API_URL}/admin/users/${userId}`, {

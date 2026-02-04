@@ -15,7 +15,9 @@ async function getAuthHeaders() {
   };
 }
 
-export async function createBooking(data: CreateBookingInput): Promise<ApiResponse<Booking>> {
+export async function createBooking(
+  data: CreateBookingInput,
+): Promise<ApiResponse<Booking>> {
   try {
     const headers = await getAuthHeaders();
     const response = await fetch(`${API_URL}/bookings`, {
@@ -56,7 +58,9 @@ export async function getBookings(): Promise<ApiResponse<Booking[]>> {
   }
 }
 
-export async function getBookingById(id: string): Promise<ApiResponse<Booking>> {
+export async function getBookingById(
+  id: string,
+): Promise<ApiResponse<Booking>> {
   try {
     const headers = await getAuthHeaders();
     const response = await fetch(`${API_URL}/bookings/${id}`, {
@@ -76,7 +80,10 @@ export async function getBookingById(id: string): Promise<ApiResponse<Booking>> 
   }
 }
 
-export async function updateBookingStatus(id: string, status: string): Promise<ApiResponse<Booking>> {
+export async function updateBookingStatus(
+  id: string,
+  status: string,
+): Promise<ApiResponse<Booking>> {
   try {
     const headers = await getAuthHeaders();
     const response = await fetch(`${API_URL}/bookings/${id}`, {

@@ -15,7 +15,9 @@ async function getAuthHeaders() {
   };
 }
 
-export async function createReview(data: CreateReviewInput): Promise<ApiResponse<Rating>> {
+export async function createReview(
+  data: CreateReviewInput,
+): Promise<ApiResponse<Rating>> {
   try {
     const headers = await getAuthHeaders();
     const response = await fetch(`${API_URL}/reviews`, {
