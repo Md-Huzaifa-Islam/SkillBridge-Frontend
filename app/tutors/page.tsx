@@ -48,7 +48,10 @@ export default async function TutorsPage({
   const tutorsData =
     tutorsResponse.success && tutorsResponse.data
       ? tutorsResponse.data
-      : { data: [], pagination: { total: 0, page: 1, limit: 12, totalPages: 1 } };
+      : {
+          data: [],
+          pagination: { total: 0, page: 1, limit: 12, totalPages: 1 },
+        };
 
   const categories = categoriesResponse.success
     ? categoriesResponse.data || []
@@ -137,7 +140,8 @@ export default async function TutorsPage({
 
         <div className="mb-6">
           <p className="text-gray-600">
-            Found {tutorsData.pagination.total} tutor{tutorsData.pagination.total !== 1 ? "s" : ""}
+            Found {tutorsData.pagination.total} tutor
+            {tutorsData.pagination.total !== 1 ? "s" : ""}
           </p>
         </div>
 
@@ -164,17 +168,18 @@ export default async function TutorsPage({
               </Button>
             )}
 
-            {Array.from({ length: tutorsData.pagination.totalPages }, (_, i) => i + 1).map(
-              (p) => (
-                <Button
-                  key={p}
-                  variant={p === page ? "default" : "outline"}
-                  asChild
-                >
-                  <Link href={buildUrl({ page: p.toString() })}>{p}</Link>
-                </Button>
-              ),
-            )}
+            {Array.from(
+              { length: tutorsData.pagination.totalPages },
+              (_, i) => i + 1,
+            ).map((p) => (
+              <Button
+                key={p}
+                variant={p === page ? "default" : "outline"}
+                asChild
+              >
+                <Link href={buildUrl({ page: p.toString() })}>{p}</Link>
+              </Button>
+            ))}
 
             {page < tutorsData.pagination.totalPages && (
               <Button variant="outline" asChild>
