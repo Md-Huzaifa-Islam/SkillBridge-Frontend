@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { updateTutorProfile } from "@/actions/tutor";
 import { toast } from "@/lib/toast";
 import { TutorProfile, Category } from "@/types";
@@ -56,7 +62,9 @@ export default function TutorProfileForm({
                 <Label htmlFor="category">Category</Label>
                 <Select
                   value={formData.category_id}
-                  onValueChange={(value) => setFormData({ ...formData, category_id: value })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, category_id: value })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a category" />
@@ -77,7 +85,9 @@ export default function TutorProfileForm({
                   id="description"
                   rows={5}
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   placeholder="Tell students about yourself and your teaching experience..."
                 />
               </div>
@@ -91,12 +101,20 @@ export default function TutorProfileForm({
                   required
                   value={formData.price_per_hour}
                   onChange={(e) =>
-                    setFormData({ ...formData, price_per_hour: parseInt(e.target.value) || 0 })
+                    setFormData({
+                      ...formData,
+                      price_per_hour: parseInt(e.target.value) || 0,
+                    })
                   }
                 />
               </div>
 
-              <Button type="submit" className="w-full" size="lg" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={loading}
+              >
                 {loading ? "Saving..." : "Save Profile"}
               </Button>
             </form>

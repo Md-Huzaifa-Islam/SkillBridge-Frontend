@@ -85,7 +85,12 @@ export default function ReviewForm({ bookingId }: { bookingId: string }) {
                 />
               </div>
 
-              <Button type="submit" className="w-full" size="lg" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={loading}
+              >
                 {loading ? "Submitting..." : "Submit Review"}
               </Button>
             </form>

@@ -9,7 +9,9 @@ export default async function TutorProfilePage() {
   ]);
 
   const profile = profileResponse.success ? profileResponse.data : null;
-  const categories = categoriesResponse.success ? categoriesResponse.data || [] : [];
+  const categories = categoriesResponse.success
+    ? categoriesResponse.data || []
+    : [];
 
   return <TutorProfileForm profile={profile} categories={categories} />;
 }
