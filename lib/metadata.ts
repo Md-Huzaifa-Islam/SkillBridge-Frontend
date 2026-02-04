@@ -3,7 +3,7 @@ import { Metadata } from "next";
 export function generateMetadata(
   title: string,
   description: string,
-  path: string = ""
+  path: string = "",
 ): Metadata {
   return {
     title: `${title} | SkillBridge`,

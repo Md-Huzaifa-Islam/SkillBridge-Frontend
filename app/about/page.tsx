@@ -1,5 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Clock, Users, BookOpen, TrendingUp } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us | SkillBridge",
+  description: "Learn more about SkillBridge and our mission to make quality education accessible to everyone.",
+};
 
 export default function AboutPage() {
   return (

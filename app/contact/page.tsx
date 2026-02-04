@@ -1,5 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us | SkillBridge",
+  description: "Get in touch with SkillBridge. We're here to help with any questions or concerns.",
+};
 
 export default function ContactPage() {
   return (
