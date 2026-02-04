@@ -4,7 +4,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About Us | SkillBridge",
-  description: "Learn more about SkillBridge and our mission to make quality education accessible to everyone.",
+  description:
+    "Learn more about SkillBridge and our mission to make quality education accessible to everyone.",
 };
 
 export default function AboutPage() {

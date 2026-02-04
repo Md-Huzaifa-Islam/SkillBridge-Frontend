@@ -4,7 +4,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Contact Us | SkillBridge",
-  description: "Get in touch with SkillBridge. We're here to help with any questions or concerns.",
+  description:
+    "Get in touch with SkillBridge. We're here to help with any questions or concerns.",
 };
 
 export default function ContactPage() {
