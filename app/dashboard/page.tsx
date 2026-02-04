@@ -35,7 +35,9 @@ export default async function StudentDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-500 text-sm">Upcoming</p>
-                  <p className="text-3xl font-bold">{upcomingBookings.length}</p>
+                  <p className="text-3xl font-bold">
+                    {upcomingBookings.length}
+                  </p>
                 </div>
                 <Clock className="h-12 w-12 text-green-600" />
               </div>
@@ -47,7 +49,9 @@ export default async function StudentDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-500 text-sm">Completed</p>
-                  <p className="text-3xl font-bold">{completedBookings.length}</p>
+                  <p className="text-3xl font-bold">
+                    {completedBookings.length}
+                  </p>
                 </div>
                 <User className="h-12 w-12 text-purple-600" />
               </div>
@@ -63,13 +67,17 @@ export default async function StudentDashboard() {
             {bookings.length > 0 ? (
               <div className="space-y-4">
                 {bookings.slice(0, 5).map((booking) => (
-                  <div key={booking.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div
+                    key={booking.id}
+                    className="flex items-center justify-between p-4 border rounded-lg"
+                  >
                     <div className="flex-1">
                       <h3 className="font-semibold">
                         {booking.bookingTutor?.userToTutor.name || "Tutor"}
                       </h3>
                       <p className="text-sm text-gray-500">
-                        {booking.date} • {booking.start_time} - {booking.end_time}
+                        {booking.date} • {booking.start_time} -{" "}
+                        {booking.end_time}
                       </p>
                     </div>
                     <div className="flex items-center gap-4">
@@ -78,8 +86,8 @@ export default async function StudentDashboard() {
                           booking.status === "confirm"
                             ? "default"
                             : booking.status === "completed"
-                            ? "secondary"
-                            : "destructive"
+                              ? "secondary"
+                              : "destructive"
                         }
                       >
                         {booking.status}

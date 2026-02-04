@@ -7,15 +7,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default async function AdminDashboard() {
-  const [usersResponse, bookingsResponse, categoriesResponse] = await Promise.all([
-    getAllUsers(),
-    getAllBookings(),
-    getCategories(),
-  ]);
+  const [usersResponse, bookingsResponse, categoriesResponse] =
+    await Promise.all([getAllUsers(), getAllBookings(), getCategories()]);
 
   const users = usersResponse.success ? usersResponse.data || [] : [];
   const bookings = bookingsResponse.success ? bookingsResponse.data || [] : [];
-  const categories = categoriesResponse.success ? categoriesResponse.data || [] : [];
+  const categories = categoriesResponse.success
+    ? categoriesResponse.data || []
+    : [];
 
   const totalRevenue = bookings
     .filter((b) => b.status === "completed")
@@ -92,7 +91,10 @@ export default async function AdminDashboard() {
             <CardContent>
               <div className="space-y-4">
                 {users.slice(0, 5).map((user) => (
-                  <div key={user.id} className="flex items-center justify-between p-3 border rounded">
+                  <div
+                    key={user.id}
+                    className="flex items-center justify-between p-3 border rounded"
+                  >
                     <div>
                       <p className="font-semibold">{user.name}</p>
                       <p className="text-sm text-gray-500">{user.email}</p>
@@ -116,10 +118,14 @@ export default async function AdminDashboard() {
             <CardContent>
               <div className="space-y-4">
                 {bookings.slice(0, 5).map((booking) => (
-                  <div key={booking.id} className="flex items-center justify-between p-3 border rounded">
+                  <div
+                    key={booking.id}
+                    className="flex items-center justify-between p-3 border rounded"
+                  >
                     <div>
                       <p className="font-semibold text-sm">
-                        {booking.bookingStudent?.name} → {booking.bookingTutor?.userToTutor.name}
+                        {booking.bookingStudent?.name} →{" "}
+                        {booking.bookingTutor?.userToTutor.name}
                       </p>
                       <p className="text-xs text-gray-500">{booking.date}</p>
                     </div>
@@ -128,8 +134,8 @@ export default async function AdminDashboard() {
                         booking.status === "confirm"
                           ? "default"
                           : booking.status === "completed"
-                          ? "secondary"
-                          : "destructive"
+                            ? "secondary"
+                            : "destructive"
                       }
                     >
                       {booking.status}
@@ -153,7 +159,10 @@ export default async function AdminDashboard() {
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {categories.map((category) => (
-                <div key={category.id} className="p-4 border rounded text-center">
+                <div
+                  key={category.id}
+                  className="p-4 border rounded text-center"
+                >
                   <p className="font-semibold">{category.name}</p>
                 </div>
               ))}

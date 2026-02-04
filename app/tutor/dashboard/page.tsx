@@ -16,7 +16,10 @@ export default async function TutorDashboard() {
 
   const upcomingSessions = sessions.filter((s) => s.status === "confirm");
   const completedSessions = sessions.filter((s) => s.status === "completed");
-  const totalEarnings = completedSessions.reduce((sum, s) => sum + s.total_price, 0);
+  const totalEarnings = completedSessions.reduce(
+    (sum, s) => sum + s.total_price,
+    0,
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -48,7 +51,9 @@ export default async function TutorDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-gray-500 text-sm">Upcoming</p>
-                      <p className="text-3xl font-bold">{upcomingSessions.length}</p>
+                      <p className="text-3xl font-bold">
+                        {upcomingSessions.length}
+                      </p>
                     </div>
                     <Users className="h-12 w-12 text-green-600" />
                   </div>
@@ -90,13 +95,17 @@ export default async function TutorDashboard() {
                 {sessions.length > 0 ? (
                   <div className="space-y-4">
                     {sessions.slice(0, 10).map((session) => (
-                      <div key={session.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div
+                        key={session.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
                         <div className="flex-1">
                           <h3 className="font-semibold">
                             {session.bookingStudent?.name || "Student"}
                           </h3>
                           <p className="text-sm text-gray-500">
-                            {session.date} • {session.start_time} - {session.end_time}
+                            {session.date} • {session.start_time} -{" "}
+                            {session.end_time}
                           </p>
                         </div>
                         <div className="flex items-center gap-4">
@@ -105,13 +114,15 @@ export default async function TutorDashboard() {
                               session.status === "confirm"
                                 ? "default"
                                 : session.status === "completed"
-                                ? "secondary"
-                                : "destructive"
+                                  ? "secondary"
+                                  : "destructive"
                             }
                           >
                             {session.status}
                           </Badge>
-                          <span className="font-bold">${session.total_price}</span>
+                          <span className="font-bold">
+                            ${session.total_price}
+                          </span>
                         </div>
                       </div>
                     ))}
@@ -127,7 +138,9 @@ export default async function TutorDashboard() {
         ) : (
           <Card>
             <CardContent className="p-12 text-center">
-              <p className="text-gray-500 mb-4">Please complete your tutor profile</p>
+              <p className="text-gray-500 mb-4">
+                Please complete your tutor profile
+              </p>
               <Link href="/tutor/profile">
                 <Button>Create Profile</Button>
               </Link>

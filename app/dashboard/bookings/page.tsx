@@ -21,7 +21,8 @@ export default async function MyBookingsPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h3 className="text-xl font-semibold mb-2">
-                        Session with {booking.bookingTutor?.userToTutor.name || "Tutor"}
+                        Session with{" "}
+                        {booking.bookingTutor?.userToTutor.name || "Tutor"}
                       </h3>
                       <div className="space-y-1 text-gray-600">
                         <p>Date: {booking.date}</p>
@@ -39,8 +40,8 @@ export default async function MyBookingsPage() {
                         booking.status === "confirm"
                           ? "default"
                           : booking.status === "completed"
-                          ? "secondary"
-                          : "destructive"
+                            ? "secondary"
+                            : "destructive"
                       }
                     >
                       {booking.status}

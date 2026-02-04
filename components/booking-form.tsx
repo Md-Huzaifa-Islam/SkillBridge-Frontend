@@ -55,7 +55,9 @@ export default function BookingForm({ tutor }: { tutor: TutorProfile }) {
             <div className="mb-6 p-4 bg-blue-50 rounded-lg">
               <div className="flex justify-between items-center">
                 <span className="text-gray-700">Price per hour:</span>
-                <span className="text-2xl font-bold text-blue-600">${tutor.price_per_hour}</span>
+                <span className="text-2xl font-bold text-blue-600">
+                  ${tutor.price_per_hour}
+                </span>
               </div>
             </div>
 
@@ -67,7 +69,9 @@ export default function BookingForm({ tutor }: { tutor: TutorProfile }) {
                   type="date"
                   required
                   value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, date: e.target.value })
+                  }
                   min={new Date().toISOString().split("T")[0]}
                 />
               </div>
@@ -79,7 +83,9 @@ export default function BookingForm({ tutor }: { tutor: TutorProfile }) {
                   type="time"
                   required
                   value={formData.start_time}
-                  onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, start_time: e.target.value })
+                  }
                 />
               </div>
 
@@ -90,12 +96,19 @@ export default function BookingForm({ tutor }: { tutor: TutorProfile }) {
                   type="time"
                   required
                   value={formData.end_time}
-                  onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, end_time: e.target.value })
+                  }
                 />
               </div>
 
               <div className="pt-4">
-                <Button type="submit" className="w-full" size="lg" disabled={loading}>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  size="lg"
+                  disabled={loading}
+                >
                   {loading ? "Creating Booking..." : "Confirm Booking"}
                 </Button>
               </div>
