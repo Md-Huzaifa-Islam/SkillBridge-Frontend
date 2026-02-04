@@ -14,7 +14,7 @@ export function TutorCard({ tutor }: TutorCardProps) {
       <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold">
+            <div className="w-16 h-16 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold">
               {tutor.userToTutor.name.charAt(0)}
             </div>
             <div className="flex-1">

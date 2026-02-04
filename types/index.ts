@@ -1,4 +1,3 @@
-// User Types
 export enum UserRole {
   TEACHER = "teacher",
   ADMIN = "admin",
@@ -86,7 +85,6 @@ export interface Rating {
   updatedAt: string;
 }
 
-// API Response Types
 export interface ApiResponse<T> {
   success: boolean;
   message: string;

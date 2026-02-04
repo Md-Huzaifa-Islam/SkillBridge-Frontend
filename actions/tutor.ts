@@ -24,7 +24,7 @@ export async function getTutorProfile(): Promise<ApiResponse<TutorProfile>> {
     const response = await fetch(`${API_URL}/tutor/profile`, {
       method: "GET",
       headers,
-      cache: "no-store",
+      next: { revalidate: 60, tags: ["tutor-profile"] },
     });
 
     const data = await response.json();
@@ -90,7 +90,7 @@ export async function getTutorSessions(): Promise<ApiResponse<Booking[]>> {
     const response = await fetch(`${API_URL}/tutor/sessions`, {
       method: "GET",
       headers,
-      cache: "no-store",
+      next: { revalidate: 30, tags: ["tutor-sessions", "bookings"] },
     });
 
     const data = await response.json();

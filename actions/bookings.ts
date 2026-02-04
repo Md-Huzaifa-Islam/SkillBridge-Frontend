@@ -44,7 +44,7 @@ export async function getBookings(): Promise<ApiResponse<Booking[]>> {
     const response = await fetch(`${API_URL}/bookings`, {
       method: "GET",
       headers,
-      cache: "no-store",
+      next: { revalidate: 30, tags: ["bookings"] },
     });
 
     const data = await response.json();

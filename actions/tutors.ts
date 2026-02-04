@@ -24,7 +24,7 @@ export async function getTutors(
     const response = await fetch(`${API_URL}/tutors?${params.toString()}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
-      cache: "no-store",
+      next: { revalidate: 60, tags: ["tutors"] },
     });
 
     const data = await response.json();

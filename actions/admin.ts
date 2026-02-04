@@ -20,7 +20,7 @@ export async function getAllUsers(): Promise<ApiResponse<User[]>> {
     const response = await fetch(`${API_URL}/admin/users`, {
       method: "GET",
       headers,
-      cache: "no-store",
+      next: { revalidate: 30, tags: ["users", "admin"] },
     });
 
     const data = await response.json();
@@ -64,7 +64,7 @@ export async function getAllBookings(): Promise<ApiResponse<Booking[]>> {
     const response = await fetch(`${API_URL}/admin/bookings`, {
       method: "GET",
       headers,
-      cache: "no-store",
+      next: { revalidate: 30, tags: ["bookings", "admin"] },
     });
 
     const data = await response.json();

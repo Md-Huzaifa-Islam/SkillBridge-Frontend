@@ -53,7 +53,6 @@ export default function TutorsClient({
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-8">Find Your Perfect Tutor</h1>
 
-        {/* Filters */}
         <Card className="mb-8">
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">

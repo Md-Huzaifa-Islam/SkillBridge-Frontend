@@ -23,12 +23,12 @@ export default async function TutorDetailPage({
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
+
           <div className="lg:col-span-2 space-y-6">
             <Card>
               <CardContent className="p-8">
                 <div className="flex items-start gap-6">
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold flex-shrink-0">
+                  <div className="w-24 h-24 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold shrink-0">
                     {tutor.userToTutor.name.charAt(0)}
                   </div>
                   <div className="flex-1">
@@ -118,7 +118,6 @@ export default async function TutorDetailPage({
             </Card>
           </div>
 
-          {/* Sidebar */}
           <div className="lg:col-span-1">
             <Card className="sticky top-24">
               <CardContent className="p-6">

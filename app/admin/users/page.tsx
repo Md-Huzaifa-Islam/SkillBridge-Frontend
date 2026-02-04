@@ -1,9 +1,27 @@
 import { getAllUsers } from "@/actions/admin";
 import UsersClient from "@/components/admin/users-client";
 
-export default async function AdminUsersPage() {
-  const response = await getAllUsers();
-  const users = response.success ? response.data || [] : [];
+interface SearchParams {
+  role?: string;
+  status?: string;
+}
 
-  return <UsersClient initialUsers={users} />;
+export default async function AdminUsersPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const usersResponse = await getAllUsers();
+  let users = usersResponse.success ? usersResponse.data || [] : [];
+
+  if (searchParams.role) {
+    users = users.filter((u) => u.role === searchParams.role);
+  }
+  if (searchParams.status === "banned") {
+    users = users.filter((u) => u.is_banned);
+  } else if (searchParams.status === "active") {
+    users = users.filter((u) => !u.is_banned);
+  }
+
+  return <UsersClient initialUsers={users} filters={searchParams} />;
 }
