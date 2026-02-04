@@ -6,9 +6,10 @@ export default function ContactPage() {
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4 max-w-4xl">
         <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
-        
+
         <p className="text-lg text-gray-700 mb-8">
-          Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          Have questions? We'd love to hear from you. Send us a message and
+          we'll respond as soon as possible.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -44,7 +45,9 @@ export default function ContactPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">123 Education St, Learning City, LC 12345</p>
+              <p className="text-gray-600">
+                123 Education St, Learning City, LC 12345
+              </p>
             </CardContent>
           </Card>
         </div>

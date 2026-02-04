@@ -21,27 +21,47 @@ export function MobileMenu() {
       {isOpen && (
         <div className="absolute top-16 left-0 right-0 bg-white border-b shadow-lg z-50">
           <div className="flex flex-col p-4 space-y-4">
-            <Link href="/tutors" onClick={() => setIsOpen(false)} className="py-2">
+            <Link
+              href="/tutors"
+              onClick={() => setIsOpen(false)}
+              className="py-2"
+            >
               Find Tutors
             </Link>
             {session?.user && userRole === UserRole.TEACHER && (
-              <Link href="/tutor/dashboard" onClick={() => setIsOpen(false)} className="py-2">
+              <Link
+                href="/tutor/dashboard"
+                onClick={() => setIsOpen(false)}
+                className="py-2"
+              >
                 My Dashboard
               </Link>
             )}
             {session?.user && userRole === UserRole.STUDENT && (
-              <Link href="/dashboard" onClick={() => setIsOpen(false)} className="py-2">
+              <Link
+                href="/dashboard"
+                onClick={() => setIsOpen(false)}
+                className="py-2"
+              >
                 My Dashboard
               </Link>
             )}
             {session?.user && userRole === UserRole.ADMIN && (
-              <Link href="/admin" onClick={() => setIsOpen(false)} className="py-2">
+              <Link
+                href="/admin"
+                onClick={() => setIsOpen(false)}
+                className="py-2"
+              >
                 Admin Panel
               </Link>
             )}
             {session?.user ? (
               <>
-                <Link href="/profile" onClick={() => setIsOpen(false)} className="py-2">
+                <Link
+                  href="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className="py-2"
+                >
                   Profile
                 </Link>
                 <Button
