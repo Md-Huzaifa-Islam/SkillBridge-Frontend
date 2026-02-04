@@ -8,8 +8,13 @@ export default async function TutorsPage() {
     getCategories(),
   ]);
 
-  const tutors = tutorsResponse.success && tutorsResponse.data ? tutorsResponse.data.data : [];
-  const categories = categoriesResponse.success ? categoriesResponse.data || [] : [];
+  const tutors =
+    tutorsResponse.success && tutorsResponse.data
+      ? tutorsResponse.data.data
+      : [];
+  const categories = categoriesResponse.success
+    ? categoriesResponse.data || []
+    : [];
 
   return <TutorsClient initialTutors={tutors} categories={categories} />;
 }

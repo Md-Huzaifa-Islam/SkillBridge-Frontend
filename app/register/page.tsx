@@ -6,8 +6,20 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { signUp } from "@/lib/auth-client";
 import { toast } from "@/lib/toast";
 import { UserRole } from "@/types";
@@ -50,7 +62,10 @@ export default function RegisterPage() {
       if (result.error) {
         toast(result.error.message || "Registration failed", "error");
       } else {
-        toast("Registration successful! Please check your email to verify your account.", "success");
+        toast(
+          "Registration successful! Please check your email to verify your account.",
+          "success",
+        );
         router.push("/login");
       }
     } catch (error) {
@@ -75,7 +90,9 @@ export default function RegisterPage() {
                 id="name"
                 required
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 placeholder="John Doe"
               />
             </div>
@@ -87,7 +104,9 @@ export default function RegisterPage() {
                 type="email"
                 required
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 placeholder="your@email.com"
               />
             </div>
@@ -96,14 +115,20 @@ export default function RegisterPage() {
               <Label htmlFor="role">I want to</Label>
               <Select
                 value={formData.role}
-                onValueChange={(value) => setFormData({ ...formData, role: value as UserRole })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, role: value as UserRole })
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={UserRole.STUDENT}>Learn (Student)</SelectItem>
-                  <SelectItem value={UserRole.TEACHER}>Teach (Tutor)</SelectItem>
+                  <SelectItem value={UserRole.STUDENT}>
+                    Learn (Student)
+                  </SelectItem>
+                  <SelectItem value={UserRole.TEACHER}>
+                    Teach (Tutor)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -115,7 +140,9 @@ export default function RegisterPage() {
                 type="password"
                 required
                 value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 placeholder="••••••••"
               />
             </div>
@@ -127,7 +154,9 @@ export default function RegisterPage() {
                 type="password"
                 required
                 value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
                 placeholder="••••••••"
               />
             </div>

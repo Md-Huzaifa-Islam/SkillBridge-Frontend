@@ -5,7 +5,13 @@ import { getCategories } from "@/actions/categories";
 import { TutorCard } from "@/components/tutor-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -55,14 +61,18 @@ export default function TutorsClient({
                 <Input
                   placeholder="Search by name or subject..."
                   value={filters.search}
-                  onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                  onChange={(e) =>
+                    setFilters({ ...filters, search: e.target.value })
+                  }
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
               </div>
 
               <Select
                 value={filters.category}
-                onValueChange={(value) => setFilters({ ...filters, category: value })}
+                onValueChange={(value) =>
+                  setFilters({ ...filters, category: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Category" />
@@ -81,18 +91,26 @@ export default function TutorsClient({
                 type="number"
                 placeholder="Min price"
                 value={filters.minPrice}
-                onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
+                onChange={(e) =>
+                  setFilters({ ...filters, minPrice: e.target.value })
+                }
               />
 
               <Input
                 type="number"
                 placeholder="Max price"
                 value={filters.maxPrice}
-                onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
+                onChange={(e) =>
+                  setFilters({ ...filters, maxPrice: e.target.value })
+                }
               />
             </div>
 
-            <Button onClick={handleSearch} className="w-full md:w-auto mt-4" disabled={loading}>
+            <Button
+              onClick={handleSearch}
+              className="w-full md:w-auto mt-4"
+              disabled={loading}
+            >
               <Search className="mr-2 h-4 w-4" />
               {loading ? "Searching..." : "Search"}
             </Button>
@@ -109,7 +127,9 @@ export default function TutorsClient({
         ) : (
           <Card>
             <CardContent className="p-12 text-center">
-              <p className="text-gray-500">No tutors found. Try adjusting your filters.</p>
+              <p className="text-gray-500">
+                No tutors found. Try adjusting your filters.
+              </p>
             </CardContent>
           </Card>
         )}

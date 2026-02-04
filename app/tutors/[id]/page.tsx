@@ -6,7 +6,11 @@ import { Star, Clock, DollarSign } from "lucide-react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
-export default async function TutorDetailPage({ params }: { params: { id: string } }) {
+export default async function TutorDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const response = await getTutorById(params.id);
 
   if (!response.success || !response.data) {
@@ -30,12 +34,17 @@ export default async function TutorDetailPage({ params }: { params: { id: string
                   <div className="flex-1">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h1 className="text-3xl font-bold mb-2">{tutor.userToTutor.name}</h1>
+                        <h1 className="text-3xl font-bold mb-2">
+                          {tutor.userToTutor.name}
+                        </h1>
                         <Badge variant="secondary" className="mb-2">
                           {tutor.category.name}
                         </Badge>
                         {tutor.featured && (
-                          <Badge variant="default" className="bg-yellow-500 ml-2">
+                          <Badge
+                            variant="default"
+                            className="bg-yellow-500 ml-2"
+                          >
                             Featured
                           </Badge>
                         )}
@@ -49,7 +58,9 @@ export default async function TutorDetailPage({ params }: { params: { id: string
                           {tutor.averageRating?.toFixed(1) || "New"}
                         </span>
                         {tutor._count && (
-                          <span className="text-gray-500">({tutor._count.bookings} sessions)</span>
+                          <span className="text-gray-500">
+                            ({tutor._count.bookings} sessions)
+                          </span>
                         )}
                       </div>
                     </div>
@@ -77,8 +88,13 @@ export default async function TutorDetailPage({ params }: { params: { id: string
                 <CardContent>
                   <div className="space-y-2">
                     {tutor.availables.map((slot) => (
-                      <div key={slot.id} className="flex items-center justify-between py-2 border-b">
-                        <span className="font-medium capitalize">{slot.day}</span>
+                      <div
+                        key={slot.id}
+                        className="flex items-center justify-between py-2 border-b"
+                      >
+                        <span className="font-medium capitalize">
+                          {slot.day}
+                        </span>
                         <span className="text-gray-600">
                           {slot.start_time} - {slot.end_time}
                         </span>
@@ -95,7 +111,9 @@ export default async function TutorDetailPage({ params }: { params: { id: string
                 <CardTitle>Reviews</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-500">No reviews yet. Be the first to book and review!</p>
+                <p className="text-gray-500">
+                  No reviews yet. Be the first to book and review!
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -110,7 +128,9 @@ export default async function TutorDetailPage({ params }: { params: { id: string
                       <DollarSign className="h-5 w-5 text-gray-600" />
                       <span className="text-gray-600">Price per hour</span>
                     </div>
-                    <span className="text-2xl font-bold text-blue-600">${tutor.price_per_hour}</span>
+                    <span className="text-2xl font-bold text-blue-600">
+                      ${tutor.price_per_hour}
+                    </span>
                   </div>
 
                   <Link href={`/tutors/${tutor.id}/book`} className="block">
