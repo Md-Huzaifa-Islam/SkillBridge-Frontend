@@ -1,41 +1,48 @@
 "use server";
 
-import { revalidateTag, revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 export async function revalidateTutors() {
-  revalidateTag("tutors");
+  revalidatePath("/tutors");
+  revalidatePath("/");
 }
 
 export async function revalidateTutor(tutorId: string) {
-  revalidateTag(`tutor-${tutorId}`);
-  revalidateTag("tutors");
+  revalidatePath(`/tutors/${tutorId}`);
+  revalidatePath("/tutors");
 }
 
 export async function revalidateCategories() {
-  revalidateTag("categories");
+  revalidatePath("/admin/categories");
+  revalidatePath("/tutors");
+  revalidatePath("/");
 }
 
 export async function revalidateBookings() {
-  revalidateTag("bookings");
+  revalidatePath("/dashboard/bookings");
+  revalidatePath("/dashboard");
+  revalidatePath("/tutor/dashboard");
+  revalidatePath("/admin/bookings");
 }
 
 export async function revalidateUsers() {
-  revalidateTag("users");
-  revalidateTag("admin");
+  revalidatePath("/admin/users");
+  revalidatePath("/admin");
 }
 
 export async function revalidateTutorProfile() {
-  revalidateTag("tutor-profile");
+  revalidatePath("/tutor/profile");
+  revalidatePath("/tutor/dashboard");
 }
 
 export async function revalidateTutorSessions() {
-  revalidateTag("tutor-sessions");
+  revalidatePath("/tutor/dashboard");
 }
 
 export async function revalidateAdminData() {
-  revalidateTag("admin");
-  revalidateTag("users");
-  revalidateTag("bookings");
+  revalidatePath("/admin");
+  revalidatePath("/admin/users");
+  revalidatePath("/admin/bookings");
 }
 
 export async function revalidateDashboard(path?: string) {
