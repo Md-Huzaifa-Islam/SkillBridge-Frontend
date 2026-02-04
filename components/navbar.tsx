@@ -13,6 +13,7 @@ import { UserRole } from "@/types";
 
 export function Navbar() {
   const { data: session } = useSession();
+  const userRole = (session?.user as any)?.role as UserRole | undefined;
 
   return (
     <nav className="border-b bg-white sticky top-0 z-50">
@@ -25,7 +26,7 @@ export function Navbar() {
           <Link href="/tutors" className="hover:text-blue-600 transition">
             Find Tutors
           </Link>
-          {session?.user && session.user.role === UserRole.TEACHER && (
+          {session?.user && userRole === UserRole.TEACHER && (
             <Link
               href="/tutor/dashboard"
               className="hover:text-blue-600 transition"
@@ -33,12 +34,12 @@ export function Navbar() {
               My Dashboard
             </Link>
           )}
-          {session?.user && session.user.role === UserRole.STUDENT && (
+          {session?.user && userRole === UserRole.STUDENT && (
             <Link href="/dashboard" className="hover:text-blue-600 transition">
               My Dashboard
             </Link>
           )}
-          {session?.user && session.user.role === UserRole.ADMIN && (
+          {session?.user && userRole === UserRole.ADMIN && (
             <Link href="/admin" className="hover:text-blue-600 transition">
               Admin Panel
             </Link>
