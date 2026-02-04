@@ -15,12 +15,14 @@ Connect with expert tutors and learn anything, anytime.
 ## Features
 
 ### Public Features
+
 - Browse and search tutors by category, price, and rating
 - View detailed tutor profiles with reviews
 - Responsive design for all devices
 - Server-side rendering for optimal performance
 
 ### Student Features
+
 - Register and login as a student
 - Book tutoring sessions
 - View upcoming and past bookings
@@ -28,6 +30,7 @@ Connect with expert tutors and learn anything, anytime.
 - Manage profile
 
 ### Tutor Features
+
 - Register and login as a tutor
 - Create and update tutor profile
 - Set availability slots
@@ -35,6 +38,7 @@ Connect with expert tutors and learn anything, anytime.
 - See ratings and reviews
 
 ### Admin Features
+
 - View all users (students and tutors)
 - Manage user status (ban/unban)
 - View all bookings
@@ -44,6 +48,7 @@ Connect with expert tutors and learn anything, anytime.
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+ or Bun
 - pnpm (recommended) or npm
 - Backend API running (see backend README)
@@ -51,20 +56,20 @@ Connect with expert tutors and learn anything, anytime.
 ### Installation
 
 1. Install dependencies:
-\`\`\`bash
-pnpm install
-\`\`\`
+   \`\`\`bash
+   pnpm install
+   \`\`\`
 
 2. Set up environment variables:
-Create a \`.env.local\` file:
-\`\`\`env
-NEXT_PUBLIC_API_URL=http://localhost:3000/api
-\`\`\`
+   Create a \`.env.local\` file:
+   \`\`\`env
+   NEXT_PUBLIC_API_URL=http://localhost:3000/api
+   \`\`\`
 
 3. Run the development server:
-\`\`\`bash
-pnpm dev
-\`\`\`
+   \`\`\`bash
+   pnpm dev
+   \`\`\`
 
 4. Open [http://localhost:3001](http://localhost:3001) in your browser
 
@@ -72,20 +77,20 @@ pnpm dev
 
 \`\`\`
 frontend/
-├── app/                      # Next.js App Router pages
-│   ├── admin/               # Admin dashboard pages
-│   ├── dashboard/           # Student dashboard pages
-│   ├── tutor/               # Tutor dashboard pages
-│   ├── tutors/              # Tutor browsing and details
-│   ├── login/               # Login page
-│   └── register/            # Registration page
-├── actions/                 # Server actions for API calls
-├── components/              # Reusable React components
-│   ├── ui/                  # Shadcn UI components
-│   └── admin/               # Admin-specific components
-├── lib/                     # Utilities and configurations
-├── types/                   # TypeScript type definitions
-└── public/                  # Static assets
+├── app/ # Next.js App Router pages
+│ ├── admin/ # Admin dashboard pages
+│ ├── dashboard/ # Student dashboard pages
+│ ├── tutor/ # Tutor dashboard pages
+│ ├── tutors/ # Tutor browsing and details
+│ ├── login/ # Login page
+│ └── register/ # Registration page
+├── actions/ # Server actions for API calls
+├── components/ # Reusable React components
+│ ├── ui/ # Shadcn UI components
+│ └── admin/ # Admin-specific components
+├── lib/ # Utilities and configurations
+├── types/ # TypeScript type definitions
+└── public/ # Static assets
 \`\`\`
 
 ## Key Pages

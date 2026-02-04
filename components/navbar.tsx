@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserRole } from "@/types";
+import { MobileMenu } from "./mobile-menu";
 
 export function Navbar() {
   const { data: session } = useSession();
@@ -63,14 +64,15 @@ export function Navbar() {
             </DropdownMenu>
           ) : (
             <>
-              <Link href="/login">
+              <Link href="/login" className="hidden md:block">
                 <Button variant="ghost">Login</Button>
               </Link>
-              <Link href="/register">
+              <Link href="/register" className="hidden md:block">
                 <Button>Get Started</Button>
               </Link>
             </>
           )}
+          <MobileMenu />
         </div>
       </div>
     </nav>
