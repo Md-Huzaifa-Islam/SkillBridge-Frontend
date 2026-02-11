@@ -1,7 +1,9 @@
 import { betterAuth } from "better-auth";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+
 export const auth = betterAuth({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api",
+  baseURL: API_URL,
   basePath: "/auth",
 });
 

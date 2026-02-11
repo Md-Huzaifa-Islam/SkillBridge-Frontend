@@ -34,7 +34,7 @@ export function TutorCard({ tutor }: TutorCardProps) {
                 )}
               </div>
 
-              <p className="text-gray-600 mt-2 line-clamp-2">
+              <p className="text-muted-foreground mt-2 line-clamp-2">
                 {tutor.description}
               </p>
 
@@ -45,14 +45,16 @@ export function TutorCard({ tutor }: TutorCardProps) {
                     {tutor.averageRating?.toFixed(1) || "New"}
                   </span>
                   {tutor._count && (
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-muted-foreground">
                       ({tutor._count.bookings})
                     </span>
                   )}
                 </div>
-                <div className="text-lg font-bold text-blue-600">
+                <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
                   ${tutor.price_per_hour}
-                  <span className="text-sm font-normal text-gray-500">/hr</span>
+                  <span className="text-sm font-normal text-muted-foreground">
+                    /hr
+                  </span>
                 </div>
               </div>
             </div>

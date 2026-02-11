@@ -27,8 +27,15 @@ export async function getTutors(
       next: { revalidate: 60, tags: ["tutors"] },
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Tutors retrieved" : "Failed to fetch tutors"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -48,8 +55,15 @@ export async function getTutorById(
       cache: "no-store",
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Tutor retrieved" : "Failed to fetch tutor"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -69,8 +83,17 @@ export async function getFeaturedTutors(): Promise<
       next: { revalidate: 3600 }, // Cache for 1 hour
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok
+          ? "Featured tutors retrieved"
+          : "Failed to fetch featured tutors"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,

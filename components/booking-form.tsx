@@ -45,7 +45,7 @@ export default function BookingForm({ tutor }: { tutor: TutorProfile }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4 max-w-2xl">
         <Card>
           <CardHeader>
@@ -54,7 +54,7 @@ export default function BookingForm({ tutor }: { tutor: TutorProfile }) {
           <CardContent>
             <div className="mb-6 p-4 bg-blue-50 rounded-lg">
               <div className="flex justify-between items-center">
-                <span className="text-gray-700">Price per hour:</span>
+                <span className="text-foreground">Price per hour:</span>
                 <span className="text-2xl font-bold text-blue-600">
                   ${tutor.price_per_hour}
                 </span>

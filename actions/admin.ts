@@ -23,8 +23,15 @@ export async function getAllUsers(): Promise<ApiResponse<User[]>> {
       next: { revalidate: 30, tags: ["users", "admin"] },
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Users retrieved" : "Failed to fetch users"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -47,8 +54,15 @@ export async function updateUserStatus(
       cache: "no-store",
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "User status updated" : "Failed to update user status"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -67,8 +81,15 @@ export async function getAllBookings(): Promise<ApiResponse<Booking[]>> {
       next: { revalidate: 30, tags: ["bookings", "admin"] },
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Bookings retrieved" : "Failed to fetch bookings"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -87,8 +108,15 @@ export async function getAdminStats(): Promise<ApiResponse<any>> {
       cache: "no-store",
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Stats retrieved" : "Failed to fetch stats"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,

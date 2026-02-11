@@ -28,7 +28,14 @@ export async function createBooking(
     });
 
     const result = await response.json();
-    return result;
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Booking created" : "Failed to create booking"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -47,8 +54,15 @@ export async function getBookings(): Promise<ApiResponse<Booking[]>> {
       next: { revalidate: 30, tags: ["bookings"] },
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Bookings retrieved" : "Failed to fetch bookings"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -69,8 +83,15 @@ export async function getBookingById(
       cache: "no-store",
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Booking retrieved" : "Failed to fetch booking"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -93,8 +114,17 @@ export async function updateBookingStatus(
       cache: "no-store",
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok
+          ? "Booking status updated"
+          : "Failed to update booking status"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,

@@ -2,8 +2,18 @@
 
 import { Category, ApiResponse } from "@/types";
 import { revalidateCategories } from "./revalidate";
+import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+
+async function getAuthHeaders() {
+  const cookieStore = await cookies();
+  const authCookie = cookieStore.get("skill_bridge.session_token");
+  return {
+    "Content-Type": "application/json",
+    Cookie: authCookie ? `${authCookie.name}=${authCookie.value}` : "",
+  };
+}
 
 export async function getCategories(): Promise<ApiResponse<Category[]>> {
   try {
@@ -13,8 +23,15 @@ export async function getCategories(): Promise<ApiResponse<Category[]>> {
       next: { revalidate: 300, tags: ["categories"] },
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Categories retrieved" : "Failed to fetch categories"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -28,18 +45,27 @@ export async function createCategory(
   name: string,
 ): Promise<ApiResponse<Category>> {
   try {
+    const headers = await getAuthHeaders();
     const response = await fetch(`${API_URL}/categories`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify({ name }),
       cache: "no-store",
     });
 
-    const data = await response.json();
-    if (data.success) {
+    const result = await response.json();
+    const isSuccess = result.success ?? response.ok;
+    if (isSuccess) {
       await revalidateCategories();
     }
-    return data;
+    return {
+      success: isSuccess,
+      message:
+        result.message ||
+        (response.ok ? "Category created" : "Failed to create category"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -51,17 +77,26 @@ export async function createCategory(
 
 export async function deleteCategory(id: string): Promise<ApiResponse<void>> {
   try {
+    const headers = await getAuthHeaders();
     const response = await fetch(`${API_URL}/categories/${id}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers,
       cache: "no-store",
     });
 
-    const data = await response.json();
-    if (data.success) {
+    const result = await response.json();
+    const isSuccess = result.success ?? response.ok;
+    if (isSuccess) {
       await revalidateCategories();
     }
-    return data;
+    return {
+      success: isSuccess,
+      message:
+        result.message ||
+        (response.ok ? "Category deleted" : "Failed to delete category"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,

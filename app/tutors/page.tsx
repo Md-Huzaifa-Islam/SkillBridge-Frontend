@@ -24,18 +24,15 @@ interface SearchParams {
 export default async function TutorsPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
-  const page = parseInt(searchParams.page || "1");
+  const params = await searchParams;
+  const page = parseInt(params.page || "1");
   const filters = {
-    search: searchParams.search,
-    category: searchParams.category,
-    minPrice: searchParams.minPrice
-      ? parseFloat(searchParams.minPrice)
-      : undefined,
-    maxPrice: searchParams.maxPrice
-      ? parseFloat(searchParams.maxPrice)
-      : undefined,
+    search: params.search,
+    category: params.category,
+    minPrice: params.minPrice ? parseFloat(params.minPrice) : undefined,
+    maxPrice: params.maxPrice ? parseFloat(params.maxPrice) : undefined,
     page,
     limit: 12,
   };
@@ -57,31 +54,31 @@ export default async function TutorsPage({
     ? categoriesResponse.data || []
     : [];
 
-  const buildUrl = (params: Record<string, string | undefined>) => {
+  const buildUrl = (urlParams: Record<string, string | undefined>) => {
     const url = new URLSearchParams();
-    Object.entries({ ...searchParams, ...params }).forEach(([key, value]) => {
+    Object.entries({ ...params, ...urlParams }).forEach(([key, value]) => {
       if (value) url.set(key, value);
     });
     return `/tutors?${url.toString()}`;
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-8">Find Your Perfect Tutor</h1>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-card rounded-lg shadow-md p-6 mb-8">
           <form action="/tutors" method="get" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Search</label>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                   <Input
                     name="search"
                     placeholder="Search tutors..."
                     className="pl-10"
-                    defaultValue={searchParams.search}
+                    defaultValue={params.search}
                   />
                 </div>
               </div>
@@ -92,8 +89,8 @@ export default async function TutorsPage({
                 </label>
                 <select
                   name="category"
-                  className="w-full h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm"
-                  defaultValue={searchParams.category || ""}
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  defaultValue={params.category || ""}
                 >
                   <option value="">All Categories</option>
                   {categories.map((cat) => (
@@ -112,7 +109,7 @@ export default async function TutorsPage({
                   name="minPrice"
                   type="number"
                   placeholder="Min"
-                  defaultValue={searchParams.minPrice}
+                  defaultValue={params.minPrice}
                 />
               </div>
 
@@ -124,7 +121,7 @@ export default async function TutorsPage({
                   name="maxPrice"
                   type="number"
                   placeholder="Max"
-                  defaultValue={searchParams.maxPrice}
+                  defaultValue={params.maxPrice}
                 />
               </div>
             </div>
@@ -139,7 +136,7 @@ export default async function TutorsPage({
         </div>
 
         <div className="mb-6">
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Found {tutorsData.pagination.total} tutor
             {tutorsData.pagination.total !== 1 ? "s" : ""}
           </p>
@@ -153,8 +150,10 @@ export default async function TutorsPage({
 
         {tutorsData.data.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No tutors found</p>
-            <p className="text-gray-400 mt-2">Try adjusting your filters</p>
+            <p className="text-muted-foreground text-lg">No tutors found</p>
+            <p className="text-muted-foreground/70 mt-2">
+              Try adjusting your filters
+            </p>
           </div>
         )}
 

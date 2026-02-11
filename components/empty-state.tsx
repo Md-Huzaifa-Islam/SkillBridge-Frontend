@@ -9,8 +9,8 @@ export default function EmptyState({
 }) {
   return (
     <div className="text-center py-12">
-      <p className="text-2xl font-semibold text-gray-400 mb-2">{title}</p>
-      <p className="text-gray-500 mb-6">{description}</p>
+      <p className="text-2xl font-semibold text-muted-foreground mb-2">{title}</p>
+      <p className="text-muted-foreground mb-6">{description}</p>
       {action}
     </div>
   );

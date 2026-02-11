@@ -13,7 +13,7 @@ export default async function StudentDashboard() {
   const completedBookings = bookings.filter((b) => b.status === "completed");
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-8">My Dashboard</h1>
 
@@ -22,7 +22,9 @@ export default async function StudentDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm">Total Bookings</p>
+                  <p className="text-muted-foreground text-sm">
+                    Total Bookings
+                  </p>
                   <p className="text-3xl font-bold">{bookings.length}</p>
                 </div>
                 <Calendar className="h-12 w-12 text-blue-600" />
@@ -34,7 +36,7 @@ export default async function StudentDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm">Upcoming</p>
+                  <p className="text-muted-foreground text-sm">Upcoming</p>
                   <p className="text-3xl font-bold">
                     {upcomingBookings.length}
                   </p>
@@ -48,7 +50,7 @@ export default async function StudentDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm">Completed</p>
+                  <p className="text-muted-foreground text-sm">Completed</p>
                   <p className="text-3xl font-bold">
                     {completedBookings.length}
                   </p>
@@ -75,7 +77,7 @@ export default async function StudentDashboard() {
                       <h3 className="font-semibold">
                         {booking.bookingTutor?.userToTutor.name || "Tutor"}
                       </h3>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         {booking.date} • {booking.start_time} -{" "}
                         {booking.end_time}
                       </p>
@@ -99,7 +101,7 @@ export default async function StudentDashboard() {
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-gray-500 mb-4">No bookings yet</p>
+                <p className="text-muted-foreground mb-4">No bookings yet</p>
                 <Link href="/tutors">
                   <Button>Find a Tutor</Button>
                 </Link>

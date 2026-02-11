@@ -24,7 +24,7 @@ export default async function AdminDashboard() {
   const students = users.filter((u) => u.role === "student");
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-8">Admin Dashboard</h1>
 
@@ -33,7 +33,7 @@ export default async function AdminDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm">Total Users</p>
+                  <p className="text-muted-foreground text-sm">Total Users</p>
                   <p className="text-3xl font-bold">{users.length}</p>
                 </div>
                 <Users className="h-12 w-12 text-blue-600" />
@@ -45,7 +45,7 @@ export default async function AdminDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm">Tutors</p>
+                  <p className="text-muted-foreground text-sm">Tutors</p>
                   <p className="text-3xl font-bold">{tutors.length}</p>
                 </div>
                 <TrendingUp className="h-12 w-12 text-green-600" />
@@ -57,7 +57,9 @@ export default async function AdminDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm">Total Bookings</p>
+                  <p className="text-muted-foreground text-sm">
+                    Total Bookings
+                  </p>
                   <p className="text-3xl font-bold">{bookings.length}</p>
                 </div>
                 <BookOpen className="h-12 w-12 text-purple-600" />
@@ -69,7 +71,7 @@ export default async function AdminDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm">Total Revenue</p>
+                  <p className="text-muted-foreground text-sm">Total Revenue</p>
                   <p className="text-3xl font-bold">${totalRevenue}</p>
                 </div>
                 <DollarSign className="h-12 w-12 text-yellow-600" />
@@ -97,7 +99,9 @@ export default async function AdminDashboard() {
                   >
                     <div>
                       <p className="font-semibold">{user.name}</p>
-                      <p className="text-sm text-gray-500">{user.email}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {user.email}
+                      </p>
                     </div>
                     <Badge variant="secondary">{user.role}</Badge>
                   </div>
@@ -127,7 +131,9 @@ export default async function AdminDashboard() {
                         {booking.bookingStudent?.name} →{" "}
                         {booking.bookingTutor?.userToTutor.name}
                       </p>
-                      <p className="text-xs text-gray-500">{booking.date}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {booking.date}
+                      </p>
                     </div>
                     <Badge
                       variant={

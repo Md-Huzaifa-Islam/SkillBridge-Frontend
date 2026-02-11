@@ -8,7 +8,7 @@ export default async function AdminCategoriesPage() {
   const categories = response.success ? response.data || [] : [];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-8">Category Management</h1>
 
@@ -29,9 +29,11 @@ export default async function AdminCategoriesPage() {
                     >
                       <div>
                         <p className="font-semibold">{category.name}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           Created:{" "}
-                          {new Date(category.createdAt).toLocaleDateString()}
+                          {new Date(
+                            category.createdAt ?? Date.now(),
+                          ).toLocaleDateString()}
                         </p>
                       </div>
                       <DeleteCategoryButton categoryId={category.id} />
@@ -39,7 +41,7 @@ export default async function AdminCategoriesPage() {
                   ))}
 
                   {categories.length === 0 && (
-                    <p className="text-center text-gray-500 py-8">
+                    <p className="text-center text-muted-foreground py-8">
                       No categories yet
                     </p>
                   )}

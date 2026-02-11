@@ -27,8 +27,15 @@ export async function getTutorProfile(): Promise<ApiResponse<TutorProfile>> {
       next: { revalidate: 60, tags: ["tutor-profile"] },
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Profile retrieved" : "Failed to fetch profile"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -51,7 +58,14 @@ export async function updateTutorProfile(
     });
 
     const result = await response.json();
-    return result;
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Profile updated" : "Failed to update profile"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -74,7 +88,16 @@ export async function updateTutorAvailability(
     });
 
     const result = await response.json();
-    return result;
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok
+          ? "Availability updated"
+          : "Failed to update availability"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,
@@ -93,8 +116,15 @@ export async function getTutorSessions(): Promise<ApiResponse<Booking[]>> {
       next: { revalidate: 30, tags: ["tutor-sessions", "bookings"] },
     });
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Sessions retrieved" : "Failed to fetch sessions"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,

@@ -49,7 +49,7 @@ export default function TutorsClient({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-8">Find Your Perfect Tutor</h1>
 
@@ -116,7 +116,6 @@ export default function TutorsClient({
           </CardContent>
         </Card>
 
-        {/* Results */}
         {tutors.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tutors.map((tutor) => (
@@ -126,7 +125,7 @@ export default function TutorsClient({
         ) : (
           <Card>
             <CardContent className="p-12 text-center">
-              <p className="text-gray-500">
+              <p className="text-muted-foreground">
                 No tutors found. Try adjusting your filters.
               </p>
             </CardContent>

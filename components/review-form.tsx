@@ -42,7 +42,7 @@ export default function ReviewForm({ bookingId }: { bookingId: string }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4 max-w-2xl">
         <Card>
           <CardHeader>
@@ -66,7 +66,7 @@ export default function ReviewForm({ bookingId }: { bookingId: string }) {
                         className={`h-10 w-10 transition-colors ${
                           star <= (hoveredRating || rating)
                             ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
+                            : "text-muted-foreground/50"
                         }`}
                       />
                     </button>

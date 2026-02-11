@@ -9,7 +9,7 @@ export default async function MyBookingsPage() {
   const bookings = bookingsResponse.success ? bookingsResponse.data || [] : [];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-8">My Bookings</h1>
 
@@ -24,7 +24,7 @@ export default async function MyBookingsPage() {
                         Session with{" "}
                         {booking.bookingTutor?.userToTutor.name || "Tutor"}
                       </h3>
-                      <div className="space-y-1 text-gray-600">
+                      <div className="space-y-1 text-muted-foreground">
                         <p>Date: {booking.date}</p>
                         <p>
                           Time: {booking.start_time} - {booking.end_time}
@@ -61,7 +61,7 @@ export default async function MyBookingsPage() {
         ) : (
           <Card>
             <CardContent className="p-12 text-center">
-              <p className="text-gray-500 mb-4">No bookings yet</p>
+              <p className="text-muted-foreground mb-4">No bookings yet</p>
               <Link href="/tutors">
                 <Button>Find a Tutor</Button>
               </Link>

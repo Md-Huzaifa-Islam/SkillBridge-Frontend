@@ -9,9 +9,10 @@ import Link from "next/link";
 export default async function TutorDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const response = await getTutorById(params.id);
+  const { id } = await params;
+  const response = await getTutorById(id);
 
   if (!response.success || !response.data) {
     notFound();
@@ -20,7 +21,7 @@ export default async function TutorDetailPage({
   const tutor = response.data;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
@@ -57,7 +58,7 @@ export default async function TutorDetailPage({
                           {tutor.averageRating?.toFixed(1) || "New"}
                         </span>
                         {tutor._count && (
-                          <span className="text-gray-500">
+                          <span className="text-muted-foreground">
                             ({tutor._count.bookings} sessions)
                           </span>
                         )}
@@ -73,7 +74,7 @@ export default async function TutorDetailPage({
                 <CardTitle>About</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-foreground leading-relaxed">
                   {tutor.description || "No description provided yet."}
                 </p>
               </CardContent>
@@ -94,7 +95,7 @@ export default async function TutorDetailPage({
                         <span className="font-medium capitalize">
                           {slot.day}
                         </span>
-                        <span className="text-gray-600">
+                        <span className="text-muted-foreground">
                           {slot.start_time} - {slot.end_time}
                         </span>
                       </div>
@@ -104,13 +105,12 @@ export default async function TutorDetailPage({
               </Card>
             )}
 
-            {/* Reviews would go here */}
             <Card>
               <CardHeader>
                 <CardTitle>Reviews</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                   No reviews yet. Be the first to book and review!
                 </p>
               </CardContent>
@@ -123,8 +123,8 @@ export default async function TutorDetailPage({
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <DollarSign className="h-5 w-5 text-gray-600" />
-                      <span className="text-gray-600">Price per hour</span>
+                      <DollarSign className="h-5 w-5 text-muted-foreground" />
+                      <span className="text-muted-foreground">Price per hour</span>
                     </div>
                     <span className="text-2xl font-bold text-blue-600">
                       ${tutor.price_per_hour}
@@ -140,7 +140,7 @@ export default async function TutorDetailPage({
 
                   <div className="pt-4 border-t">
                     <h4 className="font-semibold mb-2">Quick Facts</h4>
-                    <ul className="space-y-2 text-sm text-gray-600">
+                    <ul className="space-y-2 text-sm text-muted-foreground">
                       <li>✓ Verified tutor</li>
                       <li>✓ Quick response time</li>
                       <li>✓ Professional experience</li>

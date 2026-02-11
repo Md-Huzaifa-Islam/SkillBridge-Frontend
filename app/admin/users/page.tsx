@@ -9,19 +9,20 @@ interface SearchParams {
 export default async function AdminUsersPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
+  const params = await searchParams;
   const usersResponse = await getAllUsers();
   let users = usersResponse.success ? usersResponse.data || [] : [];
 
-  if (searchParams.role) {
-    users = users.filter((u) => u.role === searchParams.role);
+  if (params.role) {
+    users = users.filter((u) => u.role === params.role);
   }
-  if (searchParams.status === "banned") {
+  if (params.status === "banned") {
     users = users.filter((u) => u.is_banned);
-  } else if (searchParams.status === "active") {
+  } else if (params.status === "active") {
     users = users.filter((u) => !u.is_banned);
   }
 
-  return <UsersClient initialUsers={users} filters={searchParams} />;
+  return <UsersClient initialUsers={users} filters={params} />;
 }

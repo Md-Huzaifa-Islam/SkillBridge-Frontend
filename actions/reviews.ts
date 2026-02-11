@@ -28,7 +28,14 @@ export async function createReview(
     });
 
     const result = await response.json();
-    return result;
+    return {
+      success: result.success ?? response.ok,
+      message:
+        result.message ||
+        (response.ok ? "Review created" : "Failed to create review"),
+      data: result.data,
+      error: result.error,
+    };
   } catch (error) {
     return {
       success: false,

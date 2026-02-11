@@ -11,14 +11,14 @@ interface SearchParams {
 export default async function AdminBookingsPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
+  const params = await searchParams;
   const response = await getAllBookings();
   let bookings = response.success ? response.data || [] : [];
 
-  // Server-side filtering
-  if (searchParams.status) {
-    bookings = bookings.filter((b) => b.status === searchParams.status);
+  if (params.status) {
+    bookings = bookings.filter((b) => b.status === params.status);
   }
 
   const totalRevenue = bookings
@@ -26,11 +26,11 @@ export default async function AdminBookingsPage({
     .reduce((sum, b) => sum + b.total_price, 0);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-8">All Bookings</h1>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-card rounded-lg shadow-md p-6 mb-8">
           <form
             action="/admin/bookings"
             method="get"
@@ -40,8 +40,8 @@ export default async function AdminBookingsPage({
               <label className="block text-sm font-medium mb-2">Status</label>
               <select
                 name="status"
-                className="h-10 rounded-md border border-gray-300 bg-white px-3 py-2"
-                defaultValue={searchParams.status || ""}
+                className="h-10 rounded-md border border-input bg-card px-3 py-2"
+                defaultValue={params.status || ""}
               >
                 <option value="">All Status</option>
                 <option value="pending">Pending</option>
@@ -61,13 +61,13 @@ export default async function AdminBookingsPage({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card>
             <CardContent className="p-6">
-              <p className="text-gray-500 text-sm">Total Bookings</p>
+              <p className="text-muted-foreground text-sm">Total Bookings</p>
               <p className="text-3xl font-bold">{bookings.length}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6">
-              <p className="text-gray-500 text-sm">Total Revenue</p>
+              <p className="text-muted-foreground text-sm">Total Revenue</p>
               <p className="text-3xl font-bold">${totalRevenue.toFixed(2)}</p>
             </CardContent>
           </Card>
@@ -89,7 +89,7 @@ export default async function AdminBookingsPage({
                       {booking.bookingStudent?.name} →{" "}
                       {booking.bookingTutor?.userToTutor.name}
                     </div>
-                    <div className="text-sm text-gray-600 mt-1">
+                    <div className="text-sm text-muted-foreground mt-1">
                       <p>Category: {booking.bookingTutor?.category.name}</p>
                       <p>
                         {booking.date} • {booking.start_time} -{" "}
@@ -115,7 +115,7 @@ export default async function AdminBookingsPage({
               ))}
 
               {bookings.length === 0 && (
-                <p className="text-center text-gray-500 py-8">
+                <p className="text-center text-muted-foreground py-8">
                   No bookings found
                 </p>
               )}

@@ -22,7 +22,7 @@ export default async function TutorDashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-4xl font-bold">Tutor Dashboard</h1>
@@ -38,7 +38,7 @@ export default async function TutorDashboard() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-500 text-sm">Total Sessions</p>
+                      <p className="text-muted-foreground text-sm">Total Sessions</p>
                       <p className="text-3xl font-bold">{sessions.length}</p>
                     </div>
                     <Calendar className="h-12 w-12 text-blue-600" />
@@ -50,7 +50,7 @@ export default async function TutorDashboard() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-500 text-sm">Upcoming</p>
+                      <p className="text-muted-foreground text-sm">Upcoming</p>
                       <p className="text-3xl font-bold">
                         {upcomingSessions.length}
                       </p>
@@ -64,7 +64,7 @@ export default async function TutorDashboard() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-500 text-sm">Total Earnings</p>
+                      <p className="text-muted-foreground text-sm">Total Earnings</p>
                       <p className="text-3xl font-bold">${totalEarnings}</p>
                     </div>
                     <DollarSign className="h-12 w-12 text-purple-600" />
@@ -76,7 +76,7 @@ export default async function TutorDashboard() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-500 text-sm">Rating</p>
+                      <p className="text-muted-foreground text-sm">Rating</p>
                       <p className="text-3xl font-bold">
                         {profile.averageRating?.toFixed(1) || "N/A"}
                       </p>
@@ -103,7 +103,7 @@ export default async function TutorDashboard() {
                           <h3 className="font-semibold">
                             {session.bookingStudent?.name || "Student"}
                           </h3>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-muted-foreground">
                             {session.date} • {session.start_time} -{" "}
                             {session.end_time}
                           </p>
@@ -129,7 +129,7 @@ export default async function TutorDashboard() {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <p className="text-gray-500">No sessions yet</p>
+                    <p className="text-muted-foreground">No sessions yet</p>
                   </div>
                 )}
               </CardContent>
@@ -138,7 +138,7 @@ export default async function TutorDashboard() {
         ) : (
           <Card>
             <CardContent className="p-12 text-center">
-              <p className="text-gray-500 mb-4">
+              <p className="text-muted-foreground mb-4">
                 Please complete your tutor profile
               </p>
               <Link href="/tutor/profile">

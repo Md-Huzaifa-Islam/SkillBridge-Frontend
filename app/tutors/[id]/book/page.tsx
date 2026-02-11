@@ -5,9 +5,10 @@ import { notFound } from "next/navigation";
 export default async function BookTutorPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const response = await getTutorById(params.id);
+  const { id } = await params;
+  const response = await getTutorById(id);
 
   if (!response.success || !response.data) {
     notFound();

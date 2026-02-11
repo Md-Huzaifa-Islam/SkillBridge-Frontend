@@ -20,11 +20,11 @@ export default function UsersClient({
   filters?: Filters;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/50 py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-8">User Management</h1>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-card rounded-lg shadow-md p-6 mb-8">
           <form
             action="/admin/users"
             method="get"
@@ -32,7 +32,7 @@ export default function UsersClient({
           >
             <select
               name="role"
-              className="h-10 rounded-md border border-gray-300 bg-white px-3 py-2"
+              className="h-10 rounded-md border border-input bg-card px-3 py-2"
               defaultValue={filters.role || ""}
             >
               <option value="">All Roles</option>
@@ -43,7 +43,7 @@ export default function UsersClient({
 
             <select
               name="status"
-              className="h-10 rounded-md border border-gray-300 bg-white px-3 py-2"
+              className="h-10 rounded-md border border-input bg-card px-3 py-2"
               defaultValue={filters.status || ""}
             >
               <option value="">All Status</option>
@@ -87,8 +87,8 @@ export default function UsersClient({
                         <Badge variant="destructive">Banned</Badge>
                       )}
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">{user.email}</p>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">{user.email}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
                       Joined: {new Date(user.createdAt).toLocaleDateString()}
                     </p>
                   </div>
@@ -101,7 +101,7 @@ export default function UsersClient({
               ))}
 
               {initialUsers.length === 0 && (
-                <p className="text-center text-gray-500 py-8">No users found</p>
+                <p className="text-center text-muted-foreground py-8">No users found</p>
               )}
             </div>
           </CardContent>

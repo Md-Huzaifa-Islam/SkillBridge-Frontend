@@ -8,7 +8,9 @@ export default async function TutorProfilePage() {
     getCategories(),
   ]);
 
-  const profile = profileResponse.success ? profileResponse.data : null;
+  const profile = profileResponse.success
+    ? (profileResponse.data ?? null)
+    : null;
   const categories = categoriesResponse.success
     ? categoriesResponse.data || []
     : [];
