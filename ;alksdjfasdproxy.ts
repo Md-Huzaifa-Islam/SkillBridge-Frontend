@@ -10,7 +10,7 @@
 //   let isAdmin = false;
 //   let isStudent = false;
 //   let isTeacher = false;
-//   const { data } = await userServices.getSession();
+//   const { data } = get session data from backend
 //   if (data) {
 //     isAuthenticated = true;
 //     isAdmin = data.user.role === UserRoles.admin;
