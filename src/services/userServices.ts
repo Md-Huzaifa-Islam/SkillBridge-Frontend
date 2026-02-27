@@ -1,21 +1,3 @@
-// Removed better-auth related code. Implement new auth logic here as needed.
-      });
-      const session = await res.json();
-      if (!session.data) {
-        return { data: null, error: { message: "No session found" } };
-      }
-      return {
-        data: session,
-        error: null,
-      };
-    } catch (error) {
-      console.error(error);
-      return {
-        data: null,
-        error: {
-          message: "Something went wrong",
-        },
-      };
-    }
-  },
-};
+// Auth and API calls have been moved to src/lib/auth.ts and src/lib/api.ts
+// This file is kept for reference only.
+export {};

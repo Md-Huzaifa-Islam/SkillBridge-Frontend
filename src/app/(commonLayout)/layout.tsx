@@ -11,7 +11,7 @@ export default function Layout({
       <nav className="fixed w-full top-0 z-50 bg-background/80 backdrop-blur border-b">
         <Navbar />
       </nav>
-      {children}
+      <div className="container mx-auto px-4">{children}</div>
     </div>
   );
 }

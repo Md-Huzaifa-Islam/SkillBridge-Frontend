@@ -69,9 +69,7 @@ export default function SignupForm() {
     <div className="w-full max-w-sm space-y-6">
       <div className="space-y-1 text-center">
         <h1 className="text-2xl font-bold">Create an account</h1>
-        <p className="text-muted-foreground text-sm">
-          Join SkillBridge today
-        </p>
+        <p className="text-muted-foreground text-sm">Join SkillBridge today</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
