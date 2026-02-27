@@ -1,27 +1,36 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { updateProfileAction } from "@/action/authActions";
 
-// Profile update currently only sends a name change via the /auth/me endpoint.
-// Extend this if a dedicated PATCH /users/me endpoint is added to the backend.
 export default function EditProfileForm({
   initialName,
 }: {
   initialName: string;
 }) {
+  const router = useRouter();
   const [name, setName] = useState(initialName);
   const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
+    setError(null);
     startTransition(async () => {
-      // Placeholder until a PATCH /auth/me or /users/me endpoint is available.
-      await new Promise((r) => setTimeout(r, 300));
-      setMessage("Profile updated (no-op — backend endpoint pending).");
+      try {
+        await updateProfileAction(name.trim());
+        setMessage("Profile updated successfully.");
+        router.refresh();
+      } catch (err: unknown) {
+        setError(
+          err instanceof Error ? err.message : "Failed to update profile.",
+        );
+      }
     });
   };
 
@@ -37,9 +46,11 @@ export default function EditProfileForm({
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          minLength={2}
         />
       </div>
-      {message && <p className="text-sm text-primary">{message}</p>}
+      {message && <p className="text-sm text-green-600">{message}</p>}
+      {error && <p className="text-sm text-red-500">{error}</p>}
       <Button type="submit" disabled={isPending} className="w-full">
         {isPending ? "Saving…" : "Save Changes"}
       </Button>

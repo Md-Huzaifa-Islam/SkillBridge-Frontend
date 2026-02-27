@@ -1,6 +1,8 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
+import { getToken } from "@/lib/auth";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000/api";
 
@@ -82,4 +84,26 @@ export async function verifyEmailAction(token: string) {
 export async function logoutAction() {
   const cookieStore = await cookies();
   cookieStore.delete("token");
+}
+
+export async function updateProfileAction(name: string) {
+  const token = await getToken();
+  if (!token) throw new Error("Not authenticated");
+  const res = await fetch(`${BACKEND_URL}/auth/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name }),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ message: res.statusText }));
+    throw new Error(error.message || "Failed to update profile");
+  }
+  revalidatePath("/dashboard/profile");
+  return res.json() as Promise<{
+    user: { id: string; name: string; email: string; role: string };
+  }>;
 }

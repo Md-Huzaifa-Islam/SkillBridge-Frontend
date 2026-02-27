@@ -34,6 +34,12 @@ export const apiMe = (token: string) =>
     { token },
   );
 
+export const apiUpdateMe = (token: string, name: string) =>
+  req<{ user: { id: string; name: string; email: string; role: string } }>(
+    "/auth/me",
+    { method: "PATCH", token, body: JSON.stringify({ name }) },
+  );
+
 // ─── Tutors ──────────────────────────────────────────────────────────────────
 
 /** GET /tutors?category=&search=&page=&size= */
