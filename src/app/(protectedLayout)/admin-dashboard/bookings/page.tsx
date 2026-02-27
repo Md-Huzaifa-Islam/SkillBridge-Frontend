@@ -45,9 +45,7 @@ export default async function AdminBookingsPage() {
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-muted-foreground">
             <tr>
-              <th className="px-4 py-2 text-left whitespace-nowrap">
-                Student
-              </th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Student</th>
               <th className="px-4 py-2 text-left whitespace-nowrap">Tutor</th>
               <th className="px-4 py-2 text-left whitespace-nowrap">Date</th>
               <th className="px-4 py-2 text-left whitespace-nowrap">Time</th>
