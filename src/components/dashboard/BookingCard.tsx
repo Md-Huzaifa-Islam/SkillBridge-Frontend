@@ -136,4 +136,3 @@ export default function BookingCard({ booking: b, role }: Props) {
     </div>
   );
 }
-

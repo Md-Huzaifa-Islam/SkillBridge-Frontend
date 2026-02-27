@@ -144,7 +144,9 @@ export default function BookingPanel({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs text-muted-foreground">Start time</label>
+              <label className="text-xs text-muted-foreground">
+                Start time
+              </label>
               <input
                 type="time"
                 value={startTime}
