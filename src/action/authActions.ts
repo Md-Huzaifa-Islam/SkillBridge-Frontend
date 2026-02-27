@@ -3,8 +3,9 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { getToken } from "@/lib/auth";
+import { env } from "@/env";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000/api";
+const BACKEND_URL = env.BACKEND_URL;
 
 function decodeRole(token: string): string | null {
   try {

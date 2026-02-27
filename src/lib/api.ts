@@ -3,7 +3,9 @@
  * Import getToken from lib/auth in server components / server actions.
  */
 
-const BASE = process.env.BACKEND_URL || "http://localhost:5000/api";
+import { env } from "@/env";
+
+const BASE = env.BACKEND_URL;
 
 async function req<T>(
   path: string,

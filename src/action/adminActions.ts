@@ -2,8 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { getToken } from "@/lib/auth";
+import { env } from "@/env";
 
-const BASE = process.env.BACKEND_URL || "http://localhost:5000/api";
+const BASE = env.BACKEND_URL;
 
 async function apiFetch<T>(
   path: string,

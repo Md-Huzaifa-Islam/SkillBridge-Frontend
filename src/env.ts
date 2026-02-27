@@ -7,7 +7,6 @@ export const env = createEnv({
     BACKEND_URL: z
       .string()
       .url()
-      .default("http://localhost:5000/api")
       .default("https://skillbridge-iota-ebon.vercel.app/api"),
   },
 
