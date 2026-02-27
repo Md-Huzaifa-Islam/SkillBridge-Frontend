@@ -1,15 +1,4 @@
-import { env } from "@/env";
-import { cookies } from "next/headers";
-const authUrl = env.AUTH_URL;
-export const userServices = {
-  getSession: async function () {
-    try {
-      const cookieStore = await cookies();
-      const res = await fetch(`${authUrl}/get-session`, {
-        headers: {
-          Cookie: cookieStore.toString(),
-        },
-        cache: "no-store",
+// Removed better-auth related code. Implement new auth logic here as needed.
       });
       const session = await res.json();
       if (!session.data) {
