@@ -29,13 +29,19 @@ async function req<T>(
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
 export const apiMe = (token: string) =>
-  req<{ user: { id: string; name: string; email: string; role: string } }>("/auth/me", { token });
+  req<{ user: { id: string; name: string; email: string; role: string } }>(
+    "/auth/me",
+    { token },
+  );
 
 // ─── Tutors ──────────────────────────────────────────────────────────────────
 export const apiGetTutors = (query = "", revalidate = 60) =>
-  req<{ data: TutorCard[]; meta: PaginationMeta }>(`/tutors${query ? `?${query}` : ""}`, {
-    next: { revalidate },
-  });
+  req<{ data: TutorCard[]; meta: PaginationMeta }>(
+    `/tutors${query ? `?${query}` : ""}`,
+    {
+      next: { revalidate },
+    },
+  );
 
 export const apiGetTutor = (id: string) =>
   req<{ data: TutorDetail }>(`/tutors/${id}`, { next: { revalidate: 60 } });

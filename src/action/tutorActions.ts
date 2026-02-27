@@ -73,7 +73,12 @@ export async function toggleTutorAvailableAction() {
 
 export async function updateSlotAction(
   slotId: string,
-  data: { date?: string; startTime?: string; endTime?: string; isBooked?: boolean },
+  data: {
+    date?: string;
+    startTime?: string;
+    endTime?: string;
+    isBooked?: boolean;
+  },
 ) {
   const token = await getToken();
   const result = await apiFetch(`/tutors/slot/${slotId}`, {

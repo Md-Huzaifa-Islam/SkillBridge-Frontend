@@ -6,7 +6,12 @@ function decodeJwtPayload(token: string) {
   try {
     const base64Payload = token.split(".")[1];
     const payload = Buffer.from(base64Payload, "base64url").toString("utf-8");
-    return JSON.parse(payload) as { id: string; role: string; email: string; exp: number };
+    return JSON.parse(payload) as {
+      id: string;
+      role: string;
+      email: string;
+      exp: number;
+    };
   } catch {
     return null;
   }

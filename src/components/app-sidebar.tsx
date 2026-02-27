@@ -1,10 +1,21 @@
-import * as React from "react"
+import * as React from "react";
+import Link from "next/link";
+import {
+  BookOpen,
+  CalendarCheck,
+  ChartBar,
+  FolderOpen,
+  LayoutDashboard,
+  LogOut,
+  Star,
+  User,
+  Users,
+} from "lucide-react";
 
-import { SearchForm } from "@/components/search-form"
-import { VersionSwitcher } from "@/components/version-switcher"
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -13,10 +24,99 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { logoutAction } from "@/action/authActions";
+import { UserRoles } from "@/constants/roles";
 
-// This is sample data.
-const data = {
+type NavItem = { title: string; url: string; icon: React.ElementType };
+
+const studentNav: NavItem[] = [
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+  { title: "My Bookings", url: "/dashboard/bookings", icon: CalendarCheck },
+  { title: "Browse Tutors", url: "/tutors", icon: BookOpen },
+  { title: "Profile", url: "/dashboard/profile", icon: User },
+];
+
+const tutorNav: NavItem[] = [
+  { title: "Dashboard", url: "/tutor-dashboard", icon: LayoutDashboard },
+  {
+    title: "Availability",
+    url: "/tutor-dashboard/availability",
+    icon: CalendarCheck,
+  },
+  { title: "My Sessions", url: "/tutor-dashboard/sessions", icon: BookOpen },
+  { title: "Reviews", url: "/tutor-dashboard/reviews", icon: Star },
+  { title: "Profile", url: "/tutor-dashboard/profile", icon: User },
+];
+
+const adminNav: NavItem[] = [
+  { title: "Dashboard", url: "/admin-dashboard", icon: ChartBar },
+  { title: "Users", url: "/admin-dashboard/users", icon: Users },
+  { title: "Bookings", url: "/admin-dashboard/bookings", icon: CalendarCheck },
+  { title: "Categories", url: "/admin-dashboard/categories", icon: FolderOpen },
+];
+
+function navForRole(role: string): NavItem[] {
+  if (role === UserRoles.tutor) return tutorNav;
+  if (role === UserRoles.admin) return adminNav;
+  return studentNav;
+}
+
+function labelForRole(role: string) {
+  if (role === UserRoles.tutor) return "Tutor Panel";
+  if (role === UserRoles.admin) return "Admin Panel";
+  return "Student Panel";
+}
+
+// Intentionally kept as a server component — receives role as prop from layout
+export function AppSidebar({ role = UserRoles.student }: { role?: string }) {
+  const navItems = navForRole(role);
+  const label = labelForRole(role);
+
+  return (
+    <Sidebar>
+      <SidebarHeader className="p-4">
+        <Link href="/" className="font-bold text-lg tracking-tight">
+          SkillBridge
+        </Link>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>{label}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navItems.map((item) => (
+                <SidebarMenuItem key={item.url}>
+                  <SidebarMenuButton asChild>
+                    <Link href={item.url} className="flex items-center gap-2">
+                      <item.icon className="h-4 w-4" />
+                      {item.title}
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter className="p-2">
+        <form action={logoutAction}>
+          <SidebarMenuButton
+            type="submit"
+            className="w-full flex items-center gap-2 text-destructive hover:text-destructive"
+          >
+            <LogOut className="h-4 w-4" />
+            Logout
+          </SidebarMenuButton>
+        </form>
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  );
+}
+
+// keep old dummy nav so nothing else breaks — remove after full migration
+const _data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
@@ -145,38 +245,4 @@ const data = {
       ],
     },
   ],
-}
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  return (
-    <Sidebar {...props}>
-      <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
-        <SearchForm />
-      </SidebarHeader>
-      <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
-          <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {item.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url}>{item.title}</a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
-      </SidebarContent>
-      <SidebarRail />
-    </Sidebar>
-  )
-}
+};
