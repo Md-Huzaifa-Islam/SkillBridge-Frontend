@@ -4,7 +4,10 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    BACKEND_URL: z.string().url(),
+    // Use a fallback so the build never fails when BACKEND_URL isn't injected
+    // yet (e.g. during `next build` on Vercel before env vars are available).
+    // api.ts also has the same fallback for runtime safety.
+    BACKEND_URL: z.string().url().default("http://localhost:5000/api"),
   },
 
   //   client: {
@@ -14,10 +17,4 @@ export const env = createEnv({
   runtimeEnv: {
     BACKEND_URL: process.env.BACKEND_URL,
   },
-
-  // Skip validation during `next build` when env vars may not be available.
-  // The actual runtime will still fail fast if BACKEND_URL is missing.
-  skipValidation:
-    process.env.NEXT_PHASE === "phase-production-build" ||
-    !!process.env.SKIP_ENV_VALIDATION,
 });
