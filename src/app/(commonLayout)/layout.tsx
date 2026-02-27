@@ -1,14 +1,14 @@
 import { Navbar } from "@/components/navbar";
 import React from "react";
 
-export default function layout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <div>
-      <nav className="fixed w-full top-0">
+      <nav className="fixed w-full top-0 z-50 bg-background/80 backdrop-blur border-b">
         <Navbar />
       </nav>
       {children}

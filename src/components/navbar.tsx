@@ -65,10 +65,13 @@ const Navbar = ({
     alt: "logo",
     title: "SkillBridge",
   },
-  menu = [{ title: "Home", url: "/" }],
+  menu = [
+    { title: "Home", url: "/" },
+    { title: "Find Tutors", url: "/tutors" },
+  ],
   auth = {
     login: { title: "Login", url: "/login" },
-    signup: { title: "Sign up", url: "/signup" },
+    signup: { title: "Sign up", url: "/register" },
   },
   className,
 }: Navbar1Props) => {
