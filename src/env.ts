@@ -4,7 +4,11 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    BACKEND_URL: z.string().url().default("http://localhost:5000/api"),
+    BACKEND_URL: z
+      .string()
+      .url()
+      .default("http://localhost:5000/api")
+      .default("https://skillbridge-iota-ebon.vercel.app/api"),
   },
 
   runtimeEnv: {
