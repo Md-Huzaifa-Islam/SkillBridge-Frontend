@@ -27,9 +27,20 @@ async function apiFetch<T>(
   return res.json() as Promise<T>;
 }
 
+/**
+ * Create a new booking.
+ * @param data.tutor_profile_id - TutorProfile.id
+ * @param data.available_id     - Available.id (the day slot selected)
+ * @param data.date_str         - Date string "YYYY-MM-DD"
+ * @param data.start_time       - Time string "HH:MM:SS"
+ * @param data.end_time         - Time string "HH:MM:SS"
+ */
 export async function createBookingAction(data: {
-  tutorId: string;
-  slotId: string;
+  tutor_profile_id: string;
+  available_id: string;
+  date_str: string;
+  start_time: string;
+  end_time: string;
 }) {
   const token = await getToken();
   const result = await apiFetch("/bookings", {
@@ -41,9 +52,14 @@ export async function createBookingAction(data: {
   return result;
 }
 
+/**
+ * Update a booking's status.
+ * - Tutor can mark "completed"
+ * - Student can mark "cancelled"
+ */
 export async function updateBookingStatusAction(
   bookingId: string,
-  status: "CONFIRMED" | "CANCELLED" | "COMPLETED",
+  status: "completed" | "cancelled",
 ) {
   const token = await getToken();
   const result = await apiFetch(`/bookings/${bookingId}`, {
@@ -52,6 +68,6 @@ export async function updateBookingStatusAction(
     token,
   });
   revalidatePath("/dashboard/bookings");
-  revalidatePath("/tutor-dashboard");
+  revalidatePath("/tutor-dashboard/sessions");
   return result;
 }

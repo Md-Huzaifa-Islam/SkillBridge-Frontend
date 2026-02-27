@@ -12,17 +12,32 @@ export default async function TutorAvailabilityPage() {
   const profileResult = await apiGetMyTutorProfile(session.token).catch(
     () => null,
   );
-  const slots = profileResult?.data?.availableSlots ?? [];
+
+  const profile = profileResult?.data ?? null;
+
+  if (!profile) {
+    return (
+      <div className="space-y-4">
+        <h1 className="text-2xl font-bold">Availability</h1>
+        <p className="text-muted-foreground text-sm">
+          You need to create a tutor profile first before managing availability.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Availability</h1>
         <p className="text-muted-foreground text-sm">
-          Manage your available time slots for students to book.
+          Select the days of the week you are available to teach.
         </p>
       </div>
-      <AvailabilityManager slots={slots} />
+      <AvailabilityManager
+        availabilities={profile.availabilities ?? []}
+        tutorProfileId={profile.id}
+      />
     </div>
   );
 }

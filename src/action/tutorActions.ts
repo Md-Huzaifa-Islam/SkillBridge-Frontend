@@ -27,11 +27,18 @@ async function apiFetch<T>(
   return res.json() as Promise<T>;
 }
 
+/**
+ * Create a new tutor profile. categoryId is REQUIRED by the backend.
+ * @param data.start_time - "HH:MM:SS"
+ * @param data.end_time   - "HH:MM:SS"
+ */
 export async function createTutorProfileAction(data: {
-  bio: string;
-  hourlyRate: number;
-  subjects: string[];
-  categoryId?: string;
+  title: string;
+  description?: string;
+  pricePerHour: number;
+  start_time: string;
+  end_time: string;
+  categoryId: string;
 }) {
   const token = await getToken();
   const result = await apiFetch("/tutors", {
@@ -44,10 +51,18 @@ export async function createTutorProfileAction(data: {
   return result;
 }
 
+/**
+ * Update own tutor profile.
+ * @param data.start_time - "HH:MM:SS" if updating
+ * @param data.end_time   - "HH:MM:SS" if updating
+ */
 export async function updateTutorProfileAction(data: {
-  bio?: string;
-  hourlyRate?: number;
-  subjects?: string[];
+  title?: string;
+  description?: string;
+  pricePerHour?: number;
+  start_time?: string;
+  end_time?: string;
+  active?: boolean;
   categoryId?: string;
 }) {
   const token = await getToken();
@@ -61,29 +76,28 @@ export async function updateTutorProfileAction(data: {
   return result;
 }
 
-export async function toggleTutorAvailableAction() {
+/** Toggle active/inactive status of own tutor profile. */
+export async function toggleTutorAvailableAction(active: boolean) {
   const token = await getToken();
   const result = await apiFetch("/tutors/active/me", {
     method: "PATCH",
+    body: JSON.stringify({ active }),
     token,
   });
   revalidatePath("/tutor-dashboard");
   return result;
 }
 
-export async function updateSlotAction(
-  slotId: string,
-  data: {
-    date?: string;
-    startTime?: string;
-    endTime?: string;
-    isBooked?: boolean;
-  },
-) {
+/**
+ * Update available days for the tutor.
+ * @param tutorProfileId - TutorProfile.id (used as :id in PATCH /tutors/slot/:id)
+ * @param days           - Array of WeekDay strings, e.g. ["monday", "wednesday"]
+ */
+export async function updateSlotAction(tutorProfileId: string, days: string[]) {
   const token = await getToken();
-  const result = await apiFetch(`/tutors/slot/${slotId}`, {
+  const result = await apiFetch(`/tutors/slot/${tutorProfileId}`, {
     method: "PATCH",
-    body: JSON.stringify(data),
+    body: JSON.stringify({ days }),
     token,
   });
   revalidatePath("/tutor-dashboard/availability");

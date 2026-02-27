@@ -13,10 +13,10 @@ export default async function TutorSessionsPage() {
     data: [],
   }));
 
-  const pending = bookings.filter((b) => b.status === "PENDING");
-  const active = bookings.filter((b) => b.status === "CONFIRMED");
+  // Bookings start as "confirmed" — there is no pending status
+  const active = bookings.filter((b) => b.status === "confirmed");
   const history = bookings.filter((b) =>
-    ["COMPLETED", "CANCELLED"].includes(b.status),
+    ["completed", "cancelled"].includes(b.status),
   );
 
   return (
@@ -25,24 +25,11 @@ export default async function TutorSessionsPage() {
 
       <section>
         <h2 className="font-semibold text-lg mb-3">
-          Pending Requests{" "}
+          Confirmed Sessions{" "}
           <span className="text-sm font-normal text-muted-foreground">
-            ({pending.length})
+            ({active.length})
           </span>
         </h2>
-        {pending.length === 0 ? (
-          <p className="text-muted-foreground text-sm">No pending requests.</p>
-        ) : (
-          <div className="grid gap-3 sm:grid-cols-2">
-            {pending.map((b) => (
-              <BookingCard key={b.id} booking={b} role="tutor" />
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section>
-        <h2 className="font-semibold text-lg mb-3">Confirmed Sessions</h2>
         {active.length === 0 ? (
           <p className="text-muted-foreground text-sm">
             No confirmed sessions.
@@ -57,7 +44,12 @@ export default async function TutorSessionsPage() {
       </section>
 
       <section>
-        <h2 className="font-semibold text-lg mb-3">History</h2>
+        <h2 className="font-semibold text-lg mb-3">
+          History{" "}
+          <span className="text-sm font-normal text-muted-foreground">
+            ({history.length})
+          </span>
+        </h2>
         {history.length === 0 ? (
           <p className="text-muted-foreground text-sm">No past sessions.</p>
         ) : (

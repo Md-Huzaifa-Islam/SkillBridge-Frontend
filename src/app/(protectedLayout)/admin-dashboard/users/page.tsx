@@ -29,7 +29,7 @@ export default async function AdminUsersPage() {
               <tr>
                 <th className="px-4 py-2 text-left">Name</th>
                 <th className="px-4 py-2 text-left">Email</th>
-                <th className="px-4 py-2 text-left">Subjects</th>
+                <th className="px-4 py-2 text-left">Title</th>
                 <th className="px-4 py-2 text-left">Category</th>
                 <th className="px-4 py-2 text-right">Rate</th>
                 <th className="px-4 py-2 text-right">Rating</th>
@@ -43,18 +43,14 @@ export default async function AdminUsersPage() {
                     {t.user?.email}
                   </td>
                   <td className="px-4 py-2 text-muted-foreground text-xs">
-                    {t.subjects?.slice(0, 3).join(", ")}
-                    {(t.subjects?.length ?? 0) > 3 ? "…" : ""}
+                    {t.title}
                   </td>
                   <td className="px-4 py-2 text-muted-foreground">
                     {t.category?.name ?? "—"}
                   </td>
-                  <td className="px-4 py-2 text-right">${t.hourlyRate}</td>
+                  <td className="px-4 py-2 text-right">${t.pricePerHour}</td>
                   <td className="px-4 py-2 text-right">
-                    {t.averageRating?.toFixed(1) ?? "—"}{" "}
-                    <span className="text-muted-foreground text-xs">
-                      ({t.totalReviews ?? 0})
-                    </span>
+                    {t.avgRating?.toFixed(1) ?? "—"}
                   </td>
                 </tr>
               ))}

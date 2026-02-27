@@ -13,11 +13,10 @@ export default async function StudentBookingsPage() {
     data: [],
   }));
 
-  const upcoming = bookings.filter((b) =>
-    ["PENDING", "CONFIRMED"].includes(b.status),
-  );
+  // Bookings start as "confirmed" — no pending status in the system
+  const active = bookings.filter((b) => b.status === "confirmed");
   const past = bookings.filter((b) =>
-    ["COMPLETED", "CANCELLED"].includes(b.status),
+    ["completed", "cancelled"].includes(b.status),
   );
 
   return (
@@ -25,12 +24,17 @@ export default async function StudentBookingsPage() {
       <h1 className="text-2xl font-bold">My Bookings</h1>
 
       <section>
-        <h2 className="font-semibold text-lg mb-3">Upcoming Sessions</h2>
-        {upcoming.length === 0 ? (
+        <h2 className="font-semibold text-lg mb-3">
+          Upcoming Sessions{" "}
+          <span className="text-sm font-normal text-muted-foreground">
+            ({active.length})
+          </span>
+        </h2>
+        {active.length === 0 ? (
           <p className="text-muted-foreground text-sm">No upcoming sessions.</p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
-            {upcoming.map((b) => (
+            {active.map((b) => (
               <BookingCard key={b.id} booking={b} role="student" />
             ))}
           </div>
@@ -38,7 +42,12 @@ export default async function StudentBookingsPage() {
       </section>
 
       <section>
-        <h2 className="font-semibold text-lg mb-3">Past Sessions</h2>
+        <h2 className="font-semibold text-lg mb-3">
+          Past Sessions{" "}
+          <span className="text-sm font-normal text-muted-foreground">
+            ({past.length})
+          </span>
+        </h2>
         {past.length === 0 ? (
           <p className="text-muted-foreground text-sm">No past sessions yet.</p>
         ) : (

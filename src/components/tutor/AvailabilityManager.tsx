@@ -1,130 +1,107 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { updateSlotAction } from "@/action/tutorActions";
-import type { AvailableSlot } from "@/lib/api";
+import type { Available, WeekDay } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 
+const ALL_DAYS: { value: WeekDay; label: string }[] = [
+  { value: "monday", label: "Monday" },
+  { value: "tuesday", label: "Tuesday" },
+  { value: "wednesday", label: "Wednesday" },
+  { value: "thursday", label: "Thursday" },
+  { value: "friday", label: "Friday" },
+  { value: "saturday", label: "Saturday" },
+  { value: "sunday", label: "Sunday" },
+];
+
+type Props = {
+  /** Current available days from the backend */
+  availabilities: Available[];
+  /** TutorProfile.id — used as :id in PATCH /tutors/slot/:id */
+  tutorProfileId: string;
+};
+
 export default function AvailabilityManager({
-  slots,
-}: {
-  slots: AvailableSlot[];
-}) {
+  availabilities,
+  tutorProfileId,
+}: Props) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const [localSlots, setLocalSlots] = useState<AvailableSlot[]>(slots);
+  const [success, setSuccess] = useState(false);
 
-  const toggleBooked = (slot: AvailableSlot) => {
+  // Initialise selected days from current availabilities
+  const [selectedDays, setSelectedDays] = useState<Set<WeekDay>>(
+    () => new Set(availabilities.map((a) => a.day)),
+  );
+
+  const toggle = (day: WeekDay) => {
+    setSelectedDays((prev) => {
+      const next = new Set(prev);
+      if (next.has(day)) {
+        next.delete(day);
+      } else {
+        next.add(day);
+      }
+      return next;
+    });
+    setSuccess(false);
+  };
+
+  const handleSave = () => {
     setError(null);
+    setSuccess(false);
     startTransition(async () => {
       try {
-        await updateSlotAction(slot.id, { isBooked: !slot.isBooked });
-        setLocalSlots((prev) =>
-          prev.map((s) =>
-            s.id === slot.id ? { ...s, isBooked: !s.isBooked } : s,
-          ),
-        );
+        await updateSlotAction(tutorProfileId, Array.from(selectedDays));
+        setSuccess(true);
+        router.refresh();
       } catch (e: unknown) {
-        setError(e instanceof Error ? e.message : "Failed to update slot.");
+        setError(
+          e instanceof Error ? e.message : "Failed to update availability.",
+        );
       }
     });
   };
 
-  if (localSlots.length === 0) {
-    return (
-      <div className="border rounded-xl p-8 text-center text-muted-foreground text-sm">
-        No availability slots found. Slots are created from the backend seed or
-        admin panel.
-      </div>
-    );
-  }
-
-  const available = localSlots.filter((s) => !s.isBooked);
-  const booked = localSlots.filter((s) => s.isBooked);
-
   return (
-    <div className="space-y-6">
-      {error && <p className="text-sm text-red-500">{error}</p>}
-
-      <section>
-        <h2 className="font-semibold mb-3">
-          Available Slots{" "}
-          <span className="text-muted-foreground font-normal text-sm">
-            ({available.length})
-          </span>
-        </h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {available.map((slot) => (
-            <SlotCard
-              key={slot.id}
-              slot={slot}
-              onToggle={toggleBooked}
-              disabled={isPending}
-            />
-          ))}
-        </div>
-      </section>
-
-      {booked.length > 0 && (
-        <section>
-          <h2 className="font-semibold mb-3">
-            Booked Slots{" "}
-            <span className="text-muted-foreground font-normal text-sm">
-              ({booked.length})
-            </span>
-          </h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {booked.map((slot) => (
-              <SlotCard
-                key={slot.id}
-                slot={slot}
-                onToggle={toggleBooked}
-                disabled={isPending}
-              />
-            ))}
-          </div>
-        </section>
-      )}
-    </div>
-  );
-}
-
-function SlotCard({
-  slot,
-  onToggle,
-  disabled,
-}: {
-  slot: AvailableSlot;
-  onToggle: (s: AvailableSlot) => void;
-  disabled: boolean;
-}) {
-  return (
-    <div
-      className={`border rounded-xl p-4 space-y-2 ${slot.isBooked ? "opacity-60" : ""}`}
-    >
-      <div className="flex items-center justify-between">
-        <span
-          className={`text-xs px-2 py-0.5 rounded-full ${
-            slot.isBooked
-              ? "bg-red-100 text-red-600"
-              : "bg-green-100 text-green-700"
-          }`}
-        >
-          {slot.isBooked ? "Booked" : "Available"}
-        </span>
-      </div>
-      <p className="text-sm font-medium">{slot.date}</p>
-      <p className="text-xs text-muted-foreground">
-        {slot.startTime} – {slot.endTime}
+    <div className="space-y-5 border rounded-xl p-6 max-w-lg">
+      <p className="text-sm text-muted-foreground">
+        Select the days of the week you are available to teach. Students will
+        pick a date matching one of these days when booking.
       </p>
-      <Button
-        size="sm"
-        variant="outline"
-        disabled={disabled}
-        onClick={() => onToggle(slot)}
-        className="w-full text-xs"
-      >
-        {slot.isBooked ? "Mark Available" : "Mark Booked"}
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {ALL_DAYS.map(({ value, label }) => {
+          const checked = selectedDays.has(value);
+          return (
+            <label
+              key={value}
+              className={`flex items-center gap-2 rounded-lg border px-3 py-2 cursor-pointer transition-colors select-none ${
+                checked
+                  ? "border-primary bg-primary/5 font-medium"
+                  : "hover:bg-muted/50"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={checked}
+                onChange={() => toggle(value)}
+                className="accent-primary"
+              />
+              <span className="text-sm">{label}</span>
+            </label>
+          );
+        })}
+      </div>
+
+      {error && <p className="text-sm text-red-500">{error}</p>}
+      {success && <p className="text-sm text-green-600">Availability saved!</p>}
+
+      <Button onClick={handleSave} disabled={isPending} className="w-full">
+        {isPending ? "Saving…" : "Save Availability"}
       </Button>
     </div>
   );

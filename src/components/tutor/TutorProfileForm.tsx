@@ -8,12 +8,30 @@ import {
   createTutorProfileAction,
   updateTutorProfileAction,
 } from "@/action/tutorActions";
-import type { Category, TutorDetail } from "@/lib/api";
+import type { Category, TutorProfile } from "@/lib/api";
 
 type Props = {
-  profile: TutorDetail | null;
+  profile: TutorProfile | null;
   categories: Category[];
 };
+
+/** Extract "HH:MM" from an ISO datetime string (e.g. "1970-01-01T09:00:00.000Z") */
+function isoToTimeInput(iso?: string): string {
+  if (!iso) return "";
+  try {
+    const d = new Date(iso);
+    const hh = String(d.getUTCHours()).padStart(2, "0");
+    const mm = String(d.getUTCMinutes()).padStart(2, "0");
+    return `${hh}:${mm}`;
+  } catch {
+    return "";
+  }
+}
+
+/** Append ":00" to turn "HH:MM" into "HH:MM:SS" expected by the backend */
+function timeInputToBackend(v: string): string {
+  return v.length === 5 ? `${v}:00` : v;
+}
 
 export default function TutorProfileForm({ profile, categories }: Props) {
   const router = useRouter();
@@ -21,43 +39,62 @@ export default function TutorProfileForm({ profile, categories }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const [bio, setBio] = useState(profile?.bio ?? "");
-  const [hourlyRate, setHourlyRate] = useState(
-    profile?.hourlyRate?.toString() ?? "",
+  const [title, setTitle] = useState(profile?.title ?? "");
+  const [description, setDescription] = useState(profile?.description ?? "");
+  const [pricePerHour, setPricePerHour] = useState(
+    profile?.pricePerHour?.toString() ?? "",
   );
-  const [subjectsRaw, setSubjectsRaw] = useState(
-    profile?.subjects?.join(", ") ?? "",
+  const [startTime, setStartTime] = useState(
+    isoToTimeInput(profile?.startTime),
   );
-  const [categoryId, setCategoryId] = useState(profile?.category?.id ?? "");
+  const [endTime, setEndTime] = useState(isoToTimeInput(profile?.endTime));
+  const [categoryId, setCategoryId] = useState(profile?.categoryId ?? "");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(false);
 
-    const subjects = subjectsRaw
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-
-    if (!bio || !hourlyRate || subjects.length === 0) {
-      setError("Bio, hourly rate, and at least one subject are required.");
+    if (!title.trim()) {
+      setError("Title is required.");
+      return;
+    }
+    if (!pricePerHour || Number(pricePerHour) < 1) {
+      setError("Price per hour must be at least 1.");
+      return;
+    }
+    if (!startTime || !endTime) {
+      setError("Start time and end time are required.");
+      return;
+    }
+    if (!categoryId) {
+      setError("Category is required.");
       return;
     }
 
-    const data = {
-      bio,
-      hourlyRate: parseFloat(hourlyRate),
-      subjects,
-      ...(categoryId ? { categoryId } : {}),
-    };
+    const start_time = timeInputToBackend(startTime);
+    const end_time = timeInputToBackend(endTime);
 
     startTransition(async () => {
       try {
         if (profile) {
-          await updateTutorProfileAction(data);
+          await updateTutorProfileAction({
+            title,
+            description: description || undefined,
+            pricePerHour: Number(pricePerHour),
+            start_time,
+            end_time,
+            categoryId,
+          });
         } else {
-          await createTutorProfileAction(data);
+          await createTutorProfileAction({
+            title,
+            description: description || undefined,
+            pricePerHour: Number(pricePerHour),
+            start_time,
+            end_time,
+            categoryId,
+          });
         }
         setSuccess(true);
         router.refresh();
@@ -69,64 +106,94 @@ export default function TutorProfileForm({ profile, categories }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 border rounded-xl p-6">
+      {/* Title */}
       <div className="space-y-1">
-        <label htmlFor="bio" className="text-sm font-medium">
-          Bio
+        <label htmlFor="title" className="text-sm font-medium">
+          Title <span className="text-red-500">*</span>
         </label>
-        <textarea
-          id="bio"
-          rows={4}
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-          className="w-full rounded-md border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring"
-          placeholder="Tell students about yourself…"
+        <Input
+          id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="e.g. Expert Math Tutor"
           required
         />
       </div>
 
+      {/* Description */}
       <div className="space-y-1">
-        <label htmlFor="hourlyRate" className="text-sm font-medium">
-          Hourly Rate ($)
+        <label htmlFor="description" className="text-sm font-medium">
+          Description{" "}
+          <span className="text-muted-foreground font-normal">(optional)</span>
+        </label>
+        <textarea
+          id="description"
+          rows={4}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full rounded-md border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring"
+          placeholder="Tell students about yourself…"
+        />
+      </div>
+
+      {/* Price Per Hour */}
+      <div className="space-y-1">
+        <label htmlFor="pricePerHour" className="text-sm font-medium">
+          Price per Hour ($) <span className="text-red-500">*</span>
         </label>
         <Input
-          id="hourlyRate"
+          id="pricePerHour"
           type="number"
           min="1"
-          step="0.01"
-          value={hourlyRate}
-          onChange={(e) => setHourlyRate(e.target.value)}
+          step="1"
+          value={pricePerHour}
+          onChange={(e) => setPricePerHour(e.target.value)}
           placeholder="e.g. 25"
           required
         />
       </div>
 
-      <div className="space-y-1">
-        <label htmlFor="subjects" className="text-sm font-medium">
-          Subjects{" "}
-          <span className="text-muted-foreground font-normal">
-            (comma-separated)
-          </span>
-        </label>
-        <Input
-          id="subjects"
-          value={subjectsRaw}
-          onChange={(e) => setSubjectsRaw(e.target.value)}
-          placeholder="e.g. Math, Physics, Chemistry"
-          required
-        />
+      {/* Time range */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-1">
+          <label htmlFor="startTime" className="text-sm font-medium">
+            Start Time <span className="text-red-500">*</span>
+          </label>
+          <Input
+            id="startTime"
+            type="time"
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
+            required
+          />
+        </div>
+        <div className="space-y-1">
+          <label htmlFor="endTime" className="text-sm font-medium">
+            End Time <span className="text-red-500">*</span>
+          </label>
+          <Input
+            id="endTime"
+            type="time"
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
+            required
+          />
+        </div>
       </div>
 
+      {/* Category */}
       <div className="space-y-1">
         <label htmlFor="category" className="text-sm font-medium">
-          Category
+          Category <span className="text-red-500">*</span>
         </label>
         <select
           id="category"
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
+          required
           className="w-full rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
         >
-          <option value="">— No category —</option>
+          <option value="">— Select a category —</option>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}

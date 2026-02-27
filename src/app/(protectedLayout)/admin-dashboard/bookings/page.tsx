@@ -4,10 +4,9 @@ import { redirect } from "next/navigation";
 import { UserRoles } from "@/constants/roles";
 
 const STATUS_COLOR: Record<string, string> = {
-  PENDING: "bg-yellow-100 text-yellow-700",
-  CONFIRMED: "bg-green-100 text-green-700",
-  CANCELLED: "bg-red-100 text-red-600",
-  COMPLETED: "bg-muted text-muted-foreground",
+  confirmed: "bg-green-100 text-green-700",
+  cancelled: "bg-red-100 text-red-600",
+  completed: "bg-muted text-muted-foreground",
 };
 
 export default async function AdminBookingsPage() {
@@ -21,10 +20,9 @@ export default async function AdminBookingsPage() {
 
   const stats = {
     total: bookings.length,
-    pending: bookings.filter((b) => b.status === "PENDING").length,
-    confirmed: bookings.filter((b) => b.status === "CONFIRMED").length,
-    completed: bookings.filter((b) => b.status === "COMPLETED").length,
-    cancelled: bookings.filter((b) => b.status === "CANCELLED").length,
+    confirmed: bookings.filter((b) => b.status === "confirmed").length,
+    completed: bookings.filter((b) => b.status === "completed").length,
+    cancelled: bookings.filter((b) => b.status === "cancelled").length,
   };
 
   return (
@@ -59,10 +57,10 @@ export default async function AdminBookingsPage() {
                 <td className="px-4 py-2">{b.student?.name ?? "—"}</td>
                 <td className="px-4 py-2">{b.tutor?.user?.name ?? "—"}</td>
                 <td className="px-4 py-2 text-muted-foreground">
-                  {b.slot?.date ?? "—"}
+                  {b.date ?? "—"}
                 </td>
                 <td className="px-4 py-2 text-muted-foreground">
-                  {b.slot?.startTime ?? "—"} – {b.slot?.endTime ?? "—"}
+                  {b.startTime ?? "—"} – {b.endTime ?? "—"}
                 </td>
                 <td className="px-4 py-2">
                   <span

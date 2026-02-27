@@ -1,9 +1,8 @@
-import { apiGetTutor, apiGetReviews } from "@/lib/api";
+import { apiGetTutor, apiGetTutorRatings } from "@/lib/api";
 import { getSession } from "@/lib/auth";
 import { UserRoles } from "@/constants/roles";
 import { notFound } from "next/navigation";
 import BookingPanel from "@/components/tutors/BookingPanel";
-import ReviewForm from "@/components/tutors/ReviewForm";
 
 export const revalidate = 60;
 
@@ -20,16 +19,14 @@ export default async function TutorDetailPage({ params }: PageProps) {
   const isLoggedIn = !!session;
   const isStudent = session?.user.role === UserRoles.student;
 
-  const reviews = await apiGetReviews(id, session?.token ?? "")
+  const ratings = await apiGetTutorRatings(id)
     .then((r) => r.data)
     .catch(() => []);
 
   const avgRating =
-    reviews.length > 0
-      ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
+    ratings.length > 0
+      ? (ratings.reduce((s, r) => s + r.rating, 0) / ratings.length).toFixed(1)
       : null;
-
-  const slots = tutor.availableSlots ?? [];
 
   return (
     <div className="pt-20 pb-10">
@@ -43,6 +40,9 @@ export default async function TutorDetailPage({ params }: PageProps) {
             </div>
             <div className="space-y-1">
               <h1 className="text-2xl font-bold">{tutor.user?.name}</h1>
+              <p className="text-muted-foreground text-sm font-medium">
+                {tutor.title}
+              </p>
               {tutor.category && (
                 <span className="text-xs bg-muted px-2 py-0.5 rounded-full">
                   {tutor.category.name}
@@ -52,33 +52,35 @@ export default async function TutorDetailPage({ params }: PageProps) {
                 <p className="text-sm text-muted-foreground">
                   ⭐ {avgRating}{" "}
                   <span className="text-xs">
-                    ({reviews.length} review{reviews.length !== 1 ? "s" : ""})
+                    ({ratings.length} review{ratings.length !== 1 ? "s" : ""})
                   </span>
                 </p>
               )}
-              <p className="text-sm font-semibold">${tutor.hourlyRate}/hr</p>
+              <p className="text-sm font-semibold">${tutor.pricePerHour}/hr</p>
             </div>
           </div>
 
-          {/* Bio */}
-          <section className="space-y-2">
-            <h2 className="font-semibold text-lg">About</h2>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              {tutor.bio}
-            </p>
-          </section>
-
-          {/* Subjects */}
-          {tutor.subjects && tutor.subjects.length > 0 && (
+          {/* Description */}
+          {tutor.description && (
             <section className="space-y-2">
-              <h2 className="font-semibold text-lg">Subjects</h2>
+              <h2 className="font-semibold text-lg">About</h2>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                {tutor.description}
+              </p>
+            </section>
+          )}
+
+          {/* Available days */}
+          {tutor.availabilities && tutor.availabilities.length > 0 && (
+            <section className="space-y-2">
+              <h2 className="font-semibold text-lg">Available Days</h2>
               <div className="flex flex-wrap gap-2">
-                {tutor.subjects.map((s) => (
+                {tutor.availabilities.map((a) => (
                   <span
-                    key={s}
-                    className="bg-muted px-3 py-1 rounded-full text-sm"
+                    key={a.id}
+                    className="bg-muted px-3 py-1 rounded-full text-sm capitalize"
                   >
-                    {s}
+                    {a.day}
                   </span>
                 ))}
               </div>
@@ -88,22 +90,26 @@ export default async function TutorDetailPage({ params }: PageProps) {
           {/* Reviews */}
           <section className="space-y-3">
             <h2 className="font-semibold text-lg">Reviews</h2>
-            {reviews.length === 0 ? (
+            {ratings.length === 0 ? (
               <p className="text-muted-foreground text-sm">No reviews yet.</p>
             ) : (
               <div className="space-y-3">
-                {reviews.map((r) => (
+                {ratings.map((r) => (
                   <div key={r.id} className="border rounded-xl p-4 space-y-1">
                     <div className="flex items-center justify-between">
                       <p className="font-medium text-sm">
-                        {r.student?.name ?? "Student"}
+                        {r.booking?.student?.name ?? "Student"}
                       </p>
                       <span className="text-sm text-yellow-400">
                         {"★".repeat(r.rating)}
                         {"☆".repeat(5 - r.rating)}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground">{r.comment}</p>
+                    {r.review && (
+                      <p className="text-sm text-muted-foreground">
+                        {r.review}
+                      </p>
+                    )}
                     <p className="text-xs text-muted-foreground">
                       {new Date(r.createdAt).toLocaleDateString()}
                     </p>
@@ -111,14 +117,25 @@ export default async function TutorDetailPage({ params }: PageProps) {
                 ))}
               </div>
             )}
-
-            {isStudent && <ReviewForm tutorId={id} />}
+            {isStudent && (
+              <p className="text-xs text-muted-foreground">
+                Leave a review from your{" "}
+                <a href="/dashboard/bookings" className="underline">
+                  bookings page
+                </a>{" "}
+                after completing a session.
+              </p>
+            )}
           </section>
         </div>
 
-        {/* Right: booking */}
+        {/* Right: booking panel */}
         <div className="space-y-4">
-          <BookingPanel tutorId={id} slots={slots} isLoggedIn={isLoggedIn} />
+          <BookingPanel
+            tutorId={tutor.id}
+            availabilities={tutor.availabilities ?? []}
+            isLoggedIn={isLoggedIn}
+          />
         </div>
       </div>
     </div>

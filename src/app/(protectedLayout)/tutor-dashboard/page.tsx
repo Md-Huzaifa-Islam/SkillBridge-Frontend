@@ -21,9 +21,9 @@ export default async function TutorDashboardPage() {
   const bookings =
     bookingsResult.status === "fulfilled" ? bookingsResult.value.data : [];
 
-  const pending = bookings.filter((b) => b.status === "PENDING");
-  const confirmed = bookings.filter((b) => b.status === "CONFIRMED");
-  const completed = bookings.filter((b) => b.status === "COMPLETED");
+  const confirmed = bookings.filter((b) => b.status === "confirmed");
+  const completed = bookings.filter((b) => b.status === "completed");
+  const cancelled = bookings.filter((b) => b.status === "cancelled");
 
   return (
     <div className="space-y-6">
@@ -46,9 +46,9 @@ export default async function TutorDashboardPage() {
 
       {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-4">
-        <StatCard label="Pending" value={pending.length} />
         <StatCard label="Confirmed" value={confirmed.length} />
         <StatCard label="Completed" value={completed.length} />
+        <StatCard label="Cancelled" value={cancelled.length} />
         <StatCard label="Total Sessions" value={bookings.length} />
       </div>
 
@@ -65,20 +65,17 @@ export default async function TutorDashboardPage() {
             </Link>
           </div>
           <p className="text-sm text-muted-foreground line-clamp-2">
-            {profile.bio}
+            {profile.description}
           </p>
           <div className="flex gap-3 text-sm">
-            <span className="font-medium">${profile.hourlyRate}/hr</span>
-            <span className="text-muted-foreground">
-              {profile.subjects?.join(", ")}
-            </span>
+            <span className="font-medium">${profile.pricePerHour}/hr</span>
+            <span className="text-muted-foreground">{profile.title}</span>
           </div>
           <p className="text-xs text-muted-foreground">
             Rating:{" "}
             <span className="font-medium text-foreground">
-              {profile.averageRating?.toFixed(1) ?? "—"}
-            </span>{" "}
-            ({profile.totalReviews ?? 0} reviews)
+              {profile.avgRating?.toFixed(1) ?? "—"}
+            </span>
           </p>
         </div>
       )}
@@ -108,15 +105,15 @@ export default async function TutorDashboardPage() {
                     {b.student?.name ?? "Student"}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {b.slot?.date ?? "—"} · {b.slot?.startTime ?? "—"}
+                    {b.date ?? "—"} · {b.startTime ?? "—"}
                   </p>
                 </div>
                 <span
                   className={`text-xs px-2 py-1 rounded-full ${
-                    b.status === "CONFIRMED"
+                    b.status === "confirmed"
                       ? "bg-green-100 text-green-700"
-                      : b.status === "PENDING"
-                        ? "bg-yellow-100 text-yellow-700"
+                      : b.status === "completed"
+                        ? "bg-blue-100 text-blue-700"
                         : "bg-muted text-muted-foreground"
                   }`}
                 >

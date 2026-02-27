@@ -25,8 +25,8 @@ export default async function AdminDashboardPage() {
   const categories =
     categoriesResult.status === "fulfilled" ? categoriesResult.value.data : [];
 
-  const pendingBookings = bookings.filter((b) => b.status === "PENDING");
-  const confirmedBookings = bookings.filter((b) => b.status === "CONFIRMED");
+  const confirmedBookings = bookings.filter((b) => b.status === "confirmed");
+  const completedBookings = bookings.filter((b) => b.status === "completed");
 
   return (
     <div className="space-y-6">
@@ -50,8 +50,8 @@ export default async function AdminDashboardPage() {
           href="/admin-dashboard/bookings"
         />
         <StatCard
-          label="Pending Bookings"
-          value={pendingBookings.length}
+          label="Confirmed Bookings"
+          value={confirmedBookings.length}
           href="/admin-dashboard/bookings"
         />
         <StatCard
@@ -89,15 +89,15 @@ export default async function AdminDashboardPage() {
                   <td className="px-4 py-2">{b.student?.name ?? "—"}</td>
                   <td className="px-4 py-2">{b.tutor?.user?.name ?? "—"}</td>
                   <td className="px-4 py-2 text-muted-foreground">
-                    {b.slot?.date ?? "—"}
+                    {b.date ?? "—"}
                   </td>
                   <td className="px-4 py-2">
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full ${
-                        b.status === "CONFIRMED"
+                        b.status === "confirmed"
                           ? "bg-green-100 text-green-700"
-                          : b.status === "PENDING"
-                            ? "bg-yellow-100 text-yellow-700"
+                          : b.status === "completed"
+                            ? "bg-blue-100 text-blue-700"
                             : "bg-muted text-muted-foreground"
                       }`}
                     >

@@ -27,24 +27,32 @@ async function apiFetch<T>(
   return res.json() as Promise<T>;
 }
 
+/**
+ * Create a review for a completed booking.
+ * The booking must belong to the current student and have status "completed".
+ * POST /reviews/:bookingId  with body { rating, review? }
+ */
 export async function createReviewAction(
-  tutorId: string,
-  data: { rating: number; comment: string; bookingId?: string },
+  bookingId: string,
+  data: { rating: number; review?: string },
 ) {
   const token = await getToken();
-  const result = await apiFetch(`/reviews/${tutorId}`, {
+  const result = await apiFetch(`/reviews/${bookingId}`, {
     method: "POST",
     body: JSON.stringify(data),
     token,
   });
-  revalidatePath(`/tutors/${tutorId}`);
   revalidatePath("/dashboard/bookings");
   return result;
 }
 
+/**
+ * Update an existing review.
+ * PATCH /reviews/:reviewId  with body { rating?, review? }
+ */
 export async function updateReviewAction(
   reviewId: string,
-  data: { rating?: number; comment?: string },
+  data: { rating?: number; review?: string },
 ) {
   const token = await getToken();
   const result = await apiFetch(`/reviews/${reviewId}`, {
@@ -56,13 +64,16 @@ export async function updateReviewAction(
   return result;
 }
 
-export async function deleteReviewAction(reviewId: string, tutorId: string) {
+/**
+ * Delete a review.
+ * DELETE /reviews/:reviewId
+ */
+export async function deleteReviewAction(reviewId: string) {
   const token = await getToken();
   const result = await apiFetch(`/reviews/${reviewId}`, {
     method: "DELETE",
     token,
   });
-  revalidatePath(`/tutors/${tutorId}`);
   revalidatePath("/dashboard/bookings");
   return result;
 }

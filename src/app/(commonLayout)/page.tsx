@@ -55,7 +55,7 @@ export default async function HomePage() {
             {categories.map((c) => (
               <Link
                 key={c.id}
-                href={`/tutors?categoryId=${c.id}`}
+                href={`/tutors?category=${c.id}`}
                 className="border px-4 py-1.5 rounded-full text-sm hover:bg-muted transition"
               >
                 {c.name}
@@ -93,26 +93,18 @@ export default async function HomePage() {
                   )}
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground line-clamp-2">
-                {t.bio}
-              </p>
+              {t.description && (
+                <p className="text-xs text-muted-foreground line-clamp-2">
+                  {t.description}
+                </p>
+              )}
               <div className="flex items-center justify-between text-xs pt-1">
-                <span className="font-medium">${t.hourlyRate}/hr</span>
-                {t.averageRating && (
+                <span className="font-medium">${t.pricePerHour}/hr</span>
+                {t.avgRating != null && (
                   <span className="text-muted-foreground">
-                    ⭐ {t.averageRating.toFixed(1)} ({t.totalReviews})
+                    ⭐ {t.avgRating.toFixed(1)}
                   </span>
                 )}
-              </div>
-              <div className="flex flex-wrap gap-1 pt-1">
-                {t.subjects?.slice(0, 3).map((s) => (
-                  <span
-                    key={s}
-                    className="text-xs bg-muted px-2 py-0.5 rounded-full"
-                  >
-                    {s}
-                  </span>
-                ))}
               </div>
             </Link>
           ))}

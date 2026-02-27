@@ -21,11 +21,9 @@ export default async function StudentDashboardPage() {
   const featuredTutors =
     tutorsResult.status === "fulfilled" ? tutorsResult.value.data : [];
 
-  const upcoming = bookings.filter((b) =>
-    ["PENDING", "CONFIRMED"].includes(b.status),
-  );
+  const upcoming = bookings.filter((b) => b.status === "confirmed");
   const past = bookings.filter((b) =>
-    ["COMPLETED", "CANCELLED"].includes(b.status),
+    ["completed", "cancelled"].includes(b.status),
   );
 
   return (
@@ -75,12 +73,12 @@ export default async function StudentDashboardPage() {
                     {b.tutor?.user?.name ?? "Tutor"}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {b.slot?.date ?? "—"} · {b.slot?.startTime ?? "—"}
+                    {b.date ?? "—"} · {b.startTime ?? "—"}
                   </p>
                 </div>
                 <span
                   className={`text-xs px-2 py-1 rounded-full ${
-                    b.status === "CONFIRMED"
+                    b.status === "confirmed"
                       ? "bg-green-100 text-green-700"
                       : "bg-yellow-100 text-yellow-700"
                   }`}
@@ -110,9 +108,9 @@ export default async function StudentDashboardPage() {
             >
               <p className="font-semibold text-sm">{t.user?.name}</p>
               <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                {t.bio}
+                {t.description}
               </p>
-              <p className="text-xs mt-2 font-medium">${t.hourlyRate}/hr</p>
+              <p className="text-xs mt-2 font-medium">${t.pricePerHour}/hr</p>
             </Link>
           ))}
         </div>

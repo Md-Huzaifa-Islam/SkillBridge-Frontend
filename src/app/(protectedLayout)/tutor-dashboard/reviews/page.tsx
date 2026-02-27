@@ -12,16 +12,16 @@ export default async function TutorReviewsPage() {
   const profileResult = await apiGetMyTutorProfile(token).catch(() => null);
   const tutorId = profileResult?.data?.id;
 
-  const reviews = tutorId
+  const ratings = tutorId
     ? await apiGetTutorRatings(tutorId, token)
         .then((r) => r.data)
         .catch(() => [])
     : [];
 
   const avg =
-    reviews.length > 0
+    ratings.length > 0
       ? (
-          reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+          ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length
         ).toFixed(1)
       : null;
 
@@ -33,24 +33,26 @@ export default async function TutorReviewsPage() {
           <p className="text-muted-foreground text-sm">
             Average rating:{" "}
             <span className="font-semibold text-foreground">⭐ {avg}</span> from{" "}
-            {reviews.length} review{reviews.length !== 1 ? "s" : ""}
+            {ratings.length} review{ratings.length !== 1 ? "s" : ""}
           </p>
         )}
       </div>
 
-      {reviews.length === 0 ? (
+      {ratings.length === 0 ? (
         <p className="text-muted-foreground text-sm">No reviews yet.</p>
       ) : (
         <div className="space-y-3">
-          {reviews.map((r) => (
+          {ratings.map((r) => (
             <div key={r.id} className="border rounded-xl p-4 space-y-1">
               <div className="flex items-center justify-between">
                 <p className="font-medium text-sm">
-                  {r.student?.name ?? "Student"}
+                  {r.booking?.student?.name ?? "Student"}
                 </p>
                 <span className="text-sm">{"⭐".repeat(r.rating)}</span>
               </div>
-              <p className="text-sm text-muted-foreground">{r.comment}</p>
+              {r.review && (
+                <p className="text-sm text-muted-foreground">{r.review}</p>
+              )}
               <p className="text-xs text-muted-foreground">
                 {new Date(r.createdAt).toLocaleDateString()}
               </p>

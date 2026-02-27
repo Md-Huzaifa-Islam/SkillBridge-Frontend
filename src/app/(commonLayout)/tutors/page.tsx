@@ -5,21 +5,18 @@ export const revalidate = 60;
 
 type PageProps = {
   searchParams: Promise<{
-    subject?: string;
-    categoryId?: string;
-    minRate?: string;
-    maxRate?: string;
+    /** Text search — matches tutor title / description */
+    search?: string;
+    /** Category ID filter */
+    category?: string;
   }>;
 };
 
 export default async function TutorsPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const query = new URLSearchParams();
-  if (params.subject) query.set("subject", params.subject);
-  if (params.categoryId) query.set("categoryId", params.categoryId);
-  if (params.minRate) query.set("minRate", params.minRate);
-  if (params.maxRate) query.set("maxRate", params.maxRate);
-  query.set("limit", "20");
+  if (params.search) query.set("search", params.search);
+  if (params.category) query.set("category", params.category);
 
   const [tutorsResult, categoriesResult] = await Promise.allSettled([
     apiGetTutors(query.toString(), 60),
@@ -45,12 +42,7 @@ export default async function TutorsPage({ searchParams }: PageProps) {
         <aside className="w-full lg:w-56 shrink-0">
           <FilterPanel
             categories={categories}
-            current={{
-              subject: params.subject,
-              categoryId: params.categoryId,
-              minRate: params.minRate,
-              maxRate: params.maxRate,
-            }}
+            current={{ search: params.search, category: params.category }}
           />
         </aside>
 
@@ -74,6 +66,7 @@ export default async function TutorsPage({ searchParams }: PageProps) {
                     </div>
                     <div>
                       <p className="font-semibold text-sm">{t.user?.name}</p>
+                      <p className="text-xs text-muted-foreground">{t.title}</p>
                       {t.category && (
                         <p className="text-xs text-muted-foreground">
                           {t.category.name}
@@ -81,26 +74,18 @@ export default async function TutorsPage({ searchParams }: PageProps) {
                       )}
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {t.bio}
-                  </p>
+                  {t.description && (
+                    <p className="text-xs text-muted-foreground line-clamp-2">
+                      {t.description}
+                    </p>
+                  )}
                   <div className="flex items-center justify-between text-xs pt-1">
-                    <span className="font-medium">${t.hourlyRate}/hr</span>
-                    {t.averageRating && (
+                    <span className="font-medium">${t.pricePerHour}/hr</span>
+                    {t.avgRating != null && (
                       <span className="text-muted-foreground">
-                        ⭐ {t.averageRating.toFixed(1)} ({t.totalReviews})
+                        ⭐ {t.avgRating.toFixed(1)}
                       </span>
                     )}
-                  </div>
-                  <div className="flex flex-wrap gap-1 pt-1">
-                    {t.subjects?.slice(0, 3).map((s) => (
-                      <span
-                        key={s}
-                        className="text-xs bg-muted px-2 py-0.5 rounded-full"
-                      >
-                        {s}
-                      </span>
-                    ))}
                   </div>
                 </Link>
               ))}
@@ -117,38 +102,34 @@ function FilterPanel({
   current,
 }: {
   categories: { id: string; name: string }[];
-  current: {
-    subject?: string;
-    categoryId?: string;
-    minRate?: string;
-    maxRate?: string;
-  };
+  current: { search?: string; category?: string };
 }) {
   return (
     <div className="border rounded-xl p-4 space-y-4">
       <h3 className="font-semibold text-sm">Filters</h3>
 
-      {/* Subject search */}
       <form method="GET" className="space-y-3">
+        {/* Text search */}
         <div className="space-y-1">
           <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Subject
+            Search
           </label>
           <input
-            name="subject"
-            defaultValue={current.subject ?? ""}
-            placeholder="e.g. Math"
+            name="search"
+            defaultValue={current.search ?? ""}
+            placeholder="e.g. Math, Physics…"
             className="w-full rounded-md border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
           />
         </div>
 
+        {/* Category */}
         <div className="space-y-1">
           <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Category
           </label>
           <select
-            name="categoryId"
-            defaultValue={current.categoryId ?? ""}
+            name="category"
+            defaultValue={current.category ?? ""}
             className="w-full rounded-md border bg-background px-3 py-1.5 text-sm focus:outline-none"
           >
             <option value="">All categories</option>
@@ -160,42 +141,14 @@ function FilterPanel({
           </select>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Min $
-            </label>
-            <input
-              name="minRate"
-              type="number"
-              min="0"
-              defaultValue={current.minRate ?? ""}
-              placeholder="0"
-              className="w-full rounded-md border bg-background px-3 py-1.5 text-sm focus:outline-none"
-            />
-          </div>
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Max $
-            </label>
-            <input
-              name="maxRate"
-              type="number"
-              min="0"
-              defaultValue={current.maxRate ?? ""}
-              placeholder="500"
-              className="w-full rounded-md border bg-background px-3 py-1.5 text-sm focus:outline-none"
-            />
-          </div>
-        </div>
-
         <button
           type="submit"
           className="w-full bg-primary text-primary-foreground rounded-lg py-2 text-sm hover:opacity-90 transition"
         >
           Apply
         </button>
-        {Object.values(current).some(Boolean) && (
+
+        {(current.search || current.category) && (
           <Link
             href="/tutors"
             className="block text-center text-xs text-muted-foreground hover:underline"
