@@ -19,7 +19,10 @@ export default async function TutorDashboardPage() {
   const profile =
     profileResult.status === "fulfilled" ? profileResult.value.data : null;
   const bookings =
-    bookingsResult.status === "fulfilled" ? bookingsResult.value.data : [];
+    bookingsResult.status === "fulfilled" &&
+    Array.isArray(bookingsResult.value.data)
+      ? bookingsResult.value.data
+      : [];
 
   const confirmed = bookings.filter((b) => b.status === "confirmed");
   const completed = bookings.filter((b) => b.status === "completed");

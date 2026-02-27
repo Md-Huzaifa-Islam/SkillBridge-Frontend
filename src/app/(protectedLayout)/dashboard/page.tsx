@@ -17,9 +17,15 @@ export default async function StudentDashboardPage() {
   ]);
 
   const bookings =
-    bookingsResult.status === "fulfilled" ? bookingsResult.value.data : [];
+    bookingsResult.status === "fulfilled" &&
+    Array.isArray(bookingsResult.value.data)
+      ? bookingsResult.value.data
+      : [];
   const featuredTutors =
-    tutorsResult.status === "fulfilled" ? tutorsResult.value.data : [];
+    tutorsResult.status === "fulfilled" &&
+    Array.isArray(tutorsResult.value.data)
+      ? tutorsResult.value.data
+      : [];
 
   const upcoming = bookings.filter((b) => b.status === "confirmed");
   const past = bookings.filter((b) =>

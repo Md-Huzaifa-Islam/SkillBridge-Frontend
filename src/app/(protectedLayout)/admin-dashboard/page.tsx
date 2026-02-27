@@ -19,11 +19,20 @@ export default async function AdminDashboardPage() {
     ]);
 
   const tutors =
-    tutorsResult.status === "fulfilled" ? tutorsResult.value.data : [];
+    tutorsResult.status === "fulfilled" &&
+    Array.isArray(tutorsResult.value.data)
+      ? tutorsResult.value.data
+      : [];
   const bookings =
-    bookingsResult.status === "fulfilled" ? bookingsResult.value.data : [];
+    bookingsResult.status === "fulfilled" &&
+    Array.isArray(bookingsResult.value.data)
+      ? bookingsResult.value.data
+      : [];
   const categories =
-    categoriesResult.status === "fulfilled" ? categoriesResult.value.data : [];
+    categoriesResult.status === "fulfilled" &&
+    Array.isArray(categoriesResult.value.data)
+      ? categoriesResult.value.data
+      : [];
 
   const confirmedBookings = bookings.filter((b) => b.status === "confirmed");
   const completedBookings = bookings.filter((b) => b.status === "completed");

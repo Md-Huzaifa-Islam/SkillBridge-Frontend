@@ -15,11 +15,17 @@ async function req<T>(
     ...(rest.headers as Record<string, string>),
   };
   if (token) headers["Authorization"] = `Bearer ${token}`;
-  const res = await fetch(`${BASE}${path}`, {
+
+  const fetchInit: RequestInit & {
+    next?: { revalidate?: number | false; tags?: string[] };
+  } = {
     ...rest,
     headers,
-    cache: (rest.cache as RequestCache) ?? "no-store",
-  });
+  };
+  if (!fetchInit.cache && !fetchInit.next?.revalidate) {
+    fetchInit.cache = "no-store";
+  }
+  const res = await fetch(`${BASE}${path}`, fetchInit);
   if (!res.ok) {
     const err = await res.json().catch(() => ({ message: res.statusText }));
     throw new Error(err.message || "Request failed");

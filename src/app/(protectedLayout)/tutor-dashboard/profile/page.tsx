@@ -17,7 +17,10 @@ export default async function TutorProfilePage() {
   const profile =
     profileResult.status === "fulfilled" ? profileResult.value.data : null;
   const categories =
-    categoriesResult.status === "fulfilled" ? categoriesResult.value.data : [];
+    categoriesResult.status === "fulfilled" &&
+    Array.isArray(categoriesResult.value.data)
+      ? categoriesResult.value.data
+      : [];
 
   return (
     <div className="space-y-6 max-w-2xl">

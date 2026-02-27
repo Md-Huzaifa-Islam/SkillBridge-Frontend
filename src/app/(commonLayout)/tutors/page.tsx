@@ -24,9 +24,15 @@ export default async function TutorsPage({ searchParams }: PageProps) {
   ]);
 
   const tutors =
-    tutorsResult.status === "fulfilled" ? tutorsResult.value.data : [];
+    tutorsResult.status === "fulfilled" &&
+    Array.isArray(tutorsResult.value.data)
+      ? tutorsResult.value.data
+      : [];
   const categories =
-    categoriesResult.status === "fulfilled" ? categoriesResult.value.data : [];
+    categoriesResult.status === "fulfilled" &&
+    Array.isArray(categoriesResult.value.data)
+      ? categoriesResult.value.data
+      : [];
 
   return (
     <div className="pt-20 space-y-6 pb-10">

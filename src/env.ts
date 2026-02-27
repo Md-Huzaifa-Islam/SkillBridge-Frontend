@@ -14,4 +14,10 @@ export const env = createEnv({
   runtimeEnv: {
     BACKEND_URL: process.env.BACKEND_URL,
   },
+
+  // Skip validation during `next build` when env vars may not be available.
+  // The actual runtime will still fail fast if BACKEND_URL is missing.
+  skipValidation:
+    process.env.NEXT_PHASE === "phase-production-build" ||
+    !!process.env.SKIP_ENV_VALIDATION,
 });

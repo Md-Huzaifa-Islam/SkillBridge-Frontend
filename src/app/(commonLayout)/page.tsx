@@ -11,9 +11,15 @@ export default async function HomePage() {
   ]);
 
   const featuredTutors =
-    tutorsResult.status === "fulfilled" ? tutorsResult.value.data : [];
+    tutorsResult.status === "fulfilled" &&
+    Array.isArray(tutorsResult.value.data)
+      ? tutorsResult.value.data
+      : [];
   const categories =
-    categoriesResult.status === "fulfilled" ? categoriesResult.value.data : [];
+    categoriesResult.status === "fulfilled" &&
+    Array.isArray(categoriesResult.value.data)
+      ? categoriesResult.value.data
+      : [];
 
   return (
     <>

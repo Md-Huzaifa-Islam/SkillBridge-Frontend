@@ -8,7 +8,7 @@ export default function Layout({
 }>) {
   return (
     <div>
-      <nav className="fixed w-full top-0 z-50 bg-background/80 backdrop-blur border-b">
+      <nav className="fixed w-full top-0 z-50 left-1/2 -translate-x-1/2 bg-background/80 backdrop-blur border-b mx-auto container">
         <Navbar />
       </nav>
       <div className="container mx-auto px-4">{children}</div>
