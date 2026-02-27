@@ -2,22 +2,26 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { UserRoles } from "./constants/roles";
 
-function decodeJwtPayload(token: string) {
+const BACKEND_URL =
+  process.env.BACKEND_URL ?? "https://skillbridge-iota-ebon.vercel.app/api";
+
+async function getSession(
+  token: string,
+): Promise<{ id: string; role: string; email: string } | null> {
   try {
-    const base64Payload = token.split(".")[1];
-    const payload = Buffer.from(base64Payload, "base64url").toString("utf-8");
-    return JSON.parse(payload) as {
-      id: string;
-      role: string;
-      email: string;
-      exp: number;
-    };
+    const res = await fetch(`${BACKEND_URL}/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.user ?? null;
   } catch {
     return null;
   }
 }
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const pathName = request.nextUrl.pathname;
   const token = request.cookies.get("token")?.value;
 
@@ -27,12 +31,12 @@ export function proxy(request: NextRequest) {
   let isTutor = false;
 
   if (token) {
-    const payload = decodeJwtPayload(token);
-    if (payload && payload.exp * 1000 > Date.now()) {
+    const user = await getSession(token);
+    if (user) {
       isAuthenticated = true;
-      isAdmin = payload.role === UserRoles.admin;
-      isStudent = payload.role === UserRoles.student;
-      isTutor = payload.role === UserRoles.tutor;
+      isAdmin = user.role === UserRoles.admin;
+      isStudent = user.role === UserRoles.student;
+      isTutor = user.role === UserRoles.tutor;
     }
   }
 

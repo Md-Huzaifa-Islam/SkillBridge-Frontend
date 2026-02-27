@@ -2,51 +2,56 @@
 
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { getToken } from "@/lib/auth";
 import { env } from "@/env";
+import { UserRoles } from "@/constants/roles";
 
 const BACKEND_URL = env.BACKEND_URL;
 
-function decodeRole(token: string): string | null {
-  try {
-    const base64Payload = token.split(".")[1];
-    const payload = JSON.parse(
-      Buffer.from(base64Payload, "base64url").toString("utf-8"),
-    );
-    return payload.role ?? null;
-  } catch {
-    return null;
-  }
-}
-
+// Returns { error } on failure; redirects server-side on success.
+// redirect() must be called outside try/catch per Next.js requirements.
 export async function loginAction(data: {
   email: string;
   password: string;
-}): Promise<{ token: string; role: string }> {
-  const res = await fetch(`${BACKEND_URL}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-    cache: "no-store",
-  });
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || "Login failed");
+}): Promise<{ error: string } | never> {
+  let role = "";
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      return { error: error.message || "Login failed" };
+    }
+    // Backend returns { token, role } — no local JWT decode needed
+    const { token, role: userRole } = (await res.json()) as {
+      token: string;
+      role: string;
+    };
+    role = userRole ?? "";
+
+    const cookieStore = await cookies();
+    cookieStore.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+  } catch {
+    return { error: "Login failed. Please try again." };
   }
-  const json = await res.json();
-  const { token } = json as { token: string };
-  const role = decodeRole(token) ?? "";
 
-  const cookieStore = await cookies();
-  cookieStore.set("token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
-  });
-
-  return { token, role };
+  // Cookie is set — redirect server-side based on role.
+  // No client-side push needed; no race condition possible.
+  if (role === UserRoles.admin) redirect("/admin-dashboard");
+  if (role === UserRoles.tutor) redirect("/tutor-dashboard");
+  redirect("/dashboard");
 }
 
 export async function registerAction(data: {

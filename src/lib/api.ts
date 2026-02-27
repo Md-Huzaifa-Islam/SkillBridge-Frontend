@@ -52,7 +52,7 @@ export const apiUpdateMe = (token: string, name: string) =>
 
 /** GET /tutors?category=&search=&page=&size= */
 export const apiGetTutors = (query = "", revalidate = 60) =>
-  req<{ data: TutorProfile[]; total: number; pages: number }>(
+  req<{ data: { data: TutorProfile[]; total: number; pages: number } }>(
     `/tutors${query ? `?${query}` : ""}`,
     { next: { revalidate } },
   );
@@ -86,7 +86,7 @@ export const apiGetBooking = (id: string, token: string) =>
 
 /** GET /categories  (public) */
 export const apiGetCategories = () =>
-  req<{ data: Category[] }>("/categories", { next: { revalidate: 300 } });
+  req<{ data: Category[] }>("/categories", { next: { tags: ["categories"] } });
 
 // ─── Reviews ──────────────────────────────────────────────────────────────────
 

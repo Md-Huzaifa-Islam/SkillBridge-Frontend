@@ -33,7 +33,7 @@ type NavItem = { title: string; url: string; icon: React.ElementType };
 const studentNav: NavItem[] = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "My Bookings", url: "/dashboard/bookings", icon: CalendarCheck },
-  { title: "Browse Tutors", url: "/tutors", icon: BookOpen },
+  { title: "Browse Tutors", url: "/dashboard/tutors", icon: BookOpen },
   { title: "Profile", url: "/dashboard/profile", icon: User },
 ];
 

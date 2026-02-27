@@ -8,9 +8,10 @@ export default async function AdminUsersPage() {
   if (!session) redirect("/login");
   if (session.user.role !== UserRoles.admin) redirect("/login");
 
-  const { data: tutors } = await apiGetTutors("limit=100", 0).catch(() => ({
-    data: [],
+  const result = await apiGetTutors("limit=100", 0).catch(() => ({
+    data: { data: [], total: 0, pages: 0 },
   }));
+  const tutors = result.data.data ?? [];
 
   return (
     <div className="space-y-6">

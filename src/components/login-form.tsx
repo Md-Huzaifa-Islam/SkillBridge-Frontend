@@ -2,13 +2,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { loginAction } from "@/action/authActions";
-import { UserRoles } from "@/constants/roles";
 import { useState } from "react";
 
 const loginSchema = z.object({
@@ -19,7 +17,6 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
-  const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const {
     register,
@@ -31,13 +28,10 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginFormValues) => {
     setServerError(null);
-    try {
-      const { role } = await loginAction(data);
-      if (role === UserRoles.admin) router.push("/admin-dashboard");
-      else if (role === UserRoles.tutor) router.push("/tutor-dashboard");
-      else router.push("/dashboard");
-    } catch (e: unknown) {
-      setServerError(e instanceof Error ? e.message : "Login failed");
+    const result = await loginAction(data);
+    // loginAction redirects server-side on success, so result only exists on error
+    if (result?.error) {
+      setServerError(result.error);
     }
   };
 

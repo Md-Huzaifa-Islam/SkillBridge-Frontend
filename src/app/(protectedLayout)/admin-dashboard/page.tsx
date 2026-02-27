@@ -19,9 +19,8 @@ export default async function AdminDashboardPage() {
     ]);
 
   const tutors =
-    tutorsResult.status === "fulfilled" &&
-    Array.isArray(tutorsResult.value.data)
-      ? tutorsResult.value.data
+    tutorsResult.status === "fulfilled"
+      ? (tutorsResult.value.data?.data ?? [])
       : [];
   const bookings =
     bookingsResult.status === "fulfilled" &&

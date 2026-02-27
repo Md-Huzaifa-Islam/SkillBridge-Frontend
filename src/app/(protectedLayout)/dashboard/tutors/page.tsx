@@ -5,14 +5,12 @@ export const revalidate = 60;
 
 type PageProps = {
   searchParams: Promise<{
-    /** Text search — matches tutor title / description */
     search?: string;
-    /** Category ID filter */
     category?: string;
   }>;
 };
 
-export default async function TutorsPage({ searchParams }: PageProps) {
+export default async function BrowseTutorsPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const query = new URLSearchParams();
   if (params.search) query.set("search", params.search);
@@ -34,16 +32,16 @@ export default async function TutorsPage({ searchParams }: PageProps) {
       : [];
 
   return (
-    <div className="pt-20 space-y-6 pb-10">
+    <div className="space-y-6 pb-10">
       <div>
-        <h1 className="text-3xl font-bold">Browse Tutors</h1>
+        <h1 className="text-2xl font-bold">Browse Tutors</h1>
         <p className="text-muted-foreground text-sm mt-1">
           {tutors.length} tutor{tutors.length !== 1 ? "s" : ""} available
         </p>
       </div>
 
       <div className="flex gap-6 flex-col lg:flex-row">
-        {/* Filters sidebar */}
+        {/* Filters */}
         <aside className="w-full lg:w-56 shrink-0">
           <FilterPanel
             categories={categories}
@@ -62,7 +60,7 @@ export default async function TutorsPage({ searchParams }: PageProps) {
               {tutors.map((t) => (
                 <Link
                   key={t.id}
-                  href={`/tutors/${t.id}`}
+                  href={`/dashboard/tutors/${t.id}`}
                   className="border rounded-xl p-5 hover:bg-muted/50 transition-colors space-y-2"
                 >
                   <div className="flex items-center gap-3">
@@ -114,7 +112,6 @@ function FilterPanel({
       <h3 className="font-semibold text-sm">Filters</h3>
 
       <form method="GET" className="space-y-3">
-        {/* Text search */}
         <div className="space-y-1">
           <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Search
@@ -127,7 +124,6 @@ function FilterPanel({
           />
         </div>
 
-        {/* Category */}
         <div className="space-y-1">
           <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Category
@@ -155,7 +151,7 @@ function FilterPanel({
 
         {(current.search || current.category) && (
           <Link
-            href="/tutors"
+            href="/dashboard/tutors"
             className="block text-center text-xs text-muted-foreground hover:underline"
           >
             Clear filters

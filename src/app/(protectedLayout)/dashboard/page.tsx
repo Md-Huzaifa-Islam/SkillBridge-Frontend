@@ -22,9 +22,8 @@ export default async function StudentDashboardPage() {
       ? bookingsResult.value.data
       : [];
   const featuredTutors =
-    tutorsResult.status === "fulfilled" &&
-    Array.isArray(tutorsResult.value.data)
-      ? tutorsResult.value.data
+    tutorsResult.status === "fulfilled"
+      ? (tutorsResult.value.data?.data ?? [])
       : [];
 
   const upcoming = bookings.filter((b) => b.status === "confirmed");
