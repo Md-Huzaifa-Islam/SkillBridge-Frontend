@@ -104,11 +104,17 @@ export default function AvailabilityManager({
       )}
       {success && (
         <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 px-4 py-3">
-          <p className="text-sm text-emerald-700 dark:text-emerald-400 font-medium">✓ Availability saved!</p>
+          <p className="text-sm text-emerald-700 dark:text-emerald-400 font-medium">
+            ✓ Availability saved!
+          </p>
         </div>
       )}
 
-      <Button onClick={handleSave} disabled={isPending} className="w-full h-11 font-semibold shadow-sm shadow-primary/20">
+      <Button
+        onClick={handleSave}
+        disabled={isPending}
+        className="w-full h-11 font-semibold shadow-sm shadow-primary/20"
+      >
         {isPending ? "Saving…" : "Save Availability"}
       </Button>
     </div>

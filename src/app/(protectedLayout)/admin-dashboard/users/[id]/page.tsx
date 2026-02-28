@@ -21,7 +21,8 @@ function fmtTime(iso?: string) {
 }
 
 const STATUS_COLOR: Record<string, string> = {
-  confirmed: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400",
+  confirmed:
+    "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400",
   completed: "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400",
   cancelled: "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400",
 };
@@ -55,11 +56,13 @@ export default async function AdminUserDetailPage({ params }: Props) {
       <div className="border rounded-2xl p-6 bg-card shadow-sm space-y-4">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-start gap-4">
-            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-primary/20 to-violet-500/20 flex items-center justify-center text-xl font-bold text-primary shrink-0">
+            <div className="h-14 w-14 rounded-2xl bg-linear-to-br from-primary/20 to-violet-500/20 flex items-center justify-center text-xl font-bold text-primary shrink-0">
               {u.name[0]?.toUpperCase()}
             </div>
             <div className="space-y-1">
-              <h1 className="text-xl font-extrabold tracking-tight">{u.name}</h1>
+              <h1 className="text-xl font-extrabold tracking-tight">
+                {u.name}
+              </h1>
               <p className="text-sm text-muted-foreground">{u.email}</p>
               <div className="flex gap-2 mt-1 flex-wrap">
                 <span
@@ -96,8 +99,13 @@ export default async function AdminUserDetailPage({ params }: Props) {
           </div>
 
           <div className="flex flex-col items-end gap-2">
-            <BanButton userId={u.id} currentStatus={u.status as "active" | "banned"} />
-            <p className="text-xs text-muted-foreground">Joined {fmtDate(u.createdAt)}</p>
+            <BanButton
+              userId={u.id}
+              currentStatus={u.status as "active" | "banned"}
+            />
+            <p className="text-xs text-muted-foreground">
+              Joined {fmtDate(u.createdAt)}
+            </p>
           </div>
         </div>
       </div>
@@ -108,7 +116,9 @@ export default async function AdminUserDetailPage({ params }: Props) {
           {/* Booking stats */}
           {u.tutorStats && (
             <div className="space-y-3">
-              <h2 className="font-bold text-base tracking-tight">Booking Statistics</h2>
+              <h2 className="font-bold text-base tracking-tight">
+                Booking Statistics
+              </h2>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
                 {[
                   { label: "Total", value: u.tutorStats.total },
@@ -123,8 +133,13 @@ export default async function AdminUserDetailPage({ params }: Props) {
                         : "—",
                   },
                 ].map(({ label, value }) => (
-                  <div key={label} className="border rounded-2xl px-3 py-4 text-center bg-card hover:shadow-sm transition-shadow">
-                    <p className="text-xs text-muted-foreground font-medium">{label}</p>
+                  <div
+                    key={label}
+                    className="border rounded-2xl px-3 py-4 text-center bg-card hover:shadow-sm transition-shadow"
+                  >
+                    <p className="text-xs text-muted-foreground font-medium">
+                      {label}
+                    </p>
                     <p className="text-xl font-extrabold mt-1">{value}</p>
                   </div>
                 ))}
@@ -134,35 +149,53 @@ export default async function AdminUserDetailPage({ params }: Props) {
 
           {/* Tutor profile info */}
           <div className="space-y-3">
-            <h2 className="font-bold text-base tracking-tight">Tutor Profile</h2>
+            <h2 className="font-bold text-base tracking-tight">
+              Tutor Profile
+            </h2>
             <div className="border rounded-2xl p-5 space-y-3 text-sm bg-card">
               <div className="flex gap-2 flex-wrap items-center">
-                <span className="font-semibold text-base">{u.tutorProfiles.title}</span>
+                <span className="font-semibold text-base">
+                  {u.tutorProfiles.title}
+                </span>
                 {u.tutorProfiles.category && (
                   <span className="text-xs bg-primary/10 text-primary px-2.5 py-1 rounded-full font-medium">
                     {u.tutorProfiles.category.name}
                   </span>
                 )}
-                <span className="text-xs font-bold text-primary">${u.tutorProfiles.pricePerHour}/hr</span>
-                <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${u.tutorProfiles.active ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400" : "bg-muted text-muted-foreground"}`}>
+                <span className="text-xs font-bold text-primary">
+                  ${u.tutorProfiles.pricePerHour}/hr
+                </span>
+                <span
+                  className={`text-xs px-2.5 py-1 rounded-full font-medium ${u.tutorProfiles.active ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400" : "bg-muted text-muted-foreground"}`}
+                >
                   {u.tutorProfiles.active ? "Active" : "Inactive"}
                 </span>
               </div>
               {u.tutorProfiles.description && (
-                <p className="text-muted-foreground text-xs leading-relaxed">{u.tutorProfiles.description}</p>
+                <p className="text-muted-foreground text-xs leading-relaxed">
+                  {u.tutorProfiles.description}
+                </p>
               )}
               <p className="text-xs text-muted-foreground">
-                Hours: <span className="font-medium text-foreground">{fmtTime(u.tutorProfiles.startTime)} – {fmtTime(u.tutorProfiles.endTime)}</span>
+                Hours:{" "}
+                <span className="font-medium text-foreground">
+                  {fmtTime(u.tutorProfiles.startTime)} –{" "}
+                  {fmtTime(u.tutorProfiles.endTime)}
+                </span>
               </p>
-              {u.tutorProfiles.availabilities && u.tutorProfiles.availabilities.length > 0 && (
-                <div className="flex gap-1.5 flex-wrap">
-                  {u.tutorProfiles.availabilities.map((a) => (
-                    <span key={a.id} className="text-xs px-3 py-1 bg-secondary text-secondary-foreground rounded-full capitalize font-medium border">
-                      {a.day}
-                    </span>
-                  ))}
-                </div>
-              )}
+              {u.tutorProfiles.availabilities &&
+                u.tutorProfiles.availabilities.length > 0 && (
+                  <div className="flex gap-1.5 flex-wrap">
+                    {u.tutorProfiles.availabilities.map((a) => (
+                      <span
+                        key={a.id}
+                        className="text-xs px-3 py-1 bg-secondary text-secondary-foreground rounded-full capitalize font-medium border"
+                      >
+                        {a.day}
+                      </span>
+                    ))}
+                  </div>
+                )}
             </div>
           </div>
         </>
@@ -194,25 +227,48 @@ export default async function AdminUserDetailPage({ params }: Props) {
               <table className="w-full text-sm">
                 <thead className="bg-muted/60 text-muted-foreground border-b">
                   <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">Tutor</th>
-                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">Date</th>
-                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">Time</th>
-                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">Status</th>
-                    <th className="px-4 py-3 text-right font-semibold text-xs uppercase tracking-wide whitespace-nowrap">Price</th>
+                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">
+                      Tutor
+                    </th>
+                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">
+                      Date
+                    </th>
+                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">
+                      Time
+                    </th>
+                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">
+                      Status
+                    </th>
+                    <th className="px-4 py-3 text-right font-semibold text-xs uppercase tracking-wide whitespace-nowrap">
+                      Price
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {u.bookings.map((b) => (
-                    <tr key={b.id} className="hover:bg-muted/30 transition-colors">
-                      <td className="px-4 py-3 font-medium">{b.tutor?.user?.name ?? b.tutor?.title ?? "—"}</td>
-                      <td className="px-4 py-3 text-muted-foreground">{fmtDate(b.date)}</td>
-                      <td className="px-4 py-3 text-muted-foreground">{fmtTime(b.startTime)} – {fmtTime(b.endTime)}</td>
+                    <tr
+                      key={b.id}
+                      className="hover:bg-muted/30 transition-colors"
+                    >
+                      <td className="px-4 py-3 font-medium">
+                        {b.tutor?.user?.name ?? b.tutor?.title ?? "—"}
+                      </td>
+                      <td className="px-4 py-3 text-muted-foreground">
+                        {fmtDate(b.date)}
+                      </td>
+                      <td className="px-4 py-3 text-muted-foreground">
+                        {fmtTime(b.startTime)} – {fmtTime(b.endTime)}
+                      </td>
                       <td className="px-4 py-3">
-                        <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${STATUS_COLOR[b.status] ?? ""}`}>
+                        <span
+                          className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${STATUS_COLOR[b.status] ?? ""}`}
+                        >
                           {b.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right font-semibold">${b.totalPrice}</td>
+                      <td className="px-4 py-3 text-right font-semibold">
+                        ${b.totalPrice}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

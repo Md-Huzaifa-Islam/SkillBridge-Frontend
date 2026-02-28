@@ -71,7 +71,9 @@ export default function SignupForm() {
     <div className="w-full space-y-6">
       <div className="space-y-1 text-center">
         <h1 className="text-2xl font-bold tracking-tight">Create an account</h1>
-        <p className="text-muted-foreground text-sm">Join SkillBridge today — it&apos;s free</p>
+        <p className="text-muted-foreground text-sm">
+          Join SkillBridge today — it&apos;s free
+        </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -102,27 +104,51 @@ export default function SignupForm() {
           <label htmlFor="name" className="text-sm font-semibold">
             Full Name
           </label>
-          <Input id="name" type="text" placeholder="Jane Smith" className="h-11" {...register("name")} />
+          <Input
+            id="name"
+            type="text"
+            placeholder="Jane Smith"
+            className="h-11"
+            {...register("name")}
+          />
           {errors.name && (
-            <p className="text-destructive text-xs flex items-center gap-1"><span>⚠</span> {errors.name.message}</p>
+            <p className="text-destructive text-xs flex items-center gap-1">
+              <span>⚠</span> {errors.name.message}
+            </p>
           )}
         </div>
         <div className="space-y-1.5">
           <label htmlFor="email" className="text-sm font-semibold">
             Email address
           </label>
-          <Input id="email" type="email" placeholder="you@example.com" className="h-11" {...register("email")} />
+          <Input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            className="h-11"
+            {...register("email")}
+          />
           {errors.email && (
-            <p className="text-destructive text-xs flex items-center gap-1"><span>⚠</span> {errors.email.message}</p>
+            <p className="text-destructive text-xs flex items-center gap-1">
+              <span>⚠</span> {errors.email.message}
+            </p>
           )}
         </div>
         <div className="space-y-1.5">
           <label htmlFor="password" className="text-sm font-semibold">
             Password
           </label>
-          <Input id="password" type="password" placeholder="Min. 8 characters" className="h-11" {...register("password")} />
+          <Input
+            id="password"
+            type="password"
+            placeholder="Min. 8 characters"
+            className="h-11"
+            {...register("password")}
+          />
           {errors.password && (
-            <p className="text-destructive text-xs flex items-center gap-1"><span>⚠</span> {errors.password.message}</p>
+            <p className="text-destructive text-xs flex items-center gap-1">
+              <span>⚠</span> {errors.password.message}
+            </p>
           )}
         </div>
         <div className="space-y-1.5">
@@ -145,11 +171,17 @@ export default function SignupForm() {
 
         {serverError && (
           <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3">
-            <p className="text-destructive text-sm text-center">{serverError}</p>
+            <p className="text-destructive text-sm text-center">
+              {serverError}
+            </p>
           </div>
         )}
 
-        <Button type="submit" disabled={isSubmitting} className="w-full h-11 font-semibold shadow-sm shadow-primary/20">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full h-11 font-semibold shadow-sm shadow-primary/20"
+        >
           {isSubmitting ? "Creating account…" : "Create Account"}
         </Button>
       </form>
@@ -159,12 +191,17 @@ export default function SignupForm() {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-2 text-muted-foreground">Already have an account?</span>
+          <span className="bg-card px-2 text-muted-foreground">
+            Already have an account?
+          </span>
         </div>
       </div>
 
       <p className="text-center text-sm">
-        <Link href="/login" className="font-semibold text-primary hover:underline">
+        <Link
+          href="/login"
+          className="font-semibold text-primary hover:underline"
+        >
           Sign in instead →
         </Link>
       </p>

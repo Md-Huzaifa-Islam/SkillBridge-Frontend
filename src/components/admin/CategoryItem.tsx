@@ -55,7 +55,12 @@ export default function CategoryItem({ category }: { category: Category }) {
               disabled={isPending}
               autoFocus
             />
-            <Button size="sm" onClick={handleUpdate} disabled={isPending} className="shrink-0">
+            <Button
+              size="sm"
+              onClick={handleUpdate}
+              disabled={isPending}
+              className="shrink-0"
+            >
               {isPending ? "Saving…" : "Save"}
             </Button>
             <Button
@@ -73,7 +78,9 @@ export default function CategoryItem({ category }: { category: Category }) {
           </>
         ) : (
           <>
-            <span className="flex-1 text-sm font-semibold">{category.name}</span>
+            <span className="flex-1 text-sm font-semibold">
+              {category.name}
+            </span>
             <Button
               size="sm"
               variant="outline"

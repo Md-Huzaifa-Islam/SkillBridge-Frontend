@@ -11,7 +11,8 @@ type Props = {
 };
 
 const STATUS_COLOR: Record<BookingStatus, string> = {
-  confirmed: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400",
+  confirmed:
+    "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400",
   completed: "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400",
   cancelled: "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400",
 };
@@ -79,16 +80,22 @@ export default function BookingCard({ booking: b, role }: Props) {
             <p className="text-xs text-muted-foreground">
               {fmtDate(b.date)} · {fmtTime(b.startTime)} – {fmtTime(b.endTime)}
             </p>
-            <p className="text-xs font-semibold text-primary">${b.totalPrice}</p>
+            <p className="text-xs font-semibold text-primary">
+              ${b.totalPrice}
+            </p>
           </div>
         </div>
-        <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize shrink-0 ${STATUS_COLOR[b.status] ?? ""}`}>
+        <span
+          className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize shrink-0 ${STATUS_COLOR[b.status] ?? ""}`}
+        >
           {b.status}
         </span>
       </div>
 
       {error && (
-        <p className="text-xs text-destructive bg-destructive/10 rounded-lg px-3 py-2">{error}</p>
+        <p className="text-xs text-destructive bg-destructive/10 rounded-lg px-3 py-2">
+          {error}
+        </p>
       )}
 
       <div className="flex flex-wrap gap-2">

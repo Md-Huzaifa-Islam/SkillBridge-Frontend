@@ -10,11 +10,17 @@ export default function LoginPage() {
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2 group">
             <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shadow-md shadow-primary/30 group-hover:shadow-primary/50 transition-shadow">
-              <span className="text-primary-foreground font-bold text-base">S</span>
+              <span className="text-primary-foreground font-bold text-base">
+                S
+              </span>
             </div>
-            <span className="text-xl font-bold tracking-tight">SkillBridge</span>
+            <span className="text-xl font-bold tracking-tight">
+              SkillBridge
+            </span>
           </Link>
-          <p className="mt-2 text-sm text-muted-foreground">Sign in to continue your learning journey</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Sign in to continue your learning journey
+          </p>
         </div>
 
         {/* Form card */}

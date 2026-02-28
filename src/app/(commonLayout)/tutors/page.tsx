@@ -37,9 +37,12 @@ export default async function TutorsPage({ searchParams }: PageProps) {
     <div className="pt-20 space-y-6 pb-12">
       {/* Page header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-extrabold tracking-tight">Browse Tutors</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">
+          Browse Tutors
+        </h1>
         <p className="text-muted-foreground text-sm">
-          <span className="font-semibold text-foreground">{tutors.length}</span> tutor{tutors.length !== 1 ? "s" : ""} available
+          <span className="font-semibold text-foreground">{tutors.length}</span>{" "}
+          tutor{tutors.length !== 1 ? "s" : ""} available
         </p>
       </div>
 
@@ -58,7 +61,9 @@ export default async function TutorsPage({ searchParams }: PageProps) {
             <div className="border rounded-2xl py-20 text-center space-y-3">
               <p className="text-4xl">🔍</p>
               <p className="font-semibold">No tutors found</p>
-              <p className="text-sm text-muted-foreground">Try adjusting your filters or search terms.</p>
+              <p className="text-sm text-muted-foreground">
+                Try adjusting your filters or search terms.
+              </p>
             </div>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -71,12 +76,18 @@ export default async function TutorsPage({ searchParams }: PageProps) {
                     className="group border rounded-2xl p-5 hover:shadow-lg hover:shadow-primary/8 hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-200 bg-card space-y-3"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="h-11 w-11 rounded-full bg-gradient-to-br from-primary/20 to-violet-500/20 flex items-center justify-center font-bold uppercase text-primary ring-2 ring-primary/10 shrink-0 text-base">
+                      <div className="h-11 w-11 rounded-full bg-linear-to-br from-primary/20 to-violet-500/20 flex items-center justify-center font-bold uppercase text-primary ring-2 ring-primary/10 shrink-0 text-base">
                         {initial}
                       </div>
                       <div className="min-w-0">
-                        <p className="font-semibold text-sm truncate">{t.user?.name}</p>
-                        {t.title && <p className="text-xs text-muted-foreground truncate">{t.title}</p>}
+                        <p className="font-semibold text-sm truncate">
+                          {t.user?.name}
+                        </p>
+                        {t.title && (
+                          <p className="text-xs text-muted-foreground truncate">
+                            {t.title}
+                          </p>
+                        )}
                         {t.category && (
                           <span className="inline-block text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full mt-0.5">
                             {t.category.name}
@@ -92,7 +103,9 @@ export default async function TutorsPage({ searchParams }: PageProps) {
                     <div className="flex items-center justify-between pt-1 border-t border-border/60">
                       <span className="text-sm font-bold text-primary">
                         ${t.pricePerHour}
-                        <span className="text-xs font-normal text-muted-foreground">/hr</span>
+                        <span className="text-xs font-normal text-muted-foreground">
+                          /hr
+                        </span>
                       </span>
                       {t.avgRating != null && (
                         <span className="flex items-center gap-1 text-xs font-medium bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2 py-0.5 rounded-full">
@@ -120,7 +133,9 @@ function FilterPanel({
 }) {
   return (
     <div className="border rounded-2xl p-5 space-y-5 bg-card shadow-sm">
-      <h3 className="font-bold text-sm tracking-wide uppercase text-muted-foreground">Filters</h3>
+      <h3 className="font-bold text-sm tracking-wide uppercase text-muted-foreground">
+        Filters
+      </h3>
 
       <form method="GET" className="space-y-4">
         {/* Text search */}

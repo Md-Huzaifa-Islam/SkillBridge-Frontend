@@ -105,7 +105,10 @@ export default function TutorProfileForm({ profile, categories }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 border rounded-2xl p-6 bg-card shadow-sm">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-5 border rounded-2xl p-6 bg-card shadow-sm"
+    >
       {/* Title */}
       <div className="space-y-1.5">
         <label htmlFor="title" className="text-sm font-semibold">
@@ -125,7 +128,9 @@ export default function TutorProfileForm({ profile, categories }: Props) {
       <div className="space-y-1.5">
         <label htmlFor="description" className="text-sm font-semibold">
           Description{" "}
-          <span className="text-muted-foreground font-normal text-xs">(optional)</span>
+          <span className="text-muted-foreground font-normal text-xs">
+            (optional)
+          </span>
         </label>
         <textarea
           id="description"
@@ -199,7 +204,9 @@ export default function TutorProfileForm({ profile, categories }: Props) {
         >
           <option value="">— Select a category —</option>
           {categories.map((c) => (
-            <option key={c.id} value={c.id}>{c.name}</option>
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
           ))}
         </select>
       </div>
@@ -211,11 +218,17 @@ export default function TutorProfileForm({ profile, categories }: Props) {
       )}
       {success && (
         <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 px-4 py-3">
-          <p className="text-sm text-emerald-700 dark:text-emerald-400 font-medium">✓ Profile saved successfully!</p>
+          <p className="text-sm text-emerald-700 dark:text-emerald-400 font-medium">
+            ✓ Profile saved successfully!
+          </p>
         </div>
       )}
 
-      <Button type="submit" disabled={isPending} className="w-full h-11 font-semibold shadow-sm shadow-primary/20">
+      <Button
+        type="submit"
+        disabled={isPending}
+        className="w-full h-11 font-semibold shadow-sm shadow-primary/20"
+      >
         {isPending ? "Saving…" : profile ? "Update Profile" : "Create Profile"}
       </Button>
     </form>

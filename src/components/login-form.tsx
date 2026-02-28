@@ -82,11 +82,17 @@ export default function LoginForm() {
 
         {serverError && (
           <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3">
-            <p className="text-destructive text-sm text-center">{serverError}</p>
+            <p className="text-destructive text-sm text-center">
+              {serverError}
+            </p>
           </div>
         )}
 
-        <Button type="submit" disabled={isSubmitting} className="w-full h-11 font-semibold shadow-sm shadow-primary/20">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full h-11 font-semibold shadow-sm shadow-primary/20"
+        >
           {isSubmitting ? "Signing in…" : "Sign In"}
         </Button>
       </form>
@@ -96,7 +102,9 @@ export default function LoginForm() {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-2 text-muted-foreground">New to SkillBridge?</span>
+          <span className="bg-card px-2 text-muted-foreground">
+            New to SkillBridge?
+          </span>
         </div>
       </div>
 

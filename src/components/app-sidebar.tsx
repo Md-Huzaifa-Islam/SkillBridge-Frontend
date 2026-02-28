@@ -80,12 +80,16 @@ export function AppSidebar({ role = UserRoles.student }: { role?: string }) {
           <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shadow-sm shadow-primary/20">
             <span className="text-primary-foreground font-bold text-sm">S</span>
           </div>
-          <span className="font-bold text-base tracking-tight">SkillBridge</span>
+          <span className="font-bold text-base tracking-tight">
+            SkillBridge
+          </span>
         </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 px-3 py-2">{label}</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 px-3 py-2">
+            {label}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => (

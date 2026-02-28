@@ -41,7 +41,7 @@ export default async function HomePage() {
           <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-[1.1]">
             Connect with Expert Tutors,
             <br />
-            <span className="bg-gradient-to-r from-primary via-violet-500 to-indigo-500 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-primary via-violet-500 to-indigo-500 bg-clip-text text-transparent">
               Learn Anything
             </span>
           </h1>
@@ -138,7 +138,7 @@ export default async function HomePage() {
               className="group border rounded-2xl p-5 hover:shadow-lg hover:shadow-primary/8 hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-200 bg-card space-y-3"
             >
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary/20 to-violet-500/20 flex items-center justify-center text-lg font-bold uppercase text-primary ring-2 ring-primary/10 shrink-0">
+                <div className="h-12 w-12 rounded-full bg-linear-to-br from-primary/20 to-violet-500/20 flex items-center justify-center text-lg font-bold uppercase text-primary ring-2 ring-primary/10 shrink-0">
                   {t.user?.name?.[0] ?? "T"}
                 </div>
                 <div className="min-w-0">
@@ -224,7 +224,7 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="py-16 my-4">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary/90 to-violet-600 text-primary-foreground p-10 sm:p-14 text-center space-y-5">
+        <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-primary via-primary/90 to-violet-600 text-primary-foreground p-10 sm:p-14 text-center space-y-5">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-0 left-1/4 w-64 h-64 rounded-full bg-white/5 blur-3xl" />
             <div className="absolute bottom-0 right-1/4 w-64 h-64 rounded-full bg-white/5 blur-3xl" />

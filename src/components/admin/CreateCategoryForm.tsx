@@ -38,7 +38,11 @@ export default function CreateCategoryForm() {
           className="flex-1 h-11"
           disabled={isPending}
         />
-        <Button type="submit" disabled={isPending || !newName.trim()} className="h-11 px-5 font-semibold shrink-0">
+        <Button
+          type="submit"
+          disabled={isPending || !newName.trim()}
+          className="h-11 px-5 font-semibold shrink-0"
+        >
           {isPending ? "Adding…" : "+ Add"}
         </Button>
       </form>
