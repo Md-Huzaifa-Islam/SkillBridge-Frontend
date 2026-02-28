@@ -68,6 +68,7 @@ const Navbar = ({
   menu = [
     { title: "Home", url: "/" },
     { title: "Find Tutors", url: "/tutors" },
+    { title: "How it Works", url: "/#how-it-works" },
   ],
   auth = {
     login: { title: "Login", url: "/login" },
