@@ -2,19 +2,13 @@
 
 import { useState, useTransition } from "react";
 import { updateBookingStatusAction } from "@/action/bookingActions";
-import type { Booking, BookingStatus } from "@/lib/api";
+import type { Booking } from "@/lib/api";
 import ReviewForm from "@/components/tutors/ReviewForm";
+import { StatusBadge } from "@/components/dashboard/ui";
 
 type Props = {
   booking: Booking;
   role: "student" | "tutor";
-};
-
-const STATUS_COLOR: Record<BookingStatus, string> = {
-  confirmed:
-    "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400",
-  completed: "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400",
-  cancelled: "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400",
 };
 
 /** Format an ISO date string as a human-readable date (e.g. "15 Mar 2024") */
@@ -66,10 +60,10 @@ export default function BookingCard({ booking: b, role }: Props) {
   const hasReview = b.reviews && b.reviews.length > 0;
 
   return (
-    <div className="border rounded-2xl p-5 space-y-4 bg-card hover:shadow-sm transition-shadow">
+    <div className="border rounded-2xl p-5 space-y-4 bg-card hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
-          <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center text-sm font-bold text-primary shrink-0">
+          <div className="h-9 w-9 rounded-xl bg-linear-to-br from-primary/20 to-violet-500/20 flex items-center justify-center text-sm font-bold text-primary shrink-0">
             {otherParty[0]?.toUpperCase()}
           </div>
           <div className="space-y-0.5">
@@ -85,11 +79,7 @@ export default function BookingCard({ booking: b, role }: Props) {
             </p>
           </div>
         </div>
-        <span
-          className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize shrink-0 ${STATUS_COLOR[b.status] ?? ""}`}
-        >
-          {b.status}
-        </span>
+        <StatusBadge status={b.status} />
       </div>
 
       {error && (

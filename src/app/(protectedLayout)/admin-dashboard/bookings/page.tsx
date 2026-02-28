@@ -2,13 +2,7 @@ import { getSession } from "@/lib/auth";
 import { apiGetBookings } from "@/lib/api";
 import { redirect } from "next/navigation";
 import { UserRoles } from "@/constants/roles";
-
-const STATUS_COLOR: Record<string, string> = {
-  confirmed:
-    "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400",
-  cancelled: "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400",
-  completed: "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400",
-};
+import { PageHeader, StatCard, StatusBadge } from "@/components/dashboard/ui";
 
 export default async function AdminBookingsPage() {
   const session = await getSession();
@@ -27,27 +21,34 @@ export default async function AdminBookingsPage() {
   };
 
   return (
-    <div className="space-y-6 p-1">
-      <div>
-        <h1 className="text-2xl font-extrabold tracking-tight">All Bookings</h1>
-        <p className="text-muted-foreground text-sm mt-0.5">
-          Monitor all tutoring sessions across the platform.
-        </p>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="All Bookings"
+        description="Monitor all tutoring sessions across the platform."
+        icon="📊"
+        badge={`${stats.total} total`}
+      />
 
-      {/* Stats bar */}
-      <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
-        {Object.entries(stats).map(([label, count]) => (
-          <div
-            key={label}
-            className="border rounded-2xl px-4 py-4 text-center bg-card hover:shadow-sm transition-shadow"
-          >
-            <p className="text-xs text-muted-foreground capitalize font-medium">
-              {label}
-            </p>
-            <p className="text-2xl font-extrabold mt-1">{count}</p>
-          </div>
-        ))}
+      <div className="grid gap-4 grid-cols-2 sm:grid-cols-4">
+        <StatCard label="Total" value={stats.total} icon="📚" color="purple" />
+        <StatCard
+          label="Confirmed"
+          value={stats.confirmed}
+          icon="✅"
+          color="green"
+        />
+        <StatCard
+          label="Completed"
+          value={stats.completed}
+          icon="🎓"
+          color="blue"
+        />
+        <StatCard
+          label="Cancelled"
+          value={stats.cancelled}
+          icon="✕"
+          color="red"
+        />
       </div>
 
       <div className="border rounded-2xl overflow-x-auto bg-card shadow-sm">
@@ -90,13 +91,9 @@ export default async function AdminBookingsPage() {
                   {b.startTime ?? "—"} – {b.endTime ?? "—"}
                 </td>
                 <td className="px-4 py-3">
-                  <span
-                    className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${STATUS_COLOR[b.status] ?? ""}`}
-                  >
-                    {b.status}
-                  </span>
+                  <StatusBadge status={b.status} />
                 </td>
-                <td className="px-4 py-3 text-right font-semibold">
+                <td className="px-4 py-3 text-right font-semibold text-primary">
                   ${b.totalPrice}
                 </td>
               </tr>

@@ -3,6 +3,11 @@ import { apiGetBookings } from "@/lib/api";
 import { redirect } from "next/navigation";
 import { UserRoles } from "@/constants/roles";
 import BookingCard from "@/components/dashboard/BookingCard";
+import {
+  PageHeader,
+  EmptyState,
+  SectionTitle,
+} from "@/components/dashboard/ui";
 
 export default async function TutorSessionsPage() {
   const session = await getSession();
@@ -13,37 +18,28 @@ export default async function TutorSessionsPage() {
     data: [],
   }));
 
-  // Bookings start as "confirmed" — there is no pending status
   const active = bookings.filter((b) => b.status === "confirmed");
   const history = bookings.filter((b) =>
     ["completed", "cancelled"].includes(b.status),
   );
 
   return (
-    <div className="space-y-6 p-1">
-      <div>
-        <h1 className="text-2xl font-extrabold tracking-tight">My Sessions</h1>
-        <p className="text-muted-foreground text-sm mt-0.5">
-          Manage your upcoming and past tutoring sessions.
-        </p>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="My Sessions"
+        description="Manage your upcoming and past tutoring sessions."
+        icon="📊"
+        badge={`${bookings.length} total`}
+      />
 
-      <section className="space-y-3">
-        <div className="flex items-center gap-2">
-          <h2 className="font-bold text-base tracking-tight">
-            Confirmed Sessions
-          </h2>
-          <span className="text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-0.5 rounded-full font-semibold">
-            {active.length}
-          </span>
-        </div>
+      <section>
+        <SectionTitle badge={active.length}>Confirmed Sessions</SectionTitle>
         {active.length === 0 ? (
-          <div className="border rounded-2xl py-10 text-center space-y-2 bg-muted/20">
-            <p className="text-2xl">📅</p>
-            <p className="text-sm text-muted-foreground">
-              No confirmed sessions.
-            </p>
-          </div>
+          <EmptyState
+            icon="📅"
+            title="No confirmed sessions"
+            description="Sessions booked by students will appear here."
+          />
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {active.map((b) => (
@@ -53,18 +49,14 @@ export default async function TutorSessionsPage() {
         )}
       </section>
 
-      <section className="space-y-3">
-        <div className="flex items-center gap-2">
-          <h2 className="font-bold text-base tracking-tight">History</h2>
-          <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full font-semibold">
-            {history.length}
-          </span>
-        </div>
+      <section>
+        <SectionTitle badge={history.length}>Session History</SectionTitle>
         {history.length === 0 ? (
-          <div className="border rounded-2xl py-10 text-center space-y-2 bg-muted/20">
-            <p className="text-2xl">📋</p>
-            <p className="text-sm text-muted-foreground">No past sessions.</p>
-          </div>
+          <EmptyState
+            icon="📋"
+            title="No past sessions"
+            description="Your completed and cancelled sessions will appear here."
+          />
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {history.map((b) => (

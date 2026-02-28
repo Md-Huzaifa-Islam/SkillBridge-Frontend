@@ -3,6 +3,12 @@ import { apiGetBookings, apiGetTutors, apiGetCategories } from "@/lib/api";
 import { redirect } from "next/navigation";
 import { UserRoles } from "@/constants/roles";
 import Link from "next/link";
+import {
+  PageHeader,
+  StatCard,
+  SectionTitle,
+  StatusBadge,
+} from "@/components/dashboard/ui";
 
 export default async function AdminDashboardPage() {
   const session = await getSession();
@@ -37,61 +43,58 @@ export default async function AdminDashboardPage() {
   const completedBookings = bookings.filter((b) => b.status === "completed");
 
   return (
-    <div className="space-y-6 p-1">
-      <div>
-        <h1 className="text-2xl font-extrabold tracking-tight">
-          Admin Dashboard
-        </h1>
-        <p className="text-muted-foreground text-sm mt-0.5">
-          Platform overview and management.
-        </p>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        title="Admin Dashboard"
+        description="Platform overview and management."
+        icon="📊"
+        badge={`${tutors.length} tutors · ${bookings.length} bookings`}
+      />
 
-      {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Total Tutors"
           value={tutors.length}
-          href="/admin-dashboard/users"
           icon="👨‍🏫"
-          color="violet"
+          color="purple"
+          sub="registered tutors"
         />
         <StatCard
           label="Total Bookings"
           value={bookings.length}
-          href="/admin-dashboard/bookings"
           icon="📚"
           color="blue"
+          sub="all time"
         />
         <StatCard
           label="Confirmed"
           value={confirmedBookings.length}
-          href="/admin-dashboard/bookings"
           icon="✅"
           color="green"
+          sub="active sessions"
         />
         <StatCard
           label="Categories"
           value={categories.length}
-          href="/admin-dashboard/categories"
           icon="🏷️"
           color="orange"
+          sub="subjects available"
         />
       </div>
 
-      {/* Recent bookings summary */}
       <section className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="font-bold text-base tracking-tight">
-            Recent Bookings
-          </h2>
-          <Link
-            href="/admin-dashboard/bookings"
-            className="text-sm text-primary hover:underline font-medium"
-          >
-            View all →
-          </Link>
-        </div>
+        <SectionTitle
+          action={
+            <Link
+              href="/admin-dashboard/bookings"
+              className="text-sm text-primary hover:underline font-medium"
+            >
+              View all →
+            </Link>
+          }
+        >
+          Recent Bookings
+        </SectionTitle>
         <div className="border rounded-2xl overflow-hidden bg-card shadow-sm">
           <table className="w-full text-sm">
             <thead className="bg-muted/60 text-muted-foreground border-b">
@@ -126,17 +129,7 @@ export default async function AdminDashboardPage() {
                     {b.date ?? "—"}
                   </td>
                   <td className="px-4 py-3">
-                    <span
-                      className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${
-                        b.status === "confirmed"
-                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400"
-                          : b.status === "completed"
-                            ? "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400"
-                            : "bg-muted text-muted-foreground"
-                      }`}
-                    >
-                      {b.status}
-                    </span>
+                    <StatusBadge status={b.status} />
                   </td>
                   <td className="px-4 py-3 text-right font-semibold">
                     ${b.totalPrice}
@@ -158,94 +151,44 @@ export default async function AdminDashboardPage() {
         </div>
       </section>
 
-      {/* Quick links */}
       <section className="grid gap-4 sm:grid-cols-3">
-        <QuickLink
-          href="/admin-dashboard/users"
-          label="Manage Users"
-          desc="View tutors and students"
-          icon="👥"
-        />
-        <QuickLink
-          href="/admin-dashboard/bookings"
-          label="All Bookings"
-          desc="Monitor all sessions"
-          icon="📋"
-        />
-        <QuickLink
-          href="/admin-dashboard/categories"
-          label="Categories"
-          desc="Add or edit categories"
-          icon="🏷️"
-        />
+        {(
+          [
+            {
+              href: "/admin-dashboard/users",
+              label: "Manage Users",
+              desc: "View tutors and students",
+              icon: "👥",
+            },
+            {
+              href: "/admin-dashboard/bookings",
+              label: "All Bookings",
+              desc: "Monitor all sessions",
+              icon: "📋",
+            },
+            {
+              href: "/admin-dashboard/categories",
+              label: "Categories",
+              desc: "Add or edit categories",
+              icon: "🏷️",
+            },
+          ] as const
+        ).map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="border rounded-2xl p-5 hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200 bg-card flex items-start gap-3"
+          >
+            <span className="text-2xl">{item.icon}</span>
+            <div>
+              <p className="font-semibold text-sm">{item.label}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {item.desc}
+              </p>
+            </div>
+          </Link>
+        ))}
       </section>
     </div>
-  );
-}
-
-type StatColor = "violet" | "blue" | "green" | "orange";
-
-function StatCard({
-  label,
-  value,
-  href,
-  icon,
-  color,
-}: {
-  label: string;
-  value: number;
-  href: string;
-  icon: string;
-  color: StatColor;
-}) {
-  const colorMap: Record<StatColor, string> = {
-    violet:
-      "bg-violet-50 text-violet-600 dark:bg-violet-950/40 dark:text-violet-400",
-    blue: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400",
-    green:
-      "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400",
-    orange:
-      "bg-orange-50 text-orange-600 dark:bg-orange-950/40 dark:text-orange-400",
-  };
-  return (
-    <Link
-      href={href}
-      className="border rounded-2xl p-5 space-y-3 hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200 bg-card block"
-    >
-      <div
-        className={`inline-flex h-10 w-10 items-center justify-center rounded-xl text-lg ${colorMap[color]}`}
-      >
-        {icon}
-      </div>
-      <div>
-        <p className="text-3xl font-extrabold tracking-tight">{value}</p>
-        <p className="text-sm text-muted-foreground mt-0.5">{label}</p>
-      </div>
-    </Link>
-  );
-}
-
-function QuickLink({
-  href,
-  label,
-  desc,
-  icon,
-}: {
-  href: string;
-  label: string;
-  desc: string;
-  icon: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="border rounded-2xl p-5 hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200 bg-card flex items-start gap-3"
-    >
-      <span className="text-2xl">{icon}</span>
-      <div>
-        <p className="font-semibold text-sm">{label}</p>
-        <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
-      </div>
-    </Link>
   );
 }

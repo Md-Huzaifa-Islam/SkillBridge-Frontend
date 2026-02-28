@@ -6,19 +6,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import BanButton from "@/components/admin/BanButton";
 import UsersFilterBar from "@/components/admin/UsersFilterBar";
-
-const ROLE_BADGE: Record<string, string> = {
-  student: "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400",
-  tutor:
-    "bg-violet-100 text-violet-700 dark:bg-violet-950/40 dark:text-violet-400",
-  admin: "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400",
-};
-
-const STATUS_BADGE: Record<string, string> = {
-  active:
-    "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400",
-  banned: "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400",
-};
+import { PageHeader, StatusBadge } from "@/components/dashboard/ui";
 
 type Props = {
   searchParams: Promise<Record<string, string | undefined>>;
@@ -43,16 +31,13 @@ export default async function AdminUsersPage({ searchParams }: Props) {
   const { users, total } = result.data;
 
   return (
-    <div className="space-y-5 p-1">
-      <div className="flex items-center justify-between flex-wrap gap-2">
-        <div>
-          <h1 className="text-2xl font-extrabold tracking-tight">Users</h1>
-          <p className="text-muted-foreground text-sm mt-0.5">
-            <span className="font-semibold text-foreground">{total}</span> users
-            in total
-          </p>
-        </div>
-      </div>
+    <div className="space-y-5">
+      <PageHeader
+        title="Users"
+        description="Manage all students, tutors, and admins on the platform."
+        icon="👥"
+        badge={`${total} total`}
+      />
 
       <Suspense>
         <UsersFilterBar />
@@ -97,18 +82,10 @@ export default async function AdminUsersPage({ searchParams }: Props) {
                   {u.email}
                 </td>
                 <td className="px-4 py-3">
-                  <span
-                    className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${ROLE_BADGE[u.role] ?? ""}`}
-                  >
-                    {u.role}
-                  </span>
+                  <StatusBadge status={u.role} />
                 </td>
                 <td className="px-4 py-3">
-                  <span
-                    className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${STATUS_BADGE[u.status] ?? ""}`}
-                  >
-                    {u.status}
-                  </span>
+                  <StatusBadge status={u.status} />
                 </td>
                 <td className="px-4 py-3 text-xs text-muted-foreground">
                   {u.tutorProfiles ? (

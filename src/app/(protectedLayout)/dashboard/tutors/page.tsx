@@ -1,5 +1,6 @@
 import { apiGetTutors, apiGetCategories } from "@/lib/api";
 import Link from "next/link";
+import { PageHeader, EmptyState } from "@/components/dashboard/ui";
 
 export const revalidate = 60;
 
@@ -33,12 +34,11 @@ export default async function BrowseTutorsPage({ searchParams }: PageProps) {
 
   return (
     <div className="space-y-6 pb-10">
-      <div>
-        <h1 className="text-2xl font-bold">Browse Tutors</h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          {tutors.length} tutor{tutors.length !== 1 ? "s" : ""} available
-        </p>
-      </div>
+      <PageHeader
+        title="Browse Tutors"
+        description={`${tutors.length} tutor${tutors.length !== 1 ? "s" : ""} available to book.`}
+        icon="🔍"
+      />
 
       <div className="flex gap-6 flex-col lg:flex-row">
         {/* Filters */}
@@ -52,41 +52,50 @@ export default async function BrowseTutorsPage({ searchParams }: PageProps) {
         {/* Results */}
         <div className="flex-1">
           {tutors.length === 0 ? (
-            <div className="border rounded-xl py-16 text-center text-muted-foreground">
-              No tutors found. Try adjusting your filters.
-            </div>
+            <EmptyState
+              icon="🔍"
+              title="No tutors found"
+              description="Try adjusting your search filters."
+            />
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {tutors.map((t) => (
                 <Link
                   key={t.id}
                   href={`/dashboard/tutors/${t.id}`}
-                  className="border rounded-xl p-5 hover:bg-muted/50 transition-colors space-y-2"
+                  className="group border rounded-2xl p-5 hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200 bg-card space-y-3"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center font-bold uppercase text-primary">
+                    <div className="h-11 w-11 rounded-xl bg-linear-to-br from-primary/20 to-violet-500/20 flex items-center justify-center font-bold uppercase text-primary text-base shrink-0">
                       {t.user?.name?.[0] ?? "T"}
                     </div>
-                    <div>
-                      <p className="font-semibold text-sm">{t.user?.name}</p>
-                      <p className="text-xs text-muted-foreground">{t.title}</p>
-                      {t.category && (
-                        <p className="text-xs text-muted-foreground">
-                          {t.category.name}
-                        </p>
-                      )}
+                    <div className="min-w-0">
+                      <p className="font-semibold text-sm truncate">
+                        {t.user?.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {t.title}
+                      </p>
                     </div>
                   </div>
+                  {t.category && (
+                    <span className="inline-flex text-xs px-2.5 py-1 rounded-full font-medium bg-primary/10 text-primary">
+                      {t.category.name}
+                    </span>
+                  )}
                   {t.description && (
-                    <p className="text-xs text-muted-foreground line-clamp-2">
+                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                       {t.description}
                     </p>
                   )}
-                  <div className="flex items-center justify-between text-xs pt-1">
-                    <span className="font-medium">${t.pricePerHour}/hr</span>
+                  <div className="flex items-center justify-between text-xs pt-1 border-t border-border/50">
+                    <span className="font-bold text-primary">
+                      ${t.pricePerHour}/hr
+                    </span>
                     {t.avgRating != null && (
-                      <span className="text-muted-foreground">
-                        ⭐ {t.avgRating.toFixed(1)}
+                      <span className="flex items-center gap-1 text-muted-foreground">
+                        <span className="text-amber-400">★</span>
+                        {t.avgRating.toFixed(1)}
                       </span>
                     )}
                   </div>
@@ -108,7 +117,7 @@ function FilterPanel({
   current: { search?: string; category?: string };
 }) {
   return (
-    <div className="border rounded-xl p-4 space-y-4">
+    <div className="border rounded-2xl p-4 space-y-4 bg-card">
       <h3 className="font-semibold text-sm">Filters</h3>
 
       <form method="GET" className="space-y-3">

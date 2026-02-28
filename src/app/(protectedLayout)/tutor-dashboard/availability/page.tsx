@@ -3,6 +3,8 @@ import { apiGetMyTutorProfile } from "@/lib/api";
 import { redirect } from "next/navigation";
 import { UserRoles } from "@/constants/roles";
 import AvailabilityManager from "@/components/tutor/AvailabilityManager";
+import { PageHeader, EmptyState } from "@/components/dashboard/ui";
+import Link from "next/link";
 
 export default async function TutorAvailabilityPage() {
   const session = await getSession();
@@ -17,27 +19,42 @@ export default async function TutorAvailabilityPage() {
 
   if (!profile) {
     return (
-      <div className="space-y-4">
-        <h1 className="text-2xl font-bold">Availability</h1>
-        <p className="text-muted-foreground text-sm">
-          You need to create a tutor profile first before managing availability.
-        </p>
+      <div className="space-y-6">
+        <PageHeader
+          title="Availability"
+          description="Set the days and times you are available to teach."
+          icon="📅"
+        />
+        <EmptyState
+          icon="⚠️"
+          title="No tutor profile found"
+          description="You need to create a tutor profile before managing your availability."
+          action={
+            <Link
+              href="/tutor-dashboard/profile"
+              className="inline-block text-sm bg-primary text-primary-foreground px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition"
+            >
+              Create Profile
+            </Link>
+          }
+        />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Availability</h1>
-        <p className="text-muted-foreground text-sm">
-          Select the days of the week you are available to teach.
-        </p>
-      </div>
-      <AvailabilityManager
-        availabilities={profile.availabilities ?? []}
-        tutorProfileId={profile.id}
+      <PageHeader
+        title="Availability"
+        description="Select the days of the week you are available to teach."
+        icon="📅"
       />
+      <div className="border rounded-2xl p-6 bg-card">
+        <AvailabilityManager
+          availabilities={profile.availabilities ?? []}
+          tutorProfileId={profile.id}
+        />
+      </div>
     </div>
   );
 }
