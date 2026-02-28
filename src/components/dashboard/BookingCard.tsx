@@ -11,9 +11,9 @@ type Props = {
 };
 
 const STATUS_COLOR: Record<BookingStatus, string> = {
-  confirmed: "bg-green-100 text-green-700",
-  completed: "bg-muted text-muted-foreground",
-  cancelled: "bg-red-100 text-red-600",
+  confirmed: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400",
+  completed: "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400",
+  cancelled: "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400",
 };
 
 /** Format an ISO date string as a human-readable date (e.g. "15 Mar 2024") */
@@ -65,74 +65,79 @@ export default function BookingCard({ booking: b, role }: Props) {
   const hasReview = b.reviews && b.reviews.length > 0;
 
   return (
-    <div className="border rounded-xl p-4 space-y-3">
-      <div className="flex items-start justify-between">
-        <div className="space-y-1">
-          <p className="font-medium text-sm">{otherParty}</p>
-          {role === "student" && b.tutor?.title && (
-            <p className="text-xs text-muted-foreground">{b.tutor.title}</p>
-          )}
-          <p className="text-xs text-muted-foreground">
-            {fmtDate(b.date)} · {fmtTime(b.startTime)} – {fmtTime(b.endTime)}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Total: ${b.totalPrice}
-          </p>
+    <div className="border rounded-2xl p-5 space-y-4 bg-card hover:shadow-sm transition-shadow">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3">
+          <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center text-sm font-bold text-primary shrink-0">
+            {otherParty[0]?.toUpperCase()}
+          </div>
+          <div className="space-y-0.5">
+            <p className="font-semibold text-sm">{otherParty}</p>
+            {role === "student" && b.tutor?.title && (
+              <p className="text-xs text-muted-foreground">{b.tutor.title}</p>
+            )}
+            <p className="text-xs text-muted-foreground">
+              {fmtDate(b.date)} · {fmtTime(b.startTime)} – {fmtTime(b.endTime)}
+            </p>
+            <p className="text-xs font-semibold text-primary">${b.totalPrice}</p>
+          </div>
         </div>
-        <span
-          className={`text-xs px-2 py-1 rounded-full capitalize ${STATUS_COLOR[b.status] ?? ""}`}
-        >
+        <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize shrink-0 ${STATUS_COLOR[b.status] ?? ""}`}>
           {b.status}
         </span>
       </div>
 
-      {error && <p className="text-xs text-red-500">{error}</p>}
-
-      {/* Student: can cancel confirmed sessions */}
-      {role === "student" && b.status === "confirmed" && (
-        <button
-          onClick={() => handleAction("cancelled")}
-          disabled={isPending}
-          className="text-xs text-red-600 hover:underline disabled:opacity-50"
-        >
-          Cancel Session
-        </button>
+      {error && (
+        <p className="text-xs text-destructive bg-destructive/10 rounded-lg px-3 py-2">{error}</p>
       )}
 
-      {/* Student: can leave a review for completed sessions without a review */}
-      {role === "student" && b.status === "completed" && !hasReview && (
-        <div className="space-y-2">
-          {!showReview ? (
-            <button
-              onClick={() => setShowReview(true)}
-              className="text-xs text-primary hover:underline"
-            >
-              Leave a Review
-            </button>
-          ) : (
-            <ReviewForm bookingId={b.id} />
-          )}
-        </div>
-      )}
+      <div className="flex flex-wrap gap-2">
+        {/* Student: can cancel confirmed sessions */}
+        {role === "student" && b.status === "confirmed" && (
+          <button
+            onClick={() => handleAction("cancelled")}
+            disabled={isPending}
+            className="text-xs text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-950/30 px-3 py-1.5 rounded-lg font-medium disabled:opacity-50 transition-colors"
+          >
+            {isPending ? "Cancelling…" : "Cancel Session"}
+          </button>
+        )}
 
-      {/* Student: show existing review */}
-      {role === "student" && b.status === "completed" && hasReview && (
-        <p className="text-xs text-muted-foreground">
-          ⭐ {b.reviews![0].rating}/5
-          {b.reviews![0].review ? ` — "${b.reviews![0].review}"` : ""}
-        </p>
-      )}
+        {/* Student: can leave a review for completed sessions without a review */}
+        {role === "student" && b.status === "completed" && !hasReview && (
+          <div className="w-full space-y-2">
+            {!showReview ? (
+              <button
+                onClick={() => setShowReview(true)}
+                className="text-xs text-primary border border-primary/30 hover:bg-primary/5 px-3 py-1.5 rounded-lg font-semibold transition-colors"
+              >
+                ⭐ Leave a Review
+              </button>
+            ) : (
+              <ReviewForm bookingId={b.id} />
+            )}
+          </div>
+        )}
 
-      {/* Tutor: can mark confirmed sessions as completed */}
-      {role === "tutor" && b.status === "confirmed" && (
-        <button
-          onClick={() => handleAction("completed")}
-          disabled={isPending}
-          className="text-xs bg-primary text-primary-foreground px-3 py-1 rounded-lg disabled:opacity-50"
-        >
-          Mark Complete
-        </button>
-      )}
+        {/* Student: show existing review */}
+        {role === "student" && b.status === "completed" && hasReview && (
+          <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2">
+            ⭐ {b.reviews![0].rating}/5
+            {b.reviews![0].review ? ` — “${b.reviews![0].review}”` : ""}
+          </p>
+        )}
+
+        {/* Tutor: can mark confirmed sessions as completed */}
+        {role === "tutor" && b.status === "confirmed" && (
+          <button
+            onClick={() => handleAction("completed")}
+            disabled={isPending}
+            className="text-xs bg-primary text-primary-foreground px-4 py-1.5 rounded-lg font-semibold disabled:opacity-50 shadow-sm shadow-primary/20 hover:opacity-90 transition"
+          >
+            {isPending ? "Updating…" : "✓ Mark Complete"}
+          </button>
+        )}
+      </div>
     </div>
   );
 }

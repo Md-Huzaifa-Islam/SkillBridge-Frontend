@@ -28,20 +28,25 @@ export default function CreateCategoryForm() {
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 border rounded-2xl p-5 bg-card shadow-sm">
+      <p className="text-sm font-semibold">Add New Category</p>
       <form onSubmit={handleSubmit} className="flex gap-2">
         <Input
-          placeholder="New category name…"
+          placeholder="Category name…"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
-          className="flex-1"
+          className="flex-1 h-11"
           disabled={isPending}
         />
-        <Button type="submit" disabled={isPending || !newName.trim()}>
-          {isPending ? "Adding…" : "Add"}
+        <Button type="submit" disabled={isPending || !newName.trim()} className="h-11 px-5 font-semibold shrink-0">
+          {isPending ? "Adding…" : "+ Add"}
         </Button>
       </form>
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-3 py-2">
+          <p className="text-sm text-destructive">{error}</p>
+        </div>
+      )}
     </div>
   );
 }

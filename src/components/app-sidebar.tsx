@@ -75,22 +75,25 @@ export function AppSidebar({ role = UserRoles.student }: { role?: string }) {
 
   return (
     <Sidebar>
-      <SidebarHeader className="p-4">
-        <Link href="/" className="font-bold text-lg tracking-tight">
-          SkillBridge
+      <SidebarHeader className="p-4 border-b">
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shadow-sm shadow-primary/20">
+            <span className="text-primary-foreground font-bold text-sm">S</span>
+          </div>
+          <span className="font-bold text-base tracking-tight">SkillBridge</span>
         </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>{label}</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 px-3 py-2">{label}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild>
-                    <Link href={item.url} className="flex items-center gap-2">
-                      <item.icon className="h-4 w-4" />
-                      {item.title}
+                  <SidebarMenuButton asChild className="rounded-lg">
+                    <Link href={item.url} className="flex items-center gap-2.5">
+                      <item.icon className="h-4 w-4 shrink-0" />
+                      <span className="font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -99,14 +102,14 @@ export function AppSidebar({ role = UserRoles.student }: { role?: string }) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-2">
+      <SidebarFooter className="p-3 border-t">
         <form action={logoutAction}>
           <SidebarMenuButton
             type="submit"
-            className="w-full flex items-center gap-2 text-destructive hover:text-destructive"
+            className="w-full flex items-center gap-2.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg font-medium"
           >
-            <LogOut className="h-4 w-4" />
-            Logout
+            <LogOut className="h-4 w-4 shrink-0" />
+            <span>Sign Out</span>
           </SidebarMenuButton>
         </form>
       </SidebarFooter>

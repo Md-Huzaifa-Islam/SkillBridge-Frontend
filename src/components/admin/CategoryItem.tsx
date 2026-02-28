@@ -45,17 +45,17 @@ export default function CategoryItem({ category }: { category: Category }) {
 
   return (
     <div className="space-y-1">
-      <div className="flex items-center gap-3 border rounded-lg px-4 py-2">
+      <div className="flex items-center gap-3 border rounded-xl px-4 py-3 bg-card hover:shadow-sm transition-shadow">
         {isEditing ? (
           <>
             <Input
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
-              className="flex-1 h-8 text-sm"
+              className="flex-1 h-9 text-sm"
               disabled={isPending}
               autoFocus
             />
-            <Button size="sm" onClick={handleUpdate} disabled={isPending}>
+            <Button size="sm" onClick={handleUpdate} disabled={isPending} className="shrink-0">
               {isPending ? "Saving…" : "Save"}
             </Button>
             <Button
@@ -66,25 +66,27 @@ export default function CategoryItem({ category }: { category: Category }) {
                 setEditName(category.name);
               }}
               disabled={isPending}
+              className="shrink-0"
             >
               Cancel
             </Button>
           </>
         ) : (
           <>
-            <span className="flex-1 text-sm font-medium">{category.name}</span>
+            <span className="flex-1 text-sm font-semibold">{category.name}</span>
             <Button
               size="sm"
-              variant="ghost"
+              variant="outline"
               onClick={() => setIsEditing(true)}
               disabled={isPending}
+              className="shrink-0 h-8 text-xs"
             >
               Edit
             </Button>
             <Button
               size="sm"
               variant="ghost"
-              className="text-red-500 hover:text-red-600"
+              className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 shrink-0 h-8 text-xs"
               onClick={handleDelete}
               disabled={isPending}
             >
@@ -93,7 +95,7 @@ export default function CategoryItem({ category }: { category: Category }) {
           </>
         )}
       </div>
-      {error && <p className="text-xs text-red-500 px-4">{error}</p>}
+      {error && <p className="text-xs text-destructive px-4">{error}</p>}
     </div>
   );
 }

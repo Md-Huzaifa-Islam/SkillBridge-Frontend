@@ -32,62 +32,63 @@ export default async function StudentDashboardPage() {
   );
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Welcome back 👋</h1>
-        <p className="text-muted-foreground text-sm">
-          Here&apos;s an overview of your learning journey.
-        </p>
+    <div className="space-y-6 p-1">
+      {/* Welcome header */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-2xl font-extrabold tracking-tight">Welcome back 👋</h1>
+          <p className="text-muted-foreground text-sm mt-0.5">
+            Here&apos;s an overview of your learning journey.
+          </p>
+        </div>
+        <Link
+          href="/tutors"
+          className="text-sm bg-primary text-primary-foreground px-4 py-2 rounded-xl font-semibold shadow-sm shadow-primary/25 hover:opacity-90 transition"
+        >
+          + Book a Session
+        </Link>
       </div>
 
       {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard label="Upcoming Sessions" value={upcoming.length} />
-        <StatCard label="Past Sessions" value={past.length} />
-        <StatCard label="Total Bookings" value={bookings.length} />
+        <StatCard label="Upcoming Sessions" value={upcoming.length} icon="📅" color="blue" />
+        <StatCard label="Past Sessions" value={past.length} icon="✅" color="green" />
+        <StatCard label="Total Bookings" value={bookings.length} icon="📚" color="purple" />
       </div>
 
       {/* Upcoming bookings */}
-      <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold text-lg">Upcoming Sessions</h2>
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="font-bold text-base tracking-tight">Upcoming Sessions</h2>
           <Link
             href="/dashboard/bookings"
-            className="text-sm text-primary hover:underline"
+            className="text-sm text-primary hover:underline font-medium"
           >
-            View all
+            View all →
           </Link>
         </div>
         {upcoming.length === 0 ? (
-          <p className="text-muted-foreground text-sm">
-            No upcoming sessions.{" "}
-            <Link href="/tutors" className="text-primary underline">
-              Browse tutors
-            </Link>{" "}
-            to book one.
-          </p>
+          <div className="border rounded-2xl py-10 text-center space-y-2 bg-muted/20">
+            <p className="text-2xl">📅</p>
+            <p className="text-sm text-muted-foreground">No upcoming sessions.</p>
+            <Link href="/tutors" className="text-sm text-primary font-semibold hover:underline">
+              Browse tutors to book one →
+            </Link>
+          </div>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {upcoming.slice(0, 4).map((b) => (
               <div
                 key={b.id}
-                className="flex items-center justify-between border rounded-lg p-3"
+                className="flex items-center justify-between border rounded-xl p-4 bg-card hover:shadow-sm transition-shadow"
               >
                 <div>
-                  <p className="font-medium text-sm">
-                    {b.tutor?.user?.name ?? "Tutor"}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="font-semibold text-sm">{b.tutor?.user?.name ?? "Tutor"}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     {b.date ?? "—"} · {b.startTime ?? "—"}
                   </p>
                 </div>
-                <span
-                  className={`text-xs px-2 py-1 rounded-full ${
-                    b.status === "confirmed"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-yellow-100 text-yellow-700"
-                  }`}
-                >
+                <span className="text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 font-medium capitalize">
                   {b.status}
                 </span>
               </div>
@@ -97,11 +98,11 @@ export default async function StudentDashboardPage() {
       </section>
 
       {/* Featured tutors */}
-      <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold text-lg">Explore Tutors</h2>
-          <Link href="/tutors" className="text-sm text-primary hover:underline">
-            See all
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="font-bold text-base tracking-tight">Explore Tutors</h2>
+          <Link href="/tutors" className="text-sm text-primary hover:underline font-medium">
+            See all →
           </Link>
         </div>
         <div className="grid gap-3 sm:grid-cols-3">
@@ -109,13 +110,18 @@ export default async function StudentDashboardPage() {
             <Link
               key={t.id}
               href={`/tutors/${t.id}`}
-              className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
+              className="border rounded-xl p-4 hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-200 bg-card space-y-2"
             >
-              <p className="font-semibold text-sm">{t.user?.name}</p>
-              <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center font-bold text-xs text-primary shrink-0">
+                  {t.user?.name?.[0]?.toUpperCase() ?? "T"}
+                </div>
+                <p className="font-semibold text-sm truncate">{t.user?.name}</p>
+              </div>
+              <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                 {t.description}
               </p>
-              <p className="text-xs mt-2 font-medium">${t.pricePerHour}/hr</p>
+              <p className="text-xs font-bold text-primary">${t.pricePerHour}/hr</p>
             </Link>
           ))}
         </div>
@@ -124,11 +130,21 @@ export default async function StudentDashboardPage() {
   );
 }
 
-function StatCard({ label, value }: { label: string; value: number }) {
+function StatCard({ label, value, icon, color }: { label: string; value: number; icon: string; color: "blue" | "green" | "purple" }) {
+  const colorMap = {
+    blue: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400",
+    green: "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400",
+    purple: "bg-violet-50 text-violet-600 dark:bg-violet-950/40 dark:text-violet-400",
+  };
   return (
-    <div className="border rounded-xl p-4 space-y-1">
-      <p className="text-sm text-muted-foreground">{label}</p>
-      <p className="text-3xl font-bold">{value}</p>
+    <div className="border rounded-2xl p-5 space-y-3 bg-card hover:shadow-sm transition-shadow">
+      <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl text-lg ${colorMap[color]}`}>
+        {icon}
+      </div>
+      <div>
+        <p className="text-3xl font-extrabold tracking-tight">{value}</p>
+        <p className="text-sm text-muted-foreground mt-0.5">{label}</p>
+      </div>
     </div>
   );
 }

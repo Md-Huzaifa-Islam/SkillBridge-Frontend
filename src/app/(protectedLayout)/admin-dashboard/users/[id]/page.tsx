@@ -21,9 +21,9 @@ function fmtTime(iso?: string) {
 }
 
 const STATUS_COLOR: Record<string, string> = {
-  confirmed: "bg-green-100 text-green-700",
-  completed: "bg-muted text-muted-foreground",
-  cancelled: "bg-red-100 text-red-600",
+  confirmed: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400",
+  completed: "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400",
+  cancelled: "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400",
 };
 
 type Props = { params: Promise<{ id: string }> };
@@ -42,62 +42,62 @@ export default async function AdminUserDetailPage({ params }: Props) {
   const isStudent = u.role === "student";
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-4xl p-1">
       {/* Back */}
       <Link
         href="/admin-dashboard/users"
-        className="text-sm text-muted-foreground hover:underline"
+        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
       >
         ← Back to Users
       </Link>
 
       {/* Header card */}
-      <div className="border rounded-xl p-5 space-y-4">
+      <div className="border rounded-2xl p-6 bg-card shadow-sm space-y-4">
         <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div className="space-y-1">
-            <h1 className="text-xl font-bold">{u.name}</h1>
-            <p className="text-sm text-muted-foreground">{u.email}</p>
-            <div className="flex gap-2 mt-1 flex-wrap">
-              <span
-                className={`text-xs px-2 py-0.5 rounded-full capitalize ${
-                  u.role === "tutor"
-                    ? "bg-purple-100 text-purple-700"
-                    : u.role === "student"
-                      ? "bg-blue-100 text-blue-700"
-                      : "bg-yellow-100 text-yellow-700"
-                }`}
-              >
-                {u.role}
-              </span>
-              <span
-                className={`text-xs px-2 py-0.5 rounded-full capitalize ${
-                  u.status === "active"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-600"
-                }`}
-              >
-                {u.status}
-              </span>
-              {u.emailVerified ? (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-                  Email verified
+          <div className="flex items-start gap-4">
+            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-primary/20 to-violet-500/20 flex items-center justify-center text-xl font-bold text-primary shrink-0">
+              {u.name[0]?.toUpperCase()}
+            </div>
+            <div className="space-y-1">
+              <h1 className="text-xl font-extrabold tracking-tight">{u.name}</h1>
+              <p className="text-sm text-muted-foreground">{u.email}</p>
+              <div className="flex gap-2 mt-1 flex-wrap">
+                <span
+                  className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${
+                    u.role === "tutor"
+                      ? "bg-violet-100 text-violet-700 dark:bg-violet-950/40 dark:text-violet-400"
+                      : u.role === "student"
+                        ? "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400"
+                        : "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400"
+                  }`}
+                >
+                  {u.role}
                 </span>
-              ) : (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-orange-100 text-orange-600">
-                  Email unverified
+                <span
+                  className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${
+                    u.status === "active"
+                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400"
+                      : "bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-400"
+                  }`}
+                >
+                  {u.status}
                 </span>
-              )}
+                {u.emailVerified ? (
+                  <span className="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 font-medium">
+                    ✓ Email verified
+                  </span>
+                ) : (
+                  <span className="text-xs px-2.5 py-1 rounded-full bg-orange-100 text-orange-600 dark:bg-orange-950/40 dark:text-orange-400 font-medium">
+                    Email unverified
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col items-end gap-1">
-            <BanButton
-              userId={u.id}
-              currentStatus={u.status as "active" | "banned"}
-            />
-            <p className="text-xs text-muted-foreground">
-              Joined {fmtDate(u.createdAt)}
-            </p>
+          <div className="flex flex-col items-end gap-2">
+            <BanButton userId={u.id} currentStatus={u.status as "active" | "banned"} />
+            <p className="text-xs text-muted-foreground">Joined {fmtDate(u.createdAt)}</p>
           </div>
         </div>
       </div>
@@ -108,7 +108,7 @@ export default async function AdminUserDetailPage({ params }: Props) {
           {/* Booking stats */}
           {u.tutorStats && (
             <div className="space-y-3">
-              <h2 className="font-semibold text-lg">Booking Statistics</h2>
+              <h2 className="font-bold text-base tracking-tight">Booking Statistics</h2>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
                 {[
                   { label: "Total", value: u.tutorStats.total },
@@ -123,12 +123,9 @@ export default async function AdminUserDetailPage({ params }: Props) {
                         : "—",
                   },
                 ].map(({ label, value }) => (
-                  <div
-                    key={label}
-                    className="border rounded-lg px-3 py-2 text-center"
-                  >
-                    <p className="text-xs text-muted-foreground">{label}</p>
-                    <p className="text-xl font-bold">{value}</p>
+                  <div key={label} className="border rounded-2xl px-3 py-4 text-center bg-card hover:shadow-sm transition-shadow">
+                    <p className="text-xs text-muted-foreground font-medium">{label}</p>
+                    <p className="text-xl font-extrabold mt-1">{value}</p>
                   </div>
                 ))}
               </div>
@@ -137,115 +134,85 @@ export default async function AdminUserDetailPage({ params }: Props) {
 
           {/* Tutor profile info */}
           <div className="space-y-3">
-            <h2 className="font-semibold text-lg">Tutor Profile</h2>
-            <div className="border rounded-xl p-4 space-y-2 text-sm">
-              <div className="flex gap-2 flex-wrap">
-                <span className="font-medium">{u.tutorProfiles.title}</span>
+            <h2 className="font-bold text-base tracking-tight">Tutor Profile</h2>
+            <div className="border rounded-2xl p-5 space-y-3 text-sm bg-card">
+              <div className="flex gap-2 flex-wrap items-center">
+                <span className="font-semibold text-base">{u.tutorProfiles.title}</span>
                 {u.tutorProfiles.category && (
-                  <span className="text-muted-foreground">
-                    · {u.tutorProfiles.category.name}
+                  <span className="text-xs bg-primary/10 text-primary px-2.5 py-1 rounded-full font-medium">
+                    {u.tutorProfiles.category.name}
                   </span>
                 )}
-                <span className="text-muted-foreground">
-                  · ${u.tutorProfiles.pricePerHour}/hr
-                </span>
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-full ${u.tutorProfiles.active ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"}`}
-                >
+                <span className="text-xs font-bold text-primary">${u.tutorProfiles.pricePerHour}/hr</span>
+                <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${u.tutorProfiles.active ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400" : "bg-muted text-muted-foreground"}`}>
                   {u.tutorProfiles.active ? "Active" : "Inactive"}
                 </span>
               </div>
               {u.tutorProfiles.description && (
-                <p className="text-muted-foreground text-xs">
-                  {u.tutorProfiles.description}
-                </p>
+                <p className="text-muted-foreground text-xs leading-relaxed">{u.tutorProfiles.description}</p>
               )}
               <p className="text-xs text-muted-foreground">
-                Hours: {fmtTime(u.tutorProfiles.startTime)} –{" "}
-                {fmtTime(u.tutorProfiles.endTime)}
+                Hours: <span className="font-medium text-foreground">{fmtTime(u.tutorProfiles.startTime)} – {fmtTime(u.tutorProfiles.endTime)}</span>
               </p>
-              {u.tutorProfiles.availabilities &&
-                u.tutorProfiles.availabilities.length > 0 && (
-                  <div className="flex gap-1 flex-wrap">
-                    {u.tutorProfiles.availabilities.map((a) => (
-                      <span
-                        key={a.id}
-                        className="text-xs px-2 py-0.5 bg-muted rounded-full capitalize"
-                      >
-                        {a.day}
-                      </span>
-                    ))}
-                  </div>
-                )}
+              {u.tutorProfiles.availabilities && u.tutorProfiles.availabilities.length > 0 && (
+                <div className="flex gap-1.5 flex-wrap">
+                  {u.tutorProfiles.availabilities.map((a) => (
+                    <span key={a.id} className="text-xs px-3 py-1 bg-secondary text-secondary-foreground rounded-full capitalize font-medium border">
+                      {a.day}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </>
       )}
 
       {isTutor && !u.tutorProfiles && (
-        <p className="text-sm text-muted-foreground border rounded-xl p-4">
+        <div className="border rounded-2xl p-5 bg-muted/20 text-sm text-muted-foreground">
           This tutor has not set up a profile yet.
-        </p>
+        </div>
       )}
 
       {/* ── STUDENT: bookings ── */}
       {isStudent && (
         <div className="space-y-3">
-          <h2 className="font-semibold text-lg">
-            Bookings{" "}
-            <span className="text-sm font-normal text-muted-foreground">
-              ({u.bookings?.length ?? 0})
+          <div className="flex items-center gap-2">
+            <h2 className="font-bold text-base tracking-tight">Bookings</h2>
+            <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full font-semibold">
+              {u.bookings?.length ?? 0}
             </span>
-          </h2>
+          </div>
 
           {!u.bookings || u.bookings.length === 0 ? (
-            <p className="text-sm text-muted-foreground border rounded-xl p-4">
-              No bookings yet.
-            </p>
+            <div className="border rounded-2xl py-10 text-center space-y-2 bg-muted/20">
+              <p className="text-2xl">📋</p>
+              <p className="text-sm text-muted-foreground">No bookings yet.</p>
+            </div>
           ) : (
-            <div className="border rounded-xl overflow-x-auto">
+            <div className="border rounded-2xl overflow-x-auto bg-card shadow-sm">
               <table className="w-full text-sm">
-                <thead className="bg-muted/50 text-muted-foreground">
+                <thead className="bg-muted/60 text-muted-foreground border-b">
                   <tr>
-                    <th className="px-4 py-2 text-left whitespace-nowrap">
-                      Tutor
-                    </th>
-                    <th className="px-4 py-2 text-left whitespace-nowrap">
-                      Date
-                    </th>
-                    <th className="px-4 py-2 text-left whitespace-nowrap">
-                      Time
-                    </th>
-                    <th className="px-4 py-2 text-left whitespace-nowrap">
-                      Status
-                    </th>
-                    <th className="px-4 py-2 text-right whitespace-nowrap">
-                      Price
-                    </th>
+                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">Tutor</th>
+                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">Date</th>
+                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">Time</th>
+                    <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide whitespace-nowrap">Status</th>
+                    <th className="px-4 py-3 text-right font-semibold text-xs uppercase tracking-wide whitespace-nowrap">Price</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-border/60">
                   {u.bookings.map((b) => (
-                    <tr key={b.id} className="border-t hover:bg-muted/30">
-                      <td className="px-4 py-2">
-                        {b.tutor?.user?.name ?? b.tutor?.title ?? "—"}
-                      </td>
-                      <td className="px-4 py-2 text-muted-foreground">
-                        {fmtDate(b.date)}
-                      </td>
-                      <td className="px-4 py-2 text-muted-foreground">
-                        {fmtTime(b.startTime)} – {fmtTime(b.endTime)}
-                      </td>
-                      <td className="px-4 py-2">
-                        <span
-                          className={`text-xs px-2 py-0.5 rounded-full capitalize ${STATUS_COLOR[b.status] ?? ""}`}
-                        >
+                    <tr key={b.id} className="hover:bg-muted/30 transition-colors">
+                      <td className="px-4 py-3 font-medium">{b.tutor?.user?.name ?? b.tutor?.title ?? "—"}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{fmtDate(b.date)}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{fmtTime(b.startTime)} – {fmtTime(b.endTime)}</td>
+                      <td className="px-4 py-3">
+                        <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${STATUS_COLOR[b.status] ?? ""}`}>
                           {b.status}
                         </span>
                       </td>
-                      <td className="px-4 py-2 text-right font-medium">
-                        ${b.totalPrice}
-                      </td>
+                      <td className="px-4 py-3 text-right font-semibold">${b.totalPrice}</td>
                     </tr>
                   ))}
                 </tbody>

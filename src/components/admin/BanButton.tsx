@@ -31,15 +31,15 @@ export default function BanButton({ userId, currentStatus }: Props) {
       <button
         onClick={handleClick}
         disabled={isPending}
-        className={`text-xs px-3 py-1 rounded-lg font-medium disabled:opacity-50 transition-colors ${
+        className={`text-xs px-3 py-1.5 rounded-lg font-semibold disabled:opacity-50 transition-colors ${
           currentStatus === "active"
-            ? "bg-red-100 text-red-700 hover:bg-red-200"
-            : "bg-green-100 text-green-700 hover:bg-green-200"
+            ? "bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-950/40 dark:text-red-400 dark:hover:bg-red-950/60"
+            : "bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:hover:bg-emerald-950/60"
         }`}
       >
-        {isPending ? "..." : label}
+        {isPending ? "…" : label}
       </button>
-      {error && <span className="text-xs text-red-500">{error}</span>}
+      {error && <span className="text-xs text-destructive">{error}</span>}
     </span>
   );
 }

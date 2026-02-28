@@ -67,8 +67,8 @@ export default function AvailabilityManager({
   };
 
   return (
-    <div className="space-y-5 border rounded-xl p-6 max-w-lg">
-      <p className="text-sm text-muted-foreground">
+    <div className="space-y-5 border rounded-2xl p-6 max-w-lg bg-card shadow-sm">
+      <p className="text-sm text-muted-foreground leading-relaxed">
         Select the days of the week you are available to teach. Students will
         pick a date matching one of these days when booking.
       </p>
@@ -79,10 +79,10 @@ export default function AvailabilityManager({
           return (
             <label
               key={value}
-              className={`flex items-center gap-2 rounded-lg border px-3 py-2 cursor-pointer transition-colors select-none ${
+              className={`flex items-center gap-2.5 rounded-xl border px-4 py-3 cursor-pointer transition-all duration-150 select-none ${
                 checked
-                  ? "border-primary bg-primary/5 font-medium"
-                  : "hover:bg-muted/50"
+                  ? "border-primary bg-primary/5 text-primary font-semibold shadow-sm"
+                  : "hover:bg-muted/60 hover:border-border text-muted-foreground"
               }`}
             >
               <input
@@ -97,10 +97,18 @@ export default function AvailabilityManager({
         })}
       </div>
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
-      {success && <p className="text-sm text-green-600">Availability saved!</p>}
+      {error && (
+        <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3">
+          <p className="text-sm text-destructive">{error}</p>
+        </div>
+      )}
+      {success && (
+        <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 px-4 py-3">
+          <p className="text-sm text-emerald-700 dark:text-emerald-400 font-medium">✓ Availability saved!</p>
+        </div>
+      )}
 
-      <Button onClick={handleSave} disabled={isPending} className="w-full">
+      <Button onClick={handleSave} disabled={isPending} className="w-full h-11 font-semibold shadow-sm shadow-primary/20">
         {isPending ? "Saving…" : "Save Availability"}
       </Button>
     </div>

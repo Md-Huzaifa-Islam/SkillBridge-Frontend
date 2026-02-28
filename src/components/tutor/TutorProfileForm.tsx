@@ -105,41 +105,42 @@ export default function TutorProfileForm({ profile, categories }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 border rounded-xl p-6">
+    <form onSubmit={handleSubmit} className="space-y-5 border rounded-2xl p-6 bg-card shadow-sm">
       {/* Title */}
-      <div className="space-y-1">
-        <label htmlFor="title" className="text-sm font-medium">
-          Title <span className="text-red-500">*</span>
+      <div className="space-y-1.5">
+        <label htmlFor="title" className="text-sm font-semibold">
+          Title <span className="text-destructive">*</span>
         </label>
         <Input
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Expert Math Tutor"
+          className="h-11"
           required
         />
       </div>
 
       {/* Description */}
-      <div className="space-y-1">
-        <label htmlFor="description" className="text-sm font-medium">
+      <div className="space-y-1.5">
+        <label htmlFor="description" className="text-sm font-semibold">
           Description{" "}
-          <span className="text-muted-foreground font-normal">(optional)</span>
+          <span className="text-muted-foreground font-normal text-xs">(optional)</span>
         </label>
         <textarea
           id="description"
           rows={4}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full rounded-md border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring"
+          className="w-full rounded-lg border bg-background px-3 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring transition"
           placeholder="Tell students about yourself…"
         />
       </div>
 
       {/* Price Per Hour */}
-      <div className="space-y-1">
-        <label htmlFor="pricePerHour" className="text-sm font-medium">
-          Price per Hour ($) <span className="text-red-500">*</span>
+      <div className="space-y-1.5">
+        <label htmlFor="pricePerHour" className="text-sm font-semibold">
+          Price per Hour ($) <span className="text-destructive">*</span>
         </label>
         <Input
           id="pricePerHour"
@@ -149,65 +150,72 @@ export default function TutorProfileForm({ profile, categories }: Props) {
           value={pricePerHour}
           onChange={(e) => setPricePerHour(e.target.value)}
           placeholder="e.g. 25"
+          className="h-11"
           required
         />
       </div>
 
       {/* Time range */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-1">
-          <label htmlFor="startTime" className="text-sm font-medium">
-            Start Time <span className="text-red-500">*</span>
+        <div className="space-y-1.5">
+          <label htmlFor="startTime" className="text-sm font-semibold">
+            Start Time <span className="text-destructive">*</span>
           </label>
           <Input
             id="startTime"
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
+            className="h-11"
             required
           />
         </div>
-        <div className="space-y-1">
-          <label htmlFor="endTime" className="text-sm font-medium">
-            End Time <span className="text-red-500">*</span>
+        <div className="space-y-1.5">
+          <label htmlFor="endTime" className="text-sm font-semibold">
+            End Time <span className="text-destructive">*</span>
           </label>
           <Input
             id="endTime"
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
+            className="h-11"
             required
           />
         </div>
       </div>
 
       {/* Category */}
-      <div className="space-y-1">
-        <label htmlFor="category" className="text-sm font-medium">
-          Category <span className="text-red-500">*</span>
+      <div className="space-y-1.5">
+        <label htmlFor="category" className="text-sm font-semibold">
+          Category <span className="text-destructive">*</span>
         </label>
         <select
           id="category"
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
           required
-          className="w-full rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          className="w-full rounded-lg border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring transition h-11"
         >
           <option value="">— Select a category —</option>
           {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
+            <option key={c.id} value={c.id}>{c.name}</option>
           ))}
         </select>
       </div>
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <div className="rounded-lg bg-destructive/10 border border-destructive/20 px-4 py-3">
+          <p className="text-sm text-destructive">{error}</p>
+        </div>
+      )}
       {success && (
-        <p className="text-sm text-green-600">Profile saved successfully!</p>
+        <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 px-4 py-3">
+          <p className="text-sm text-emerald-700 dark:text-emerald-400 font-medium">✓ Profile saved successfully!</p>
+        </div>
       )}
 
-      <Button type="submit" disabled={isPending} className="w-full">
+      <Button type="submit" disabled={isPending} className="w-full h-11 font-semibold shadow-sm shadow-primary/20">
         {isPending ? "Saving…" : profile ? "Update Profile" : "Create Profile"}
       </Button>
     </form>
