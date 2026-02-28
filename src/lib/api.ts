@@ -158,7 +158,7 @@ export type Booking = {
     category?: { id: string; name: string };
   };
   student?: { id: string; name: string; email: string };
-  available?: { id: string; day: WeekDay };
+  availableDate?: { id: string; day: WeekDay };
   reviews?: { id: string; rating: number; review?: string }[];
 };
 
@@ -195,3 +195,74 @@ export type TutorRating = {
     student: { name: string; email: string; image?: string | null };
   };
 };
+
+// ─── Admin ────────────────────────────────────────────────────────────────────
+
+export type AdminUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: "student" | "tutor" | "admin";
+  status: "active" | "banned";
+  emailVerified: boolean;
+  createdAt: string;
+  tutorProfiles?: {
+    id: string;
+    title: string;
+    pricePerHour: number;
+    active: boolean;
+    category?: { id: string; name: string } | null;
+  } | null;
+};
+
+export type AdminUsersResult = {
+  users: AdminUser[];
+  total: number;
+  pages: number;
+};
+
+export type AdminUserDetail = Omit<AdminUser, "tutorProfiles"> & {
+  updatedAt: string;
+  tutorProfiles?: {
+    id: string;
+    title: string;
+    description?: string | null;
+    pricePerHour: number;
+    startTime: string;
+    endTime: string;
+    active: boolean;
+    category?: { id: string; name: string } | null;
+    availabilities?: { id: string; day: string }[];
+  } | null;
+  bookings?: Array<{
+    id: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+    totalPrice: number;
+    status: BookingStatus;
+    createdAt: string;
+    tutor?: {
+      id: string;
+      title: string;
+      user: { name: string; email: string };
+    };
+  }>;
+  tutorStats?: {
+    total: number;
+    confirmed: number;
+    completed: number;
+    cancelled: number;
+    avgRating: number | null;
+  };
+};
+
+/** GET /admin/users?role=&status=&search=&page=&size= */
+export const apiAdminGetUsers = (token: string, query = "") =>
+  req<{ data: AdminUsersResult }>(`/admin/users${query ? `?${query}` : ""}`, {
+    token,
+  });
+
+/** GET /admin/users/:id */
+export const apiAdminGetUser = (token: string, id: string) =>
+  req<{ data: AdminUserDetail }>(`/admin/users/${id}`, { token });

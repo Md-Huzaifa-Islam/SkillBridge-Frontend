@@ -60,3 +60,18 @@ export async function deleteCategoryAction(id: string) {
   revalidatePath("/admin-dashboard/categories");
   return result;
 }
+
+export async function banUserAction(
+  userId: string,
+  status: "active" | "banned",
+) {
+  const token = await getToken();
+  const result = await apiFetch(`/admin/users/${userId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+    token,
+  });
+  revalidatePath("/admin-dashboard/users");
+  revalidatePath(`/admin-dashboard/users/${userId}`);
+  return result;
+}
